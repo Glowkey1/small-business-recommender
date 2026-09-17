@@ -1,0 +1,251 @@
+ID,Job,Category,Physical_Skills,Technical_Skills,Mental_Skills
+1,AI Engineer,Private,Low_Endurance,Python ML DL Math Stats,System_Thinking Research Patience
+2,Airforce Technical,Government,High_Stamina,Aircraft_Systems Electronics Radar,Discipline Alertness
+3,Android Developer,Private,Low_Endurance,Java Kotlin Android_SDK APIs,Logic Creativity
+4,Army (GD),Government,High_Stamina Strength Height Chest,Weapons Tactics Survival,Discipline Courage Stress_Control
+5,Assistant Professor,Government,Low_Endurance,Subject_Mastery Research Teaching,Patience Communication
+6,Automation Engineer,Private,Medium_Endurance,PLC SCADA Robotics Sensors,Problem_Solving Precision
+7,Backend Developer,Private,Low_Endurance,Java Python Node DB APIs,Logic Debugging
+8,Bank Clerk,Government,Low_Endurance,Banking Ops Accounting IT,Accuracy Responsibility
+9,Business Analyst,Private,Low_Endurance,Excel SQL Docs UML,Critical_Thinking Communication
+10,Brand Manager,Private,Low_Endurance,Branding Analytics Campaigns,Strategic_Thinking Creativity
+11,Carpenter,Private,High_Strength,Woodwork Tools Measurement,Precision Patience
+12,Chartered Accountant,Private,Low_Endurance,Accounting Tax Audit Law,Judgement Ethics
+13,Civil Site Engineer,Private,Medium_Endurance,Drawings Surveying Concrete,Field_Management Decision
+14,Cloud Engineer,Private,Low_Endurance,AWS Azure Linux CI_CD,Reliability Crisis_Handling
+15,Content Writer,Private,Low_Endurance,SEO Writing Research,Creativity Focus
+16,Corporate Trainer,Government,Low_Endurance,Training Design Presentation,Motivation Communication
+17,Credit Manager,Private,Low_Endurance,Credit_Risk Finance Analysis,Judgement Accountability
+18,Customer Support Executive,Private,Low_Endurance,CRM Tools Product_Knowledge,Patience Empathy
+19,Data Analyst,Private,Low_Endurance,SQL Python Excel Stats,Analytical_Thinking
+20,Data Engineer,Private,Low_Endurance,ETL SQL Spark Cloud,Structured_Thinking
+21,Database Administrator,Private,Low_Endurance,SQL Backup Security Tuning,Attention_Detail
+22,Defense Scientist (DRDO),Government,Low_Endurance,Research Engineering Simulation,Innovation Focus
+23,Delivery Executive,Private,High_Endurance,Navigation App Handling,Reliability Time_Management
+24,DevOps Engineer,Private,Low_Endurance,Docker Kubernetes CI_CD Linux,Ownership Calm
+25,Digital Marketing Manager,Private,Low_Endurance,SEO SEM Ads Analytics,Creativity Analysis
+26,Electrician,Private,Medium_Strength,Wiring Panels Safety Codes,Alertness Precision
+27,Embedded Systems Engineer,Private,Low_Endurance,C Embedded RTOS Hardware,Debug_Patience
+28,Event Manager,Private,Medium_Endurance,Planning Vendors Budgeting,Multitasking Leadership
+29,Factory Supervisor,Private,Medium_Endurance,Production Planning Quality,Team_Handling
+30,Financial Analyst,Private,Low_Endurance,Modeling Valuation Excel,Analytical_Rigor
+31,Fireman,Government,Very_High_Stamina,Rescue Equipment Fire_Safety,Bravery Calm
+32,Forest Guard,Government,High_Stamina,Patrolling Wildlife Law,Alertness Endurance
+33,Forest Watcher,Government,High_Stamina,Tracking Survival GPS,Observation Discipline
+34,Frontend Developer,Private,Low_Endurance,HTML CSS JS React,Creativity UX
+35,Game Tester,Private,Low_Endurance,Testing Bug_Tracking,Attention_Patience
+36,GIS Analyst,Private,Low_Endurance,GIS Tools Mapping Data,Spatial_Thinking
+37,Graphic Designer,Private,Low_Endurance,Photoshop Illustrator UI,Creativity Detail
+38,Growth Manager,Private,Low_Endurance,Funnels Analytics A_B_Testing,Experimentation
+39,Hardware Engineer,Private,Low_Endurance,Circuits PCB Testing,Precision Logic
+40,Health Inspector,Government,Medium_Endurance,Public_Health Rules Inspection,Responsibility Ethics
+41,Home Guard,Government,High_Stamina,Crowd_Control Emergency_Response,Service_Mindset
+42,HR Executive,Private,Low_Endurance,Recruitment Payroll HRMS,People_Skills
+43,HR Manager,Private,Low_Endurance,HR_Strategy Labour_Laws,Leadership Empathy
+44,Industrial Safety Officer,Private,Medium_Endurance,Safety_Audits Regulations,Risk_Awareness
+45,Insurance Officer,Government,Low_Endurance,Policies Claims Risk,Judgement
+46,Investment Banker,Private,Low_Endurance,Valuation Deals Markets,Stress_Tolerance
+47,IT Support Engineer,Private,Low_Endurance,OS Networking Hardware,Troubleshooting
+48,Journalist,Private,Medium_Endurance,Reporting Editing Research,Curiosity Ethics
+49,Lab Technician,Private,Low_Endurance,Lab_Equipment Procedures,Accuracy
+50,Lecturer,Government,Low_Endurance,Teaching Subject_Plan,Patience Clarity
+51,Logistics Manager,Private,Low_Endurance,Inventory Transport ERP,Coordination
+52,Machine Operator,Private,Medium_Strength,Machine_Control Safety,Focus Discipline
+53,Maintenance Engineer,Private,Medium_Endurance,Preventive_Maintenance Tools,Problem_Solving
+54,Management Consultant,Private,Low_Endurance,Frameworks Analysis PPT,Strategic_Thinking
+55,Management Trainee,Private,Low_Endurance,Business Basics Reporting,Adaptability
+56,Marketing Executive,Private,Low_Endurance,Campaigns CRM Outreach,Persuasion
+57,Mechanical Technician,Private,Medium_Strength,Repair Tools Drawings,Practical_Thinking
+58,Medical Lab Technician,Private,Low_Endurance,Pathology Tests Equipment,Accuracy
+59,Meter Reader (Electricity),Government,Medium_Endurance,Reading Devices Billing,Reliability
+60,Network Engineer,Private,Low_Endurance,Routing Switching Firewalls,Logical_Thinking
+61,Operations Lead,Private,Low_Endurance,Process Metrics Execution,Leadership
+62,Operations Manager,Private,Low_Endurance,KPIs Process_Design,Decision_Making
+63,Petroleum Engineer,Government,Medium_Endurance,Drilling Safety Reservoirs,Stress_Handling
+64,Pharmacist,Private,Low_Endurance,Medicines Dispensing Law,Responsibility
+65,Photographer,Private,Medium_Endurance,Camera Editing Lighting,Creativity Patience
+66,Police Constable,Government,High_Stamina,Law Control Weapons,Alertness Integrity
+67,Post Office GDS,Government,Medium_Endurance,Postal Ops IT,Reliability
+68,Product Manager,Private,Low_Endurance,Product_Lifecycle Tech_Basics,Vision Decision
+69,Production Supervisor,Private,Medium_Endurance,Scheduling Quality Control,Team_Handling
+70,Project Coordinator,Private,Low_Endurance,Planning Tools Documentation,Time_Management
+71,QA Engineer,Private,Low_Endurance,Manual Automation Testing,Detail_Orientation
+72,Quality Control Inspector,Private,Low_Endurance,Inspection Standards,Accuracy
+73,Railway Group D,Government,High_Stamina,Track Maintenance Tools,Endurance
+74,Railway NTPC Clerk,Government,Low_Endurance,Clerical IT Accounts,Accuracy
+75,Receptionist,Private,Low_Endurance,Office Tools Communication,Politeness
+76,Research Assistant,Government,Low_Endurance,Data Collection Analysis,Focus
+77,Retail Store Manager,Private,Medium_Endurance,Inventory Sales POS,Customer_Handling
+78,Risk Analyst,Private,Low_Endurance,Models Compliance Stats,Critical_Thinking
+79,Sales Manager,Private,Low_Endurance,Sales Strategy CRM,Negotiation
+80,Security Guard,Private,High_Stamina,Surveillance Access_Control,Alertness
+81,Site Supervisor,Private,Medium_Endurance,Construction Supervision,Leadership
+82,Software Engineer,Private,Low_Endurance,Programming DSA Systems,Problem_Solving
+83,SSC CHSL Clerk,Government,Low_Endurance,Office Admin Computers,Accuracy
+84,SSC GD,Government,High_Stamina,Security Weapons Drill,Discipline
+85,SSC JE,Government,Low_Endurance,Engineering Design Codes,Analytical_Thinking
+86,SSC MTS,Government,Medium_Endurance,Office Support Basics,Responsibility
+87,Store Keeper,Private,Medium_Endurance,Inventory Records ERP,Organization
+88,Strategy Analyst,Private,Low_Endurance,Market Research Models,Strategic_Thinking
+89,Supply Chain Analyst,Private,Low_Endurance,Forecasting Logistics Data,Planning
+90,System Administrator,Private,Low_Endurance,Servers Linux Backup,Reliability
+91,Technical Recruiter,Private,Low_Endurance,Sourcing Tech_Roles,Judgement
+92,Technician,Private,Medium_Strength,Repair Maintenance Tools,Practical_Sense
+93,Telecom Engineer,Private,Low_Endurance,Networks RF Switching,Analytical_Thinking
+94,Test Automation Engineer,Private,Low_Endurance,Selenium Scripts CI,Precision
+95,UI UX Designer,Private,Low_Endurance,Wireframes Research Tools,Empathy Creativity
+96,Video Editor,Private,Low_Endurance,Premiere AfterEffects,Patience Storytelling
+97,Warehouse Executive,Private,Medium_Endurance,Material Handling Inventory,Discipline
+98,Web Developer,Private,Low_Endurance,HTML CSS JS Frameworks,Logic Creativity
+99,Welding Technician,Private,High_Strength,Welding Safety Metallurgy,Precision
+100,Zonal Officer (Govt),Government,Low_Endurance,Admin Law Reporting,Decision_Making
+101,Accounts Executive,Private,Low_Endurance,Accounting Tally GST Excel,Accuracy Ethics
+102,Actuarial Analyst,Private,Low_Endurance,Probability Statistics Modeling,Risk_Thinking
+103,Administrative Officer,Government,Low_Endurance,Office_Admin Rules Documentation,Decision_Making
+104,Air Traffic Controller,Government,Low_Endurance,Aviation Systems Radar Communication,Extreme_Focus
+105,Android Tester,Private,Low_Endurance,App_Testing Automation Bug_Tracking,Attention_Detail
+106,API Developer,Private,Low_Endurance,REST APIs Security Backend,Logical_Thinking
+107,Agriculture Officer,Government,Medium_Endurance,Agronomy Soil Crop_Science,Field_Judgement
+108,AML Analyst,Private,Low_Endurance,Compliance Banking Risk_Tools,Alertness Integrity
+109,Application Support Engineer,Private,Low_Endurance,Logs SQL Linux Support,Calmness
+110,Area Sales Manager,Private,Medium_Endurance,Sales Planning Territory CRM,Leadership
+111,Audit Officer,Government,Low_Endurance,Audit Standards Finance Law,Integrity Analysis
+112,Automation Tester,Private,Low_Endurance,Selenium Cypress CI,Precision
+113,Backend API Engineer,Private,Low_Endurance,Microservices Security Databases,Structured_Thinking
+114,Bank PO,Government,Low_Endurance,Banking Finance Law,Decision_Making
+115,Billing Executive,Private,Low_Endurance,Billing Software GST Excel,Accuracy
+116,Blockchain Developer,Private,Low_Endurance,Blockchain Solidity Cryptography,Logical_Thinking
+117,Branch Manager (Bank),Government,Low_Endurance,Banking Ops Leadership Risk,Accountability
+118,Business Development Executive,Private,Low_Endurance,Lead_Generation CRM Pitching,Persuasion
+119,CAD Design Engineer,Private,Low_Endurance,AutoCAD SolidWorks Drafting,Visualization
+120,Call Center Executive,Private,Low_Endurance,CRM Communication Tools,Patience
+121,Cashier,Private,Low_Endurance,Billing POS Cash_Handling,Accuracy Honesty
+122,Chartered Financial Analyst,Private,Low_Endurance,Finance Valuation Portfolio,Analytical_Rigor
+123,Civil Draughtsman,Private,Low_Endurance,AutoCAD Structural_Drawings,Precision
+124,Cloud Security Engineer,Private,Low_Endurance,Cloud IAM Security Tools,Threat_Analysis
+125,Compliance Officer,Private,Low_Endurance,Regulations Audits Reporting,Integrity
+126,Construction Manager,Private,Medium_Endurance,Planning Contracts Safety,Leadership
+127,Content Moderator,Private,Low_Endurance,Platform Tools Policy,Emotional_Control
+128,Control Room Operator,Government,Medium_Endurance,System Monitoring SCADA,Alertness
+129,Corporate Lawyer,Private,Low_Endurance,Company_Law Compliance Drafting,Judgement
+130,Cost Accountant,Private,Low_Endurance,Costing Budgeting Analysis,Accuracy
+131,Customer Success Manager,Private,Low_Endurance,CRM Product_Knowledge,Relationship_Building
+132,Cyber Security Analyst,Private,Low_Endurance,SIEM Threat_Analysis Networking,Analytical_Focus
+133,Data Entry Operator,Private,Low_Endurance,Typing MS_Office Accuracy,Concentration
+134,Data Scientist,Private,Low_Endurance,Statistics ML Python SQL,Research_Mindset
+135,Defense Procurement Officer,Government,Low_Endurance,Contracts Defense_Policy,Negotiation
+136,Design Engineer,Private,Low_Endurance,Design Tools Engineering_Concepts,Innovation
+137,Desktop Support Engineer,Private,Low_Endurance,OS Hardware Troubleshooting,Patience
+138,Digital Forensics Analyst,Government,Low_Endurance,Forensics Tools Cyber_Law,Attention_Detail
+139,Documentation Specialist,Private,Low_Endurance,Technical_Writing Tools,Clarity
+140,Electrical Inspector,Government,Medium_Endurance,Electrical_Codes Inspection,Alertness
+141,Energy Auditor,Private,Medium_Endurance,Energy Systems Measurement,Analytical_Thinking
+142,ERP Consultant,Private,Low_Endurance,SAP Oracle Business_Process,Process_Thinking
+143,Ethical Hacker,Private,Low_Endurance,Pentesting Networking Security,Curiosity Ethics
+144,Export Import Manager,Private,Low_Endurance,EXIM Policy Logistics,Compliance_Thinking
+145,Facility Manager,Private,Medium_Endurance,Maintenance Safety Admin,Coordination
+146,Field Engineer,Private,Medium_Endurance,Onsite Systems Installation,Adaptability
+147,Financial Controller,Private,Low_Endurance,Accounting Controls Reporting,Judgement
+148,Fleet Manager,Private,Medium_Endurance,Vehicle Ops Maintenance,Planning
+149,Food Safety Officer,Government,Medium_Endurance,Food_Laws Inspection Testing,Responsibility
+150,Forex Dealer,Private,Low_Endurance,Forex Markets Analysis,Risk_Control
+151,Full Stack Developer,Private,Low_Endurance,Frontend Backend Databases,Problem_Solving
+152,Game Designer,Private,Low_Endurance,Game_Logic UX Tools,Creativity
+153,Gas Plant Operator,Government,Medium_Endurance,Plant Ops Safety Systems,Alertness
+154,Geotechnical Engineer,Private,Low_Endurance,Soil Mechanics Foundation,Analytical_Thinking
+155,Government Auditor,Government,Low_Endurance,Audit Law Finance,Integrity
+156,Grant Officer,Government,Low_Endurance,Policy Evaluation Reporting,Judgement
+157,Hardware Testing Engineer,Private,Low_Endurance,Testing Instruments QA,Precision
+158,Health Information Manager,Private,Low_Endurance,Medical_Records IT Compliance,Accuracy
+159,Highway Patrol Officer,Government,High_Stamina,Driving Law Enforcement,Alertness
+160,Hospital Administrator,Private,Low_Endurance,Hospital Ops Compliance,Leadership
+161,Hotel Operations Manager,Private,Medium_Endurance,Hospitality Systems Staffing,Customer_Orientation
+162,Industrial Engineer,Private,Low_Endurance,Process Optimization Lean,Analytical_Thinking
+163,Information Security Officer,Private,Low_Endurance,Security Governance Risk,Strategic_Thinking
+164,Internal Auditor,Private,Low_Endurance,Audit Controls Risk,Integrity
+165,Inventory Planner,Private,Low_Endurance,Forecasting ERP Excel,Planning
+166,IT Auditor,Private,Low_Endurance,IT Controls Compliance,Analytical_Rigor
+167,Junior Engineer (Govt),Government,Low_Endurance,Engineering Maintenance,Problem_Solving
+168,Knowledge Management Officer,Private,Low_Endurance,Documentation Systems,Structured_Thinking
+169,Lab Quality Manager,Private,Low_Endurance,Lab Standards QA,Responsibility
+170,Land Surveyor,Private,Medium_Endurance,Survey Instruments Mapping,Precision
+171,Legal Advisor,Government,Low_Endurance,Law Drafting Advisory,Judgement
+172,Loan Processing Officer,Private,Low_Endurance,Loan Docs Credit_Check,Accuracy
+173,Manufacturing Engineer,Private,Low_Endurance,Process Design Quality,Optimization_Mindset
+174,Marine Surveyor,Government,Medium_Endurance,Marine Inspection Law,Alertness
+175,Market Research Analyst,Private,Low_Endurance,Surveys Data Analysis,Insight_Generation
+176,Materials Engineer,Private,Low_Endurance,Materials Testing Metallurgy,Analytical_Thinking
+177,Medical Coding Specialist,Private,Low_Endurance,ICD Coding Healthcare_IT,Accuracy
+178,Mining Engineer,Government,High_Endurance,Mining Safety Planning,Risk_Awareness
+179,Municipal Commissioner,Government,Low_Endurance,Urban Admin Law,Decision_Making
+180,Network Security Engineer,Private,Low_Endurance,Firewalls VPN IDS,Threat_Analysis
+181,Operations Research Analyst,Private,Low_Endurance,Optimization Models Math,Analytical_Rigor
+182,Patent Analyst,Private,Low_Endurance,IP Research Documentation,Detail_Orientation
+183,Payroll Officer,Private,Low_Endurance,Payroll Systems Tax_Law,Accuracy
+184,Petty Officer (Navy),Government,High_Stamina,Naval Ops Technical_Systems,Discipline
+185,Plant Safety Manager,Private,Medium_Endurance,Safety Systems Compliance,Risk_Control
+186,Policy Analyst,Government,Low_Endurance,Policy Research Economics,Critical_Thinking
+187,Power Plant Engineer,Government,Medium_Endurance,Power Systems Turbines,Responsibility
+188,Process Engineer,Private,Low_Endurance,Process Design Chemical_Systems,Optimization
+189,Procurement Officer,Private,Low_Endurance,Vendors Contracts Costing,Negotiation
+190,Program Manager,Private,Low_Endurance,Program Planning Metrics,Leadership
+191,Public Relations Officer,Private,Low_Endurance,Media Relations Writing,Communication
+192,Quality Assurance Manager,Private,Low_Endurance,QA Systems Standards,Decision_Making
+193,Railway Section Engineer,Government,Medium_Endurance,Rail Systems Maintenance,Alertness
+194,Records Officer,Government,Low_Endurance,Documentation Archival,Organization
+195,Recruitment Consultant,Private,Low_Endurance,Sourcing Screening Hiring,Judgement
+196,Regulatory Affairs Officer,Private,Low_Endurance,Regulations Submissions,Compliance_Mindset
+197,Remote Systems Operator,Private,Low_Endurance,System Monitoring Control,Focus
+198,Revenue Inspector,Government,Medium_Endurance,Land Records Law,Public_Dealing
+199,Robotics Engineer,Private,Low_Endurance,Robotics Control AI,Innovation
+200,Route Planning Analyst,Private,Low_Endurance,Routing Software GIS,Optimization
+201,Safety Auditor,Private,Medium_Endurance,Safety Audits Risk,Alertness
+202,Sales Operations Analyst,Private,Low_Endurance,Sales Data CRM,Analytical_Thinking
+203,SCADA Engineer,Private,Low_Endurance,SCADA PLC Industrial_Networks,Precision
+204,School Administrator,Government,Low_Endurance,School Ops Regulations,Coordination
+205,Security Analyst,Private,Low_Endurance,Threat Analysis Monitoring,Calmness
+206,Service Delivery Manager,Private,Low_Endurance,SLA Management ITSM,Accountability
+207,Shipping Coordinator,Private,Medium_Endurance,Shipping Docs Logistics,Organization
+208,Skill Development Officer,Government,Low_Endurance,Training Programs Assessment,Motivation
+209,Social Welfare Officer,Government,Medium_Endurance,Policy Field_Work,Empathy
+210,Software Architect,Private,Low_Endurance,System Design Scalability,Vision
+211,Special Branch Officer,Government,High_Stamina,Intelligence Surveillance,Discretion
+212,Statistical Officer,Government,Low_Endurance,Statistics Data Analysis,Analytical_Rigor
+213,Stock Market Dealer,Private,Low_Endurance,Trading Platforms Analysis,Risk_Control
+214,Structural Engineer,Private,Low_Endurance,Structural Design Codes,Precision
+215,Supply Planner,Private,Low_Endurance,Forecasting ERP,Planning
+216,Systems Analyst,Private,Low_Endurance,Systems Analysis Documentation,Logical_Thinking
+217,Talent Development Manager,Private,Low_Endurance,Learning Programs HR,Coaching_Mindset
+218,Tax Inspector,Government,Medium_Endurance,Tax Law Investigation,Integrity
+219,Technical Documentation Engineer,Private,Low_Endurance,Tech Writing Tools,Clarity
+220,Telecom Field Engineer,Private,Medium_Endurance,Field Installation RF,Adaptability
+221,Test Manager,Private,Low_Endurance,Test Strategy QA Tools,Decision_Making
+222,Trade Compliance Officer,Private,Low_Endurance,Trade Laws Export_Control,Accuracy
+223,Training Manager,Private,Low_Endurance,Training Design LMS,Leadership
+224,Transport Officer,Government,Medium_Endurance,Transport Law Ops,Responsibility
+225,Urban Planner,Government,Low_Endurance,Urban Design GIS Policy,Strategic_Thinking
+226,Utility Engineer,Government,Medium_Endurance,Utility Systems Maintenance,Alertness
+227,Vendor Manager,Private,Low_Endurance,Vendor Contracts Costing,Negotiation
+228,Video Surveillance Analyst,Private,Low_Endurance,Monitoring Systems,Observation
+229,Warehouse Manager,Private,Medium_Endurance,Warehouse Ops Inventory,Leadership
+230,Water Resources Engineer,Government,Low_Endurance,Hydrology Irrigation,Analytical_Thinking
+231,Web Security Analyst,Private,Low_Endurance,Web Security OWASP,Threat_Analysis
+232,Welfare Inspector,Government,Medium_Endurance,Field Inspection Policy,Empathy
+233,Wind Energy Engineer,Private,Medium_Endurance,Wind Systems Maintenance,Technical_Thinking
+234,Workforce Analyst,Private,Low_Endurance,HR Analytics Forecasting,Analytical_Thinking
+235,Works Manager (Factory),Private,Medium_Endurance,Production Safety Admin,Leadership
+236,Youth Welfare Officer,Government,Medium_Endurance,Youth Programs Policy,Motivation
+237,Zonal Accounts Officer,Government,Low_Endurance,Government Accounting Rules,Accuracy
+238,Zonal HR Manager,Private,Low_Endurance,HR Strategy Compliance,Leadership
+239,Zonal Operations Manager,Private,Low_Endurance,Regional Ops Planning,Decision_Making
+240,Zonal Sales Head,Private,Low_Endurance,Sales Strategy Leadership,Negotiation
+241,Zoological Survey Officer,Government,Medium_Endurance,Wildlife Research Field_Work,Observation
+242,Quality Systems Auditor,Private,Low_Endurance,ISO Standards Audits,Integrity
+243,Renewable Energy Analyst,Private,Low_Endurance,Energy Models Policy,Analytical_Thinking
+244,Public Procurement Officer,Government,Low_Endurance,Tender Rules Contracts,Compliance
+245,Disaster Management Officer,Government,High_Stamina,Emergency Planning Rescue,Calmness
+246,Intelligence Analyst,Government,Low_Endurance,Data Analysis Surveillance,Critical_Thinking
+247,Urban Transport Planner,Government,Low_Endurance,Transport Models GIS,Optimization
+248,Environmental Compliance Officer,Private,Medium_Endurance,Environmental Law Audits,Responsibility
+249,Smart Grid Engineer,Government,Low_Endurance,Power Systems IT Integration,Analytical_Thinking
+250,Chief Operations Officer,Private,Low_Endurance,Org Strategy Ops Finance,Vision Leadership

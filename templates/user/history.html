@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Recommendation History{% endblock %}
+{% block content %}
+<h2>Your Recommendation History</h2>
+<div class="card">
+  {% for h in history %}
+    <div class="history-item">
+      <div>
+        <strong>{{ h.business.business_type }}</strong>
+        <span class="badge">{{ h.compatibility_score }}% Match</span>
+      </div>
+      <a href="/pathway/{{ h.business.business_type }}" class="btn btn-sm">View Pathway</a>
+    </div>
+  {% else %}
+    <p>No history found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+﻿ID,Job,Category,Physical_Skills,Technical_Skills,Mental_Skills
+1,Academic Counselor,Private,Low_Endurance,Counseling CRM Documentation,Empathy Communication
+2,Assistant Commandant,Government,High_Stamina,Field_Operations Leadership Tactics,Discipline Courage
+3,Business Intelligence Developer,Private,Low_Endurance,SQL ETL PowerBI DAX,Analytical_Thinking
+4,Clinical Data Manager,Private,Low_Endurance,Clinical_Databases Validation Reporting,Accuracy Patience
+5,Digital Forensics Analyst,Government,Low_Endurance,Forensics_Tools Incident_Response,Observation Logic
+6,Export Documentation Officer,Private,Low_Endurance,Trade_Docs Compliance ERP,Detail_Orientation
+7,Instructional Designer,Private,Low_Endurance,LMS Storyboarding Content_Tools,Creativity Structure
+8,Policy Research Associate,Government,Low_Endurance,Policy_Analysis Data_Review Writing,Critical_Thinking
+9,Procurement Analyst,Private,Low_Endurance,Vendor_Analysis Negotiation Excel,Judgment Planning
+10,Revenue Officer,Government,Medium_Endurance,Tax_Law Assessments Record_Keeping,Integrity Public_Dealing

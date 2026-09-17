@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Matched Recommendations — SmallBiz Match{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+  <div>
+    <span class="mono-tag">FEASIBILITY MATCHES // ₱{{ "{:,.2f}".format(profile.capital) }} CAPITAL</span>
+    <h2>Recommended Business Opportunities</h2>
+    <p class="subtitle" style="margin-bottom: 0;">
+      Filtered strictly within your available budget and ranked by skill vector similarity.
+    </p>
+  </div>
+  <a href="/find" class="btn btn-secondary btn-sm">Adjust Filters</a>
+</div>
+
+{% for r in recs %}
+  <div class="business-card">
+    <div class="biz-cost-col">
+      <div class="biz-cost-label">Required Capital</div>
+      <div class="biz-cost-val">₱{{ "{:,.0f}".format(r.min_capital) }}</div>
+      <div style="font-size: 11px; color: var(--color-ink-muted); margin-top: 4px;">{{ r.startup_cost }}</div>
+    </div>
+
+    <div class="biz-main-col">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <h3>{{ r.business_type }}</h3>
+        <span class="badge">{{ r.category }}</span>
+      </div>
+      <div class="biz-meta">
+        Setup: <strong>{{ r.business_setup }}</strong> · Minimum Staff: <strong>{{ r.people_needed }}</strong>
+      </div>
+      {% if r.matched_skills %}
+        <div class="skills-match">✓ Matching Skills: {{ r.matched_skills | join(', ') }}</div>
+      {% endif %}
+      {% if r.skill_gaps %}
+        <div class="skills-gap-preview">⚠ Skills to Acquire: {{ r.skill_gaps[:3] | join(', ') }}{% if r.skill_gaps | length > 3 %} +{{ r.skill_gaps | length - 3 }} more{% endif %}</div>
+      {% endif %}
+    </div>
+
+    <div class="biz-score-col">
+      <div>
+        <div class="score-num">{{ r.compatibility_score }}%</div>
+        <div class="score-lbl">Compatibility</div>
+      </div>
+      <a href="/pathway/{{ r.business_type }}" class="btn btn-primary btn-sm btn-block">View Pathway</a>
+    </div>
+  </div>
+{% else %}
+  <div class="card card-editorial">
+    <h3>No Compatible Businesses Found</h3>
+    <p style="margin-top: 8px;">Try increasing your capital limit or selecting broader skill categories.</p>
+    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Refine Input</a>
+  </div>
+{% endfor %}
+
+<div class="card card-editorial" id="feedback-card" style="text-align: center; margin-top: 40px; background: var(--color-surface-soft);">
+  <h4 style="margin-bottom: 6px;">Evaluate Recommendation Realism</h4>
+  <p style="font-size: 14px; color: var(--color-ink-muted); margin-bottom: 16px;">
+    Are these business ideas feasible with your starting funds and aligned with your skills?
+  </p>
+  <div style="display: flex; justify-content: center; gap: 14px;">
+    <button onclick="sendFeedback('yes')" class="btn btn-primary btn-sm">👍 Yes, Realistic Match</button>
+    <button onclick="sendFeedback('no')" class="btn btn-secondary btn-sm">👎 Not a Good Fit</button>
+  </div>
+</div>
+
+<script>
+function sendFeedback(choice) {
+  const formData = new FormData();
+  formData.append('rating', choice);
+  fetch('/feedback', { method: 'POST', body: formData })
+    .then(res => res.text())
+    .then(html => { document.getElementById('feedback-card').innerHTML = html; });
+}
+</script>
+{% endblock %}

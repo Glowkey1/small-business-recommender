@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Your Business Profile</h2>
+  <form method="POST">
+    <div class="form-group">
+      <label>Starting Capital (₱ PHP)</label>
+      <input type="number" name="capital" value="{{ current_user.starting_capital }}" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Experience Level</label>
+      <select name="experience" class="form-control">
+        <option value="Beginner" {% if current_user.experience_level == 'Beginner' %}selected{% endif %}>Beginner</option>
+        <option value="Intermediate" {% if current_user.experience_level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+        <option value="Experienced" {% if current_user.experience_level == 'Experienced' %}selected{% endif %}>Experienced</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Available Daily Time</label>
+      <input type="text" name="available_time" value="{{ current_user.available_time }}" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Preferred Business Setup</label>
+      <input type="text" name="preferred_setup" value="{{ current_user.preferred_setup }}" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Select Your Skills</label>
+      <div class="skills-grid">
+        {% for s in skills %}
+          <label class="skill-pill">
+            <input type="checkbox" name="skills" value="{{ s.name }}" {% if s in current_user.skills %}checked{% endif %}> {{ s.name }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Profile</button>
+  </form>
+</div>
+{% endblock %}

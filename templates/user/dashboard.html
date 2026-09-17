@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}User Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Welcome, {{ current_user.username }}</h2>
+  <p class="subtitle">Quick access to your profile parameters and recent matches.</p>
+  <a href="/find" class="btn btn-primary">Find New Business Ideas</a>
+  <a href="/profile" class="btn btn-secondary">Edit Business Profile</a>
+</div>
+
+<h3>Recent Recommendations History</h3>
+<div class="card">
+  {% for r in recent %}
+    <div class="history-item">
+      <span><strong>{{ r.business.business_type }}</strong> (Score: {{ r.compatibility_score }}%)</span>
+      <a href="/pathway/{{ r.business.business_type }}" class="btn btn-sm">Pathway</a>
+    </div>
+  {% else %}
+    <p>No recent recommendations yet. Click 'Find New Business Ideas' to start!</p>
+  {% endfor %}
+</div>
+{% endblock %}

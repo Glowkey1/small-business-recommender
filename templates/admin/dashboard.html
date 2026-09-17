@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<div class="grid-3">
+  <div class="card"><h3>Users</h3><p class="stat">{{ users_count }}</p></div>
+  <div class="card"><h3>Businesses</h3><p class="stat">{{ biz_count }}</p></div>
+  <div class="card"><h3>Skills</h3><p class="stat">{{ skill_count }}</p></div>
+</div>
+<div class="card" style="margin-top:20px;">
+  <a href="/admin/metrics" class="btn btn-primary">View ML Model Metrics</a>
+</div>
+{% endblock %}

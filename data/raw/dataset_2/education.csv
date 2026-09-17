@@ -1,0 +1,201 @@
+ID,Education,Subjects
+1,Accounting & Finance,Accounting Finance Taxation Auditing Economics
+2,Actuarial Science,Mathematics Probability Statistics Finance
+3,Aeronautical Engineering,Mathematics Physics Aerodynamics Propulsion
+4,Agriculture,Biology Agronomy Soil_Science Genetics
+5,AI Engineering,Mathematics Programming ML Statistics
+6,Animation,Drawing Animation_Tools Storyboarding Design
+7,Anthropology,Human_Evolution Culture Research Methods
+8,Applied Mathematics,Calculus Linear_Algebra Statistics Modeling
+9,Architecture,Design Structures History AutoCAD
+10,Artificial Intelligence,Math Programming ML Neural_Networks
+11,Astronomy,Physics Mathematics Astrophysics Data_Analysis
+12,Automobile Engineering,Mechanics Engines Materials Manufacturing
+13,Ayurveda (BAMS),Anatomy Physiology Pathology Materia_Medica
+14,BBA,Management Marketing Finance HR
+15,BBM,Management Business_Law Economics Accounting
+16,BCA,Programming Databases OS Software_Engineering
+17,BCom Accounting,Financial_Accounting Costing Tax
+18,BCom Finance,Finance Banking Economics Accounting
+19,BDS,Anatomy Physiology Dental_Materials Pathology
+20,B.Ed,Pedagogy Psychology Curriculum Assessment
+21,Biochemistry,Chemistry Biology Enzymology Metabolism
+22,Biology,Botany Zoology Genetics Ecology
+23,Biomedical Engineering,Biology Electronics Medical_Devices
+24,Biotechnology,Genetics Biochemistry Microbiology
+25,BPharmacy,Pharmaceutics Pharmacology Chemistry
+26,BSc Chemistry,Organic Physical Inorganic Chemistry
+27,BSc Computer Science,Programming Algorithms Databases OS
+28,BSc Mathematics,Calculus Algebra Statistics
+29,BSc Nursing,Anatomy Physiology Nursing_Foundation
+30,BSc Physics,Mechanics Electrodynamics Quantum
+31,BSc Statistics,Probability Inference Regression
+32,BTech Civil,Structures Surveying Geotechnical
+33,BTech CSE,DSA OS DBMS CN
+34,BTech ECE,Signals Communication VLSI
+35,BTech EEE,Power_Systems Machines Control
+36,BTech Mechanical,Thermodynamics Design Manufacturing
+37,Business Analytics,Statistics SQL BI Tools
+38,Chartered Accountant,Accounting Law Tax Audit
+39,Chemical Engineering,Thermodynamics Mass_Transfer Kinetics
+40,Civil Engineering,Structures Transportation Hydrology
+41,Clinical Psychology,Psychology Therapy Assessment Research
+42,Commerce,Accounting Economics Business_Law
+43,Computer Engineering,Programming Hardware OS Networks
+44,COPA,Computers MS_Office Programming Basics
+45,Corporate Law,Company_Law Contracts Compliance
+46,Criminology,Crime Psychology Law Forensics
+47,Data Science,Statistics Python ML SQL
+48,D.El.Ed,Child_Psychology Teaching_Methods Pedagogy
+49,Dentistry,BDS_Subjects Clinical_Practice
+50,Design (UI/UX),Design Thinking Prototyping Tools
+51,Diploma Civil,Surveying Structures Materials
+52,Diploma CSE,Programming Databases Networks
+53,Diploma ECE,Electronics Circuits Communication
+54,Diploma EEE,Electrical Machines Wiring Safety
+55,Diploma Mechanical,Workshop Thermodynamics Drawing
+56,Digital Marketing,SEO SEM Analytics Content
+57,Economics,Micro Macro Statistics Econometrics
+58,Education Studies,Pedagogy Psychology Assessment
+59,Electrical Engineering,Circuits Power Machines
+60,Electrician,Wiring Safety Electrical_Basics
+61,Electronics Engineering,Devices Signals Communication
+62,Embedded Systems,Microcontrollers C Programming RTOS
+63,Engineering Physics,Physics Math Electronics
+64,English Literature,Literature Linguistics Criticism
+65,Environmental Science,Ecology Climate Sustainability
+66,Executive MBA,Strategy Leadership Finance Ops
+67,Fashion Designing,Textiles Design Merchandising
+68,Finance,Corporate_Finance Markets Accounting
+69,Fine Arts,Drawing Painting Art_History
+70,Fitter,Workshop Practice Drawing Safety
+71,Food Technology,Food_Chemistry Processing Microbiology
+72,Forensic Science,Forensics Chemistry Law Biology
+73,Geography,Physical Human GIS Mapping
+74,Graphic Design,Design Tools Typography Branding
+75,History,Ancient Medieval Modern World
+76,Hotel Management,Hospitality Food_Service Management
+77,HR Management,HRM OB Labour_Laws
+78,Information Technology,Programming Networks Databases
+79,International Relations,Politics Diplomacy Economics
+80,ITI Mechanic,Engines Workshop Safety
+81,Journalism,Reporting Media Ethics Writing
+82,Law (5-Year LLB),Constitution Criminal Contracts
+83,Law (3-Year LLB),Constitution CPC CrPC
+84,Library Science,Library_Management Cataloguing
+85,Linguistics,Phonetics Syntax Semantics
+86,Logistics Management,Supply_Chain Transport Ops
+87,Machine Learning,Math Python ML Models
+88,Management Studies,Management Finance Marketing
+89,Marine Engineering,Marine_Mechanics Thermodynamics
+90,Marketing,Marketing_Management Consumer_Behaviour
+91,Mass Communication,Media PR Journalism
+92,Mathematics,Algebra Calculus Statistics
+93,Mechanical Engineering,Thermal Design Manufacturing
+94,Mechatronics,Mechanics Electronics Control
+95,MBA Finance,Finance Accounting Economics
+96,MBA HR,HRM OB Labour_Laws
+97,MBA Marketing,Marketing Branding Research
+98,MBA Operations,Operations Supply_Chain
+99,MBA Business Analytics,Stats BI SQL
+100,MCA,Advanced_Programming Software Engineering
+101,MBBS,Anatomy Physiology Biochemistry
+102,MCom Accounting,Advanced_Accounting Auditing
+103,MCom Finance,Finance Investment Banking
+104,M.Des,Design Research Innovation
+105,Media Studies,Media Theory Production
+106,Medical Lab Technology,Pathology Hematology Microbiology
+107,Metallurgical Engineering,Metallurgy Materials Thermodynamics
+108,Meteorology,Atmospheric Physics Climate
+109,MPhil,Research Methodology Thesis
+110,Microbiology,Microbes Immunology Genetics
+111,MSc Chemistry,Advanced Chemistry Research
+112,MSc Computer Science,Algorithms AI Databases
+113,MSc Mathematics,Real_Analysis Topology Algebra
+114,MSc Physics,Quantum EM Research
+115,MSc Statistics,Inference Regression Probability
+116,MS USA,Core Research Electives Thesis
+117,MS UK,Core Research Electives Dissertation
+118,MS Canada,Core Research Electives Thesis
+119,MS Germany,Core Research Electives Thesis
+120,MTech Civil,Structures Geotechnical
+121,MTech CSE,AI Algorithms Systems
+122,MTech ECE,VLSI DSP Embedded
+123,MTech EEE,Power Control Machines
+124,MTech Mechanical,Thermal Design Robotics
+125,Music,Theory Performance Composition
+126,Nanotechnology,Nano_Physics Materials Chemistry
+127,Nursing,Anatomy Physiology Care
+128,Operations Management,Operations Analytics SCM
+129,Paramedical,Anatomy Physiology Patient_Care
+130,Pharmacy,Pharmaceutics Pharmacology
+131,PhD,Research Publications Thesis
+132,Philosophy,Logic Ethics Metaphysics
+133,Physical Education,Anatomy Training Sports_Science
+134,Physics,Mechanics Quantum EM
+135,Physiotherapy,Anatomy Rehab Therapy
+136,Political Science,Polity Theory IR
+137,Psychology,Behavior Cognition Research
+138,Public Administration,Governance Policy Management
+139,Public Health,Epidemiology Biostatistics Policy
+140,Quantity Surveying,Estimation Contracts Costing
+141,Robotics,Control AI Mechanics
+142,SAP FICO,Accounting ERP Systems
+143,Sociology,Society Culture Research
+144,Software Engineering,SDLC Design Testing
+145,Sound Engineering,Audio Acoustics Mixing
+146,Special Education,Inclusive_Ed Psychology Teaching
+147,Statistics,Probability Inference Modeling
+148,Structural Engineering,Structural_Analysis Design
+149,Supply Chain Management,Logistics Procurement Ops
+150,Surgical Technology,OT Procedures Anatomy
+151,Systems Engineering,Systems Design Integration
+152,Teacher Training,Pedagogy Curriculum Evaluation
+153,Theology,Religious_Studies Ethics History
+154,Tourism Management,Hospitality Travel Planning
+155,UI UX Design,User_Research Prototyping
+156,Urban Planning,Urban_Design GIS Policy
+157,Veterinary Science,Animal_Anatomy Pathology
+158,VFX,Visual_Effects Compositing
+159,Web Development,HTML CSS JS
+160,Welding Technology,Welding Metallurgy Safety
+161,Zoology,Animal_Biology Ecology
+162,MEC,Math Economics Commerce English
+163,CEC,Civics Economics Commerce English
+164,MPC,Math Physics Chemistry English
+165,BiPC,Biology Physics Chemistry English
+166,HEC / Arts,History Economics Civics English
+167,Healthcare,Anatomy Physiology Microbiology
+168,Agricultural Engineering,Farm_Machinery Soil Irrigation
+169,Retail Management,Sales Marketing Inventory
+170,IT Management,IT Strategy Systems
+171,Automobile Technology,Vehicle_Systems Diagnostics
+172,Construction Management,Planning Contracts Cost
+173,Energy Engineering,Renewable Power Systems
+174,Ethical Hacking,Networking Security Pentesting
+175,Game Design,Game_Logic Graphics Programming
+176,Genetics,Genomics Molecular_Biology
+177,Geoinformatics,GIS Remote_Sensing Mapping
+178,Industrial Engineering,Operations Optimization Quality
+179,Interior Design,Space Design Materials
+180,Investment Banking,Finance Valuation Markets
+181,Journalism Digital,Media Writing Editing
+182,Library Informatics,Information_Systems Metadata
+183,Marine Biology,Oceanography Ecology
+184,Marketing Analytics,Stats Consumer_Data BI
+185,Materials Science,Materials Physics Chemistry
+186,Mobile App Development,Android iOS Programming
+187,Neuroscience,Neurobiology Cognition Research
+188,Petroleum Engineering,Drilling Reservoir Engineering
+189,Public Policy,Policy Analysis Economics
+190,Renewable Energy,Solar Wind Storage
+191,Risk Management,Finance Risk Models
+192,Rural Development,Development Studies Economics
+193,Social Work,Sociology Welfare Policy
+194,Space Science,Astronomy Space_Physics
+195,Sports Management,Sports_Business Marketing
+196,Taxation Studies,Direct_Indirect Tax Law
+197,Telecommunication Engineering,Networks Signals Switching
+198,Textile Engineering,Textiles Fibers Processing
+199,Transport Management,Logistics Transport Planning
+200,Women Studies,Gender Studies Sociology Policy

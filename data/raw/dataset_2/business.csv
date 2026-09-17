@@ -1,0 +1,101 @@
+ID,Business_Type,Minimum_Requirements,People_Needed,Core_Skills,Strategies_to_Survive_and_Grow,Risks_to_Handle
+1,Advertising Agency,Office laptops clients,3-15 staff,Marketing creativity sales,Portfolio referrals branding,Client loss competition
+2,Affiliate Marketing,Laptop internet,Solo,SEO content marketing,Niche focus traffic building,Low conversions
+3,Agri Equipment Rental,Machinery capital,2-6 staff,Maintenance scheduling,Local farmer tieups,Equipment damage
+4,App Development Studio,Laptops hosting,3-20 devs,Programming UX testing,Client apps SaaS pivot,Scope creep
+5,Artificial Jewellery Shop,Shop inventory,1-3 staff,Design pricing sales,Trendy collections,Low margins
+6,Bakery,Kitchen license,3-10 staff,Baking inventory hygiene,Freshness local delivery,Food spoilage
+7,Battery Recycling Unit,Land license,5-20 workers,Process safety compliance,Corporate contracts,Environmental fines
+8,Bicycle Rental,Bicycles GPS,1-4 staff,Maintenance customer handling,Tourist locations,Damage theft
+9,Blog Website,Laptop internet,Solo,Writing SEO consistency,Content authority,Low traffic
+10,Bookstore,Shop inventory,2-5 staff,Stock management reading culture,Events community,Rent cost
+11,Business Consultancy,Expertise brand,1-10 consultants,Problem solving documentation,Value pricing referrals,Client dependency
+12,Cab Aggregator,Fleet app capital,5-50 staff,Logistics tech ops,Driver incentives,Regulatory issues
+13,Catering Service,Kitchen equipment,5-25 staff,Food planning logistics,Bulk orders quality,Food safety risk
+14,Cloud Kitchen,Kitchen delivery apps,5-20 staff,Menu costing packaging,Aggregator optimization,Commission costs
+15,Coaching Institute,Classrooms faculty,2-15 teachers,Teaching curriculum marketing,Results branding,Competition
+16,Cold Storage,Land power backup,5-20 staff,Inventory temperature control,Farm tieups,High electricity
+17,Computer Training Center,PC lab faculty,2-10 trainers,Teaching sales syllabus,Certification tieups,Low enrollments
+18,Construction Contracting,Licenses machinery,10-200 workers,Project management estimation,Networking timely delivery,Payment delays
+19,Content Creation Agency,Cameras editing setup,2-10 creators,Storytelling editing,Brand deals,Algorithm dependency
+20,Courier Franchise,Office bikes staff,5-20 staff,Logistics tracking customer care,Local coverage,Service complaints
+21,Dairy Farm,Land cattle sheds,3-15 workers,Animal care feed planning,Direct milk sales,Disease risk
+22,Day Care Center,Safe space license,3-10 staff,Child care hygiene,Trust building,Legal compliance
+23,Digital Marketing Agency,Laptops tools,3-20 staff,Ads SEO analytics,Retainers performance,Client churn
+24,Driving School,Cars license,2-10 instructors,Teaching road safety,High pass rate,Vehicle damage
+25,Drone Services,Drones license,Solo-5 operators,Piloting data analysis,Survey filming,Regulations
+26,E-Commerce Store,Website inventory,2-10 staff,Product sourcing ads,Fast delivery,Returns
+27,Electrical Contracting,Tools license,3-20 electricians,Wiring safety estimation,Bulk projects,Accidents
+28,Event Management,Vendor network,3-20 staff,Planning negotiation,Corporate events,Cash flow
+29,Export Import Business,Capital licenses,2-10 staff,Documentation compliance,Global buyers,Forex risk
+30,Fabrication Unit,Land machinery,5-50 workers,Welding production QA,Bulk orders,Raw material price
+31,Fashion Boutique,Shop inventory,2-6 staff,Styling sales,Unique designs,Trends change
+32,Fitness Gym,Space equipment,3-10 trainers,Training sales retention,Membership plans,Injuries
+33,Food Truck,Vehicle permits,2-6 staff,Cooking fast service,Busy locations,Weather issues
+34,Freelancing,Laptop internet,Solo,Client communication delivery,Repeat clients,Payment delay
+35,Franchise Business,Capital agreement,5-30 staff,Operations SOP,Location choice,High fees
+36,Fruit Juice Center,Small shop tools,2-5 staff,Hygiene fast service,Fresh ingredients,Seasonal sales
+37,Garment Manufacturing,Factory machines,10-100 workers,Production QC,Bulk buyers,Labour issues
+38,Grocery Store,Shop stock POS,2-6 staff,Inventory pricing,Local loyalty,Thin margins
+39,Handicrafts Business,Workshop online store,2-15 artisans,Design sourcing,Export platforms,Low scale
+40,Hardware Store,Shop inventory,2-5 staff,Product knowledge,Contractor tieups,Capital lock
+41,Home Interior Services,Design tools vendors,2-10 staff,Design execution,Referrals,Delays
+42,Hostel / PG,Rented building staff,2-6 caretakers,Facility management,Student locations,Vacancy
+43,IT Services Company,Laptops tools,5-50 staff,Tech support delivery,AMC contracts,Client loss
+44,Jewellery Manufacturing,Workshop gold license,5-30 workers,Design purity control,Brand trust,Price volatility
+45,Laundry Services,Machines delivery bikes,3-10 staff,Process hygiene,Subscription plans,Machine breakdown
+46,Logistics Company,Vehicles software,5-50 staff,Route planning,Corporate contracts,Fuel cost
+47,Manufacturing Unit,Factory machines,10-200 workers,Production planning,Scale efficiency,Compliance
+48,Medical Store,License inventory,2-4 staff,Medicine handling,Doctor tieups,Expiry loss
+49,Mobile Repair Shop,Tools spare stock,1-3 staff,Diagnosis soldering,Fast service,Spare quality
+50,Online Course Platform,Camera LMS,Solo-10 team,Teaching marketing,Upselling courses,Low completion
+51,Online Reselling,Mobile internet,Solo-2 staff,Product sourcing pricing,Multiple platforms,Returns
+52,Organic Farming,Land inputs,3-15 workers,Soil crop planning,Premium branding,Yield risk
+53,Packaged Food Brand,Kitchen license,5-30 staff,Recipe standardization,Retail tieups,Compliance
+54,Pet Care Services,Space tools,2-8 staff,Animal handling,Memberships,Bites complaints
+55,Photography Studio,Cameras editing PC,1-5 staff,Shooting editing,Portfolio marketing,Seasonal demand
+56,Printing Press,Machines orders,3-15 staff,Design printing QC,Bulk clients,Machine cost
+57,Real Estate Brokerage,Office network,Solo-10 agents,Negotiation marketing,Local builders,Market slowdown
+58,Repair & Service Center,Tools shop space,1-5 technicians,Diagnosis customer trust,AMC contracts,Spare cost
+59,Restaurant,Dining kitchen license,10-40 staff,Food service management,Branding reviews,High costs
+60,Rice Mill,Land machinery,5-20 workers,Processing logistics,Bulk buyers,Power cost
+61,SaaS / App Business,Laptop cloud infra,2-20 team,Product dev support,Subscription model,Churn
+62,Security Services,Guards license,20-200 guards,Training deployment,Corporate contracts,Attrition
+63,Seed Distribution,Warehouse network,2-10 staff,Agri knowledge,Dealer network,Seasonality
+64,Skill Training Institute,Classrooms trainers,2-15 staff,Curriculum placement,Certifications,Dropouts
+65,Small Shop / Retail,Shop stock license,1-3 helpers,Customer handling pricing,Local trust,Low margins
+66,Social Media Agency,Laptops tools,2-10 staff,Content analytics,Retainers,Algorithm shifts
+67,Software Company,Laptops servers,5-100 staff,Development QA,Product focus,Competition
+68,Startup,Idea capital cofounders,5-50 team,Leadership innovation,Market validation,Failure risk
+69,Stock Trading Firm,Capital terminals,1-10 analysts,Risk management strategy,Disciplined trading,Market crash
+70,Storage Warehouse,Land racks,3-15 staff,Inventory safety,Bulk contracts,Vacancy
+71,Street Food Stall,Cart license,1-3 staff,Cooking speed hygiene,Busy areas,Weather risk
+72,Supply Chain Consultancy,Expertise network,1-5 consultants,Process optimization,High value clients,Limited market
+73,Telecom Franchise,Office staff,5-15 staff,Customer onboarding,Service quality,Policy changes
+74,Textile Trading,Warehouse buyers,2-10 staff,Market trends sourcing,Wholesale margins,Inventory risk
+75,Trading / Investment,Capital discipline,Solo,Risk control analysis,Compounding strategy,Emotional losses
+76,Transport Business,Trucks permits,5-50 drivers,Route cost planning,Corporate tieups,Fuel prices
+77,Travel Agency,Office systems,2-8 staff,Booking planning,Holiday packages,Seasonal demand
+78,Tuition Center,Rooms faculty,1-5 teachers,Teaching results,Parent trust,Competition
+79,Used Car Dealership,Yard capital,2-8 staff,Vehicle evaluation,Transparent pricing,Legal disputes
+80,Vehicle Rental,Cars bikes,2-6 staff,Maintenance booking,App tieups,Damage theft
+81,Video Production House,Cameras editing suite,3-15 staff,Filming editing,Corporate clients,High equipment cost
+82,Water Purifier Sales,Inventory installers,2-8 staff,Product demo service,AMC plans,Competition
+83,Web Hosting Business,Servers support,Solo-5 staff,Infrastructure management,Recurring plans,Downtime
+84,Wedding Planning,Vendors network,2-10 staff,Event coordination,Premium branding,Client pressure
+85,Wholesale Distribution,Warehouse vehicles,3-15 staff,Supply management,Dealer relations,Credit risk
+86,Wood Furniture Unit,Workshop machines,5-30 workers,Carpentry finishing,Bulk orders,Raw wood cost
+87,YouTube / Content Creation,Mobile camera,Solo-3 team,Storytelling editing,Consistency niche,Income delay
+88,Agro Processing Unit,Factory license,5-30 workers,Processing storage,Value addition,Compliance
+89,AI Services Company,Laptops cloud,3-20 staff,AI deployment consulting,Enterprise clients,Skill shortage
+90,Bio Fertilizer Unit,Land lab setup,3-15 staff,Chemical formulation,Farmer education,Adoption lag
+91,Call Center,BPO infrastructure,20-200 agents,Communication CRM,Service contracts,Attrition
+92,Digital Products Store,Laptop platform,Solo,Product creation marketing,Automation,Low visibility
+93,Eco Friendly Products,Manufacturing sourcing,5-25 staff,Green materials branding,Awareness,Cost
+94,Education Consultancy,Office counselors,2-10 staff,Guidance documentation,Trust reputation,Policy changes
+95,Export Handicrafts,Artisan network,3-15 staff,Quality control,International fairs,Logistics delays
+96,Financial Advisory,Certification trust,Solo-5 advisors,Planning compliance,Client referrals,Market trust
+97,Franchise Food Outlet,Capital agreement,10-40 staff,SOP execution,Location traffic,High royalties
+98,Green Energy Installation,Tools certifications,3-15 technicians,Solar wind setup,Government subsidies,Policy risk
+99,HR Consulting,Expertise tools,1-5 consultants,Hiring strategy,Corporate retainers,Client churn
+100,Agriculture / Dairy / Poultry,Land sheds feed,2-20 workers,Farm management logistics,Diversification,Disease weather

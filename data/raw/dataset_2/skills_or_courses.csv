@@ -1,0 +1,101 @@
+ID,Skill,Minimum Devices (works),Better Devices (recommended),Software / Tools,Core Knowledge,Why Useful
+1,Computer Basics,Basic PC or old laptop,Any modern laptop,Windows File Explorer Browser,Basic file handling internet usage,Foundation for all digital jobs
+2,Tally + GST,PC with 4GB RAM,Laptop with SSD,Tally Prime GST Portal,Accounting tax filing,Accounting jobs small businesses
+3,Web Design,Basic laptop,Mid-range laptop,HTML CSS VS Code Browser,Layout responsive design,Entry to web careers
+4,Graphic Design,4GB laptop,8GB laptop with SSD,Photoshop Illustrator Canva,Color typography layout,Freelance and agency work
+5,Video Editing,Mobile phone,Laptop with GPU,CapCut Alight Motion Premiere Pro,Timeline cuts transitions,Content creation income
+6,MS Office + Data Entry,Any PC,Laptop with keyboard,Word Excel PowerPoint,Typing accuracy formulas,Clerical and office jobs
+7,Animation,Mid laptop,High performance laptop,Blender After Effects,Motion principles timing,Media and entertainment
+8,VFX,High performance PC,PC with strong GPU,After Effects Nuke Blender,Compositing tracking,Film and ads industry
+9,Photography,Mobile phone,DSLR or mirrorless camera,Lightroom Photoshop,Lighting framing,Freelance creative work
+10,Fashion Designing,Paper and pencil,Laptop with design tools,Illustrator CLO 3D,Patterns fabrics,Garment industry
+11,Makeup Artist,Basic makeup kit,Professional kit with lights,None,Skin tones techniques,Salon bridal freelancing
+12,Electrician,Hand tools set,Certified safety tools,None,Wiring safety,Trade jobs and contracts
+13,Plumber,Hand tools set,Advanced plumbing kit,None,Pipe fitting leakage,Residential service work
+14,AC / Refrigerator Repair,Tool kit,Gauge meter set,None,Cooling cycles,High demand repair skill
+15,Automobile Mechanic,Tool kit,Workshop access,None,Engine systems,Garage and service centers
+16,Mobile Repair,Tool kit,Microscope station,Flashing tools,Soldering hardware,Mobile service business
+17,Python,Basic laptop,Any modern laptop,Python VS Code,Jupyter,Logic programming,High demand coding skill
+18,Java,Basic laptop,Modern laptop,Java JDK IntelliJ,OOP concepts,Enterprise software jobs
+19,SQL,Basic laptop,Any laptop,MySQL PostgreSQL,Queries joins,Data and backend roles
+20,Web Development,Basic laptop,Mid laptop,HTML CSS JS React,Frontend backend,Freelance and IT jobs
+21,Data Analytics,Basic laptop,8GB RAM laptop,Python Excel SQL,Statistics insights,Business decision roles
+22,Power BI,Basic laptop,8GB RAM laptop,Power BI Desktop,DAX data models,Corporate analytics
+23,Excel,Basic laptop,Any laptop,Microsoft Excel,Formulas pivot tables,Universal office skill
+24,AutoCAD,Basic laptop,Laptop with graphics,AutoCAD,Drafting measurements,Engineering support jobs
+25,PLC / SCADA,PC or laptop,Industrial lab setup,Siemens Rockwell software,Control systems,Factory automation
+26,CNC Programming,Laptop,Workshop CNC access,CNC software G code,Machine operations,Manufacturing jobs
+27,HVAC,Tool kit,Advanced diagnostic tools,None,Heating cooling systems,Building maintenance
+28,Embedded Systems,Laptop,Dev boards access,Arduino Keil Proteus,C microcontrollers,Electronics industry
+29,Industrial Automation,Laptop,Industrial lab,PLC SCADA HMI,Process automation,Industry plants
+30,Electrical Design,Laptop,Engineering laptop,ETAP AutoCAD Electrical,Load calculations,Power projects
+31,Cyber Security,Laptop,Virtual lab setup,Kali Linux Wireshark,Networking threats,Security roles
+32,Cloud AWS / Azure,Laptop,Good internet laptop,AWS Console Azure Portal,Cloud architecture,Remote IT jobs
+33,Blockchain,Laptop,Modern laptop,Solidity Remix Web3,Cryptography,Future tech field
+34,Digital Marketing,Mobile phone,Laptop preferred,Google Ads Meta Ads,Funnels content,Online business growth
+35,Performance Marketing,Laptop,Analytics focused laptop,Ads Manager Analytics,ROI optimization,High pay marketing roles
+36,CRM Tools,Laptop,Any laptop,Salesforce Zoho CRM,Customer management,Sales operations
+37,Industrial Safety,Field gear,Certified PPE equipment,None,Safety regulations,Industrial compliance
+38,Quality Control Certifications,PC and field access,Factory exposure,ISO documentation,Inspection standards,Manufacturing quality roles
+39,UI UX Design,Laptop,Design focused laptop,Figma Adobe XD,User experience,Product design
+40,Game Development,PC,Laptop with GPU,Unity Unreal,Coding game logic,Gaming industry
+41,Ethical Hacking,Laptop,Virtual machines,Kali tools,Pentesting,Security careers
+42,DevOps,Laptop,Cloud credits setup,Docker Kubernetes CI tools,Deployment pipelines,High demand IT role
+43,Content Writing,Mobile or laptop,Laptop preferred,Google Docs Grammarly,Language clarity,Freelancing
+44,Technical Writing,Laptop,Any laptop,Docs tools,Documentation clarity,IT documentation
+45,SEO,Laptop,Analytics tools access,Search Console Ahrefs,Keyword ranking,Digital visibility
+46,Social Media Management,Mobile phone,Laptop,Instagram Meta tools,Content planning,Brand growth
+47,YouTube Content Creation,Mobile phone,Camera + mic,Editing apps,Storytelling,Passive income
+48,Podcasting,Mobile phone,Mic setup,Audacity Spotify tools,Voice delivery,Audio content
+49,Video Shooting,Mobile phone,Camera gimbal,Camera apps,Composition,Media work
+50,Drone Operation,Drone basic,Advanced drone with camera,Drone software,Aerial control,Survey filming
+51,3D Modeling,Laptop,High RAM laptop,Blender Maya,Spatial design,Design engineering
+52,Interior Design,Laptop,Design workstation,SketchUp AutoCAD,Space planning,Real estate projects
+53,Surveying,Basic tools,Total station,GIS tools,Land measurement,Civil projects
+54,GIS Mapping,Laptop,GIS workstation,QGIS ArcGIS,Spatial analysis,Urban planning
+55,Renewable Energy Tech,Tool kit,Lab access,None,Solar wind systems,Green jobs
+56,Electric Vehicle Technician,Tool kit,EV lab access,None,EV systems,Booming sector
+57,Robotics,Laptop,Robot kits,ROS Arduino,Automation logic,Advanced engineering
+58,Mechatronics,Laptop,Lab access,None,Mechanical electronics mix,Industry automation
+59,Control Systems,Laptop,Simulation tools,Matlab Simulink,System stability,Engineering design
+60,Simulation Modeling,Laptop,High RAM laptop,ANSYS Matlab,Model testing,Engineering analysis
+61,Business Analytics,Laptop,BI tools access,Excel Power BI SQL,Business metrics,Management decisions
+62,Product Management,Laptop,Any laptop,Docs Jira tools,Product lifecycle,Tech leadership
+63,Project Management,Laptop,Any laptop,MS Project Jira,Planning execution,All industries
+64,Supply Chain Tools,Laptop,ERP exposure,SAP SCM,Logistics flow,Operations roles
+65,ERP SAP FICO,Laptop,Training access,SAP software,Finance processes,Corporate finance
+66,Accounting Software,Laptop,Office laptop,QuickBooks Zoho Books,Bookkeeping,SME jobs
+67,Stock Market Trading,Mobile phone,Laptop charts,TradingView Zerodha,Market analysis,Personal income
+68,Investment Analysis,Laptop,Finance workstation,Excel tools,Valuation,Finance careers
+69,Risk Management,Laptop,Data tools,Risk models,Decision making,Corporate safety
+70,HR Analytics,Laptop,HR tools,Excel dashboards,People metrics,HR growth
+71,Recruitment Tools,Laptop,CRM access,Naukri LinkedIn,Screening hiring,HR roles
+72,Learning Management Systems,Laptop,Platform access,Moodle tools,Training delivery,E-learning sector
+73,E-learning Course Creation,Mobile phone,Laptop preferred,Canva video tools,Teaching content,Online education
+74,EdTech Operations,Laptop,Admin tools,Course platforms,Process handling,Education startups
+75,Healthcare IT,Laptop,Hospital systems,HIS tools,Medical records,Health tech
+76,Medical Coding,Laptop,Training access,ICD tools,Coding accuracy,Healthcare jobs
+77,Bioinformatics,Laptop,High RAM laptop,R tools Python,Biology data,Research careers
+78,Lab Data Analysis,Laptop,Stat tools,SPSS Excel,Data accuracy,Scientific labs
+79,Research Methodology,Laptop,Reference tools,Mendeley SPSS,Study design,Academia
+80,Patent Analysis,Laptop,IP databases,Patent search,Legal tech,IP firms
+81,Legal Documentation,Laptop,Any laptop,Word tools,Legal drafting,Law offices
+82,Compliance Management,Laptop,Policy tools,Compliance software,Regulatory rules,Corporate governance
+83,Public Policy Analysis,Laptop,Research tools,Policy frameworks,Governance,Think tanks
+84,Urban Planning Tools,Laptop,GIS setup,Urban software,City design,Government projects
+85,Environmental Auditing,Field gear,Monitoring tools,None,Environmental laws,Compliance roles
+86,Safety Auditing,Field gear,Audit tools,None,Workplace safety,Industrial audits
+87,Quality Auditing,Laptop,ISO tools,Audit checklists,Standards,Manufacturing QA
+88,Food Safety Inspection,Field kit,Testing tools,None,Hygiene standards,Food industry
+89,Agriculture Tech,Laptop,Field sensors,None,Crop tech,Agri startups
+90,Drone Data Analysis,Laptop,Processing software,Pix4D,GIS mapping,Surveying
+91,Smart Home Installation,Tool kit,IoT devices,None,Home automation,Residential tech
+92,IoT Development,Laptop,Dev kits,Arduino cloud,Sensors logic,Smart devices
+93,Network Administration,Laptop,Lab access,Cisco tools,Networking basics,IT infrastructure
+94,Wireless Communication,Laptop,RF tools,Network simulators,Signal basics,Telecom
+95,Telecom Field Work,Tool kit,Field meters,None,Cable systems,ISP jobs
+96,Video Surveillance Systems,Tool kit,Camera systems,None,Security setup,Private security
+97,Fire Safety Systems,Tool kit,Alarm panels,None,Fire standards,Safety contracts
+98,Building Management Systems,Laptop,Control panels,BMS software,Facility ops,Commercial buildings
+99,Smart Grid Basics,Laptop,Simulation tools,Power software,Grid management,Energy sector
+100,Entrepreneurship Skills,Mobile phone,Laptop preferred,Business tools,Idea execution,Self employment

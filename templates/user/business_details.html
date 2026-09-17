@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ business.business_type }}{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>{{ business.business_type }}</h2>
+  <span class="badge">{{ business.category }}</span>
+  <hr>
+  <p><strong>Required Capital:</strong> {{ business.startup_cost_display }}</p>
+  <p><strong>Core Skills:</strong> {{ business.core_skills }}</p>
+  <p><strong>Setup:</strong> {{ business.business_setup }}</p>
+  <p><strong>Minimum Requirements:</strong> {{ business.minimum_requirements }}</p>
+  <p><strong>Strategies to Grow:</strong> {{ business.strategies }}</p>
+  <p><strong>Potential Risks:</strong> {{ business.risks }}</p>
+  <a href="/pathway/{{ business.business_type }}" class="btn btn-primary">Start Business Pathway</a>
+</div>
+{% endblock %}

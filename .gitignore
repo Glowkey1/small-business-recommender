@@ -1,0 +1,24 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment & local state
+venv/
+env/
+.env
+
+# SQLite local database
+instance/*.db
+instance/*.db-journal
+instance/*.sqlite
+
+# Pytest & test cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS artifacts
+.DS_Store
+Thumbs.db

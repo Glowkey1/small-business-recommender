@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Saved Businesses{% endblock %}
+{% block content %}
+<h2>Saved Businesses</h2>
+<div class="card">
+  {% for s in saved %}
+    <div class="history-item">
+      <strong>{{ s.business.business_type }}</strong>
+      <a href="/pathway/{{ s.business.business_type }}" class="btn btn-sm">View Pathway</a>
+    </div>
+  {% else %}
+    <p>No saved businesses yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

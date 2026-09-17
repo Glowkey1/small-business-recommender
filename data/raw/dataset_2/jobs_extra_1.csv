@@ -1,0 +1,11 @@
+﻿ID,Job,Category,Physical_Skills,Technical_Skills,Mental_Skills
+1,AR VR Developer,Private,Low_Endurance,Unity Unreal 3D_Math APIs,Creativity Spatial_Thinking
+2,Biomedical Technician,Private,Medium_Endurance,Medical_Devices Calibration Repair,Attention_to_Detail
+3,Cyber Security Analyst,Private,Low_Endurance,Networking SIEM Threat_Analysis,Analytical_Thinking Vigilance
+4,Drone Operations Officer,Government,Medium_Endurance,Drone_Control Mapping Regulations,Situational_Awareness
+5,Environmental Analyst,Government,Medium_Endurance,Sampling GIS Reporting,Critical_Thinking
+6,Forensic Accountant,Private,Low_Endurance,Accounting Audit Investigation,Integrity Reasoning
+7,Geospatial Engineer,Private,Low_Endurance,GIS CAD Survey_Data,Problem_Solving
+8,Logistics Planner,Private,Low_Endurance,ERP Route_Planning Inventory,System_Thinking
+9,Product Analyst,Private,Low_Endurance,SQL Analytics Experimentation,Decision_Making Communication
+10,Supply Chain Executive,Private,Medium_Endurance,Procurement Forecasting ERP,Coordination Planning

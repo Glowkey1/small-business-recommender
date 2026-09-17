@@ -1,0 +1,76 @@
+ID,Exam,Subjects,Outcomes
+1,AFCAT,General_Awareness Verbal_Ability Numerical_Ability Reasoning Military_Aptitude,Airforce Officer
+2,Airforce X,Physics Mathematics English Reasoning,Airforce Technical Trades
+3,Airforce Y,English Reasoning General_Awareness,Airforce Non_Technical Trades
+4,BARC,Physics Nuclear_Physics Reactor_Theory Engineering_Mathematics Thermodynamics Fluid_Mechanics Electrical Electronics Materials,Scientific Officer BARC
+5,BITSAT,Physics Chemistry Mathematics Logical_Reasoning English,BTech Integrated MSc BITS
+6,BPSC,History Geography Polity Economy Current_Affairs Aptitude,State Civil Services
+7,BSF,General_Knowledge Reasoning Numerical_Ability Physical_Efficiency,Border_Security_Force
+8,CAPF (AC),General_Ability Polity Economy History Geography Science,AFC Assistant Commandant
+9,CDS,English General_Knowledge Mathematics Polity History Geography Science,Army Navy Airforce Officer
+10,CISF,General_Knowledge Reasoning Numerical_Ability Physical_Efficiency,Industrial_Security_Force
+11,CLAT,Legal_Reasoning Logical_Reasoning English Quantitative_Techniques Current_Affairs,NLU Law Degree
+12,CMAT,Quantitative_Techniques Logical_Reasoning Language_Comprehension General_Awareness,MBA Colleges
+13,CRPF,General_Knowledge Reasoning Numerical_Ability Physical_Efficiency,Central_Reserve_Police
+14,CSIR NET,Mathematical_Sciences Physical_Sciences Chemical_Sciences Life_Sciences Earth_Sciences,Research Fellowship Lecturer
+15,CUET,Domain_Subjects English General_Test,Central Universities Admission
+16,DSSSB,General_Awareness Reasoning Numerical_Ability Subject_Knowledge,Delhi Govt Jobs
+17,EAMCET,Mathematics Algebra Trigonometry Calculus Vectors Probability Physics Mechanics Thermodynamics Waves Optics Electricity Magnetism Modern_Physics Chemistry Atomic_Structure Chemical_Bonding Thermodynamics Electrochemistry Organic_Reactions Polymers,BTech BE Agriculture Pharmacy Colleges
+18,ESE,Engineering_Mathematics General_Studies Ethics Quality Engineering_Mechanics Strength_of_Materials Structural_Analysis Geotechnical Transportation Hydrology Thermodynamics Fluid_Mechanics Heat_Transfer Machine_Design Electrical_Machines Power_Systems Control_Systems Electronics,IES Officer Class_1 Engineer Govt Services
+19,ECET,Engineering_Mathematics Core_Engineering_Subjects Branch_Specific Theory Applied_Mechanics Electrical Circuits Electronics Strength_of_Materials,BTech Lateral_Entry Engineering Colleges
+20,GATE,Engineering_Mathematics Discrete_Math Linear_Algebra Calculus Probability Programming C_Data_Structures Algorithms Computer_Organization Operating_Systems DBMS Computer_Networks Theory_of_Computation Compiler_Design Digital_Logic Control_Systems Signals Power_Systems Thermodynamics Fluid_Mechanics Strength_of_Materials,MTech PSU Jobs NTPC BHEL ONGC DRDO Research
+21,GPAT,Pharmaceutics Pharmacology Pharmaceutical_Chemistry Pharmacognosy Biotechnology,MPharmacy Pharma Jobs
+22,IBPS Clerk,Quantitative_Aptitude Reasoning English Computer_Knowledge Banking_Awareness,Bank Clerk
+23,IBPS PO,Quantitative_Aptitude Reasoning English Banking_Awareness Computer_Knowledge,Bank Officer
+24,ICAI CA,Accounting Law Taxation Costing Audit Economics,Chartered Accountant
+25,IES ISS,Statistics Probability Sampling Inference Econometrics,Statistical Services
+26,IIFT,Quantitative_Ability Logical_Reasoning Verbal_Ability Data_Interpretation,MBA International Business
+27,ISRO,Engineering_Mathematics Core_Engineering Physics Electronics Signals Control Systems Programming Mechanical_Thermal Materials,Scientist Engineer ISRO
+28,JEE,Mathematics Sets Relations Functions Calculus Differential_Equations Linear_Algebra Vectors Probability Physics Mechanics Kinematics Laws_of_Motion Work_Energy Power Rotational_Motion Gravitation Thermodynamics Waves Optics Modern_Physics Electricity Magnetism Chemistry Physical_Chemistry Organic_Chemistry Inorganic_Chemistry,BTech IIT NIT IIIT Engineering Research
+29,JIPMER,Biology Physics Chemistry Anatomy Physiology Biochemistry,MBBS JIPMER
+30,KPSC,State_History Polity Economy Geography Current_Affairs,Karnataka State Services
+31,LIC AAO,Reasoning Quantitative English Insurance_Awareness,Insurance Officer
+32,MAT,Quantitative_Aptitude Logical_Reasoning English General_Knowledge,MBA Colleges
+33,MPPSC,History Polity Economy Geography Current_Affairs,State Civil Services
+34,NABARD Grade A,Reasoning Quantitative English Agriculture Economics,Bank Officer
+35,NDA,Mathematics Algebra Trigonometry Calculus Probability Physics Chemistry General_Science History Geography Current_Affairs,Army Navy Airforce Officer
+36,NEET,Biology Botany Zoology Cell_Biology Genetics Evolution Ecology Human_Physiology Plant_Physiology Biotechnology Physics Mechanics Thermodynamics Waves Optics Electricity Magnetism Chemistry Organic Inorganic Physical,MBBS BDS BAMS BHMS Nursing Medical Colleges
+37,NEST,Biology Chemistry Mathematics Physics,Integrated MSc NISER
+38,NIFT,Design Aptitude Creativity Observation Communication,Fashion Design Institutes
+39,NID,Design Thinking Visualization Creativity Innovation,Design Institutes
+40,NIMCET,Mathematics Programming Logical_Reasoning Computer_Fundamentals,MCA NITs
+41,NMIMS NPAT,Quantitative Reasoning English Logical,UG Management Courses
+42,NTA UGC NET,Teaching_Aptitude Research_Methodology Subject_Knowledge,Assistant Professor JRF
+43,Navy AA,Mathematics Physics Chemistry English,Naval Aviation Technician
+44,Navy MR,Mathematics Science English General_Knowledge,Indian Navy Sailor MR
+45,Navy SSR,Mathematics Physics Chemistry English General_Awareness,Indian Navy Sailor SSR
+46,NEET MDS,Dental Subjects Clinical Knowledge,MDS Dental
+47,OBC Bank Exams,Quantitative Reasoning English Banking_Awareness,Bank Jobs
+48,PGCET,Subject_Specific Engineering Mathematics,PG Admission
+49,PSC Group 1,History Polity Economy Geography Science Ethics,State Top Services
+50,PSC Group 2,History Polity Economy Aptitude,State Executive Jobs
+51,RBI Grade B,Economics Finance Management English,Central Bank Officer
+52,RRB ALP,Math Reasoning General_Science Trade_Knowledge,Railway Technician
+53,RRB JE,Engineering Mathematics Core Subjects,Railway Junior Engineer
+54,RRB NTPC,Math Reasoning General_Awareness English,Railway Clerk Officer
+55,SBI Clerk,Quantitative Reasoning English Banking_Awareness,Bank Clerk
+56,SBI PO,Quantitative Reasoning English Banking_Awareness,Bank Officer
+57,SSC CGL,Quantitative_Aptitude Advanced_Math Reasoning English Statistics General_Studies,Income_Tax Officer Auditor Assistant Section Officer
+58,SSC CHSL,Arithmetic Reasoning English General_Awareness,Clerk DEO LDC
+59,SSC Exams,Quantitative_Aptitude Arithmetic Algebra Geometry Trigonometry Reasoning Logical Verbal Ability English_Comprehension General_Awareness,Clerk Assistant Inspector Govt Jobs
+60,SSC GD,General_Knowledge Reasoning Numerical_Ability Physical_Efficiency,Security Forces
+61,SSC JE,Engineering Subjects Mathematics,Railway PSU JE
+62,SSC MTS,General_Awareness Reasoning Numerical_Ability,Support Staff
+63,State PSC,State_History Polity Economy Geography Current_Affairs Aptitude,MRO DSP Group_1 Group_2 State Services
+64,TANCET,Quantitative Reasoning English Data_Analysis,PG Admission
+65,TET,Child_Psychology Pedagogy Subject_Content,Teacher Eligibility
+66,UGC NET,Teaching_Aptitude Research_Methodology Subject_Knowledge,Professor JRF
+67,UPSC,History Ancient Medieval Modern Geography Physical Human Indian_Polity Constitution Governance Economy Macro Micro Environment Ecology Science_Tech Ethics Current_Affairs Essay,IAS IPS IFS IRS Central Services
+68,VITEEE,Physics Chemistry Mathematics Aptitude,BTech VIT
+69,XAT,Decision_Making Quantitative Ability English GK,XLRI MBA
+70,YUVA NET,Teaching Aptitude Subject Knowledge,Teaching
+71,ZSI Exam,Zoology Ecology Biology Field_Work,Zoological Survey
+72,AAI ATC,Physics Mathematics Reasoning,Air Traffic Control
+73,ICMR JRF,Biology Biochemistry Biotechnology,Medical Research
+74,ICAI CMA,Cost Accounting Law Taxation Economics,Cost Accountant
+75,ICSI CS,Company_Law Tax Corporate_Governance,Company Secretary

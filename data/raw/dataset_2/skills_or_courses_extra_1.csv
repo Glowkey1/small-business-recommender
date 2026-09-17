@@ -1,0 +1,11 @@
+﻿ID,Skill,Minimum Devices (works),Better Devices (recommended),Software / Tools,Core Knowledge,Why Useful
+1,Cloud Computing Basics,Any laptop with internet,8GB laptop with SSD,AWS Azure GCP free tiers,Compute storage networking,Entry for cloud careers
+2,Prompt Engineering,Basic laptop,Modern laptop with browser,ChatGPT Claude Gemini,Task framing evaluation,Productivity and AI roles
+3,No Code App Building,Basic laptop,Mid-range laptop,Bubble Glide Airtable,Logic workflows UX basics,Fast MVP development
+4,UI UX Design,4GB laptop,8GB+ laptop,Figma Miro Notion,User research wireframing,Product and design jobs
+5,Cyber Security Basics,Basic laptop,Mid-range laptop,Wireshark Kali VM OWASP,Networking threats controls,Security career foundation
+6,Salesforce Admin,Basic laptop,Laptop with stable internet,Salesforce Trailhead CRM,CRM workflow automation,Business ops opportunities
+7,SEO Specialist,Basic laptop,Any modern laptop,Search Console Ahrefs Semrush,Keyword research content SEO,Traffic and growth roles
+8,Podcast Editing,Phone or basic laptop,Mid-range laptop with headset,Audacity Reaper Riverside,Audio cleanup storytelling,Media freelancing income
+9,Video Scripting,Any smartphone,Laptop + smartphone,Docs Canva CapCut,Script hooks pacing,Better content performance
+10,Freelance Proposal Writing,Basic laptop,Any laptop,Docs Notion Upwork,Funnel writing pricing,Higher freelance conversions
