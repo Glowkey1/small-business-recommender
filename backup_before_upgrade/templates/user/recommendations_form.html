@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Find Business Ideas — SmallBiz Match{% endblock %}
+
+{% block content %}
+<div class="card card-editorial">
+  <span class="mono-tag">FEASIBILITY ENGINE // REAL CATALOG ATTRIBUTES</span>
+  <h2 style="margin: 8px 0 12px 0;">Find Your Business Match</h2>
+  <p class="subtitle">Enter your real parameters to filter candidate businesses and calculate compatibility.</p>
+
+  <form action="/find" method="POST">
+    <div class="form-group">
+      <label>Starting Capital (₱ PHP)</label>
+      <input type="number" name="capital" value="10000" min="0" step="500" required class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Select Your Existing Skills</label>
+      <div class="skills-grid">
+        {% for s in skills %}
+          <label class="skill-pill">
+            <input type="checkbox" name="skills" value="{{ s.name }}"> {{ s.name }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Experience Level</label>
+        <select name="experience" class="form-control">
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Experienced">Experienced</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Available Daily Commitment</label>
+        <select name="available_time" class="form-control">
+          <option value="Less than 2 hours/day">Less than 2 hours/day</option>
+          <option value="2-4 hours/day">2-4 hours/day</option>
+          <option value="4-6 hours/day" selected>4-6 hours/day</option>
+          <option value="Full-Time (6+ hours/day)">Full-Time (6+ hours/day)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Preferred Business Setup</label>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px;">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" name="setup" value="Online" checked> Online
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" name="setup" value="Home-Based" checked> Home-Based
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" name="setup" value="Physical Store"> Physical Store
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" style="padding: 14px; margin-top: 10px;">
+      DISCOVER COMPATIBLE BUSINESSES
+    </button>
+  </form>
+</div>
+{% endblock %}

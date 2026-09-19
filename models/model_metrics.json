@@ -1,0 +1,37 @@
+{
+  "model_name": "Logistic Regression",
+  "dataset_size": 250,
+  "successful_records": 62,
+  "not_successful_records": 188,
+  "majority_baseline_accuracy": 0.752,
+  "test_metrics": {
+    "accuracy": 0.9,
+    "precision": 0.7059,
+    "recall": 1.0,
+    "f1": 0.8276,
+    "confusion_matrix": [
+      [
+        33,
+        5
+      ],
+      [
+        0,
+        12
+      ]
+    ]
+  },
+  "five_fold_cross_validation": {
+    "accuracy_mean": 0.948,
+    "accuracy_std": 0.0349,
+    "precision_mean": 0.8614,
+    "precision_std": 0.0882,
+    "recall_mean": 0.95,
+    "recall_std": 0.0667,
+    "f1_mean": 0.9012,
+    "f1_std": 0.0664
+  },
+  "random_forest_comparison": {
+    "accuracy_mean": 0.872,
+    "f1_mean": 0.6696
+  }
+}

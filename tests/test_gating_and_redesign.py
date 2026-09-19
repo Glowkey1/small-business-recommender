@@ -40,7 +40,7 @@ def test_login_redirects_back_to_find(client):
         "password": "securepassword123"
     }, follow_redirects=True)
     assert res.status_code == 200
-    assert b"Find Your Business Match" in res.data
+    assert b"Find Your Compatible Small Business" in res.data
 
 def test_pathway_remains_publicly_readable(client):
     res = client.get("/pathway/NonexistentRandom123")

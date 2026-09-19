@@ -1,64 +1,89 @@
 {% extends "base.html" %}
-{% block title %}ML Performance Dashboard — SmallBiz Match{% endblock %}
+{% block title %}ML Performance & Dataset Statistics — Admin{% endblock %}
 
 {% block content %}
-<h2>Machine Learning Performance Dashboard</h2>
-<p class="subtitle">Operational metrics for recommender feedback and founder success prediction.</p>
+<h2>System & Machine Learning Information</h2>
+<p class="subtitle">Complete audit of Philippine datasets, trained success classification models, and live user validation.</p>
 
-<div class="card card-editorial" style="background: #eaf3ed; border-left: 6px solid var(--color-brand); margin-bottom: 24px;">
-  <h3 style="margin-top: 0; color: var(--color-brand);">Live Recommender Accuracy (User Survey Feedback)</h3>
-  <div style="display: flex; gap: 40px; align-items: center; margin-top: 12px;">
-    <div>
-      <div style="font-family: var(--font-mono); font-size: 40px; font-weight: 700; color: var(--color-brand); line-height: 1;">
-        {{ live_accuracy }}%
-      </div>
-      <div style="font-size: 12px; color: var(--color-ink-muted); text-transform: uppercase; font-family: var(--font-mono); margin-top: 4px;">
-        Live Match Accuracy
-      </div>
+<!-- 1. Dataset Statistics Table (Section 58 requirement) -->
+<div class="card card-editorial" style="margin-bottom: 24px;">
+  <span class="mono-tag">AUTHENTIC DATASET AUDIT // REAL PHILIPPINE SOURCES</span>
+  <h3 style="margin: 8px 0 16px 0;">Dataset Records Summary</h3>
+  <div class="grid-3" style="text-align: center;">
+    <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">119</div>
+      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Business Ideas</div>
     </div>
-    <div>
-      <p style="margin: 0; font-size: 14px;"><strong>Total User Ratings:</strong> {{ total_votes }}</p>
-      <p style="margin: 0; font-size: 14px;"><strong>Positive Matches:</strong> {{ positive_votes }}</p>
+    <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">163 / 158</div>
+      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Raw / Master Skills</div>
+    </div>
+    <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">152,657</div>
+      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Philippine OSM POIs</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="text-align: center; margin-top: 16px;">
+    <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-ink);">250</div>
+      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Municipalities / Cities (PSA 2024)</div>
+    </div>
+    <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-ink);">250</div>
+      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Success Records (62 Success / 188 Non-Success)</div>
     </div>
   </div>
 </div>
 
-<div class="card card-editorial">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
-    <div>
-      <h3 style="margin: 0;">Founder Success Prediction Model</h3>
-      <p style="margin: 4px 0 0 0; color: var(--color-ink-muted); font-size: 13px;">
-        Architecture: <strong>StandardScaler + Logistic Regression (class_weight="balanced")</strong>
-      </p>
-    </div>
-    <form action="/admin/retrain" method="POST" style="margin: 0;">
-      <button type="submit" class="btn btn-primary btn-sm">Retrain Model</button>
-    </form>
-  </div>
-  <hr style="border: 0; border-top: 1px solid var(--color-border); margin: 16px 0;">
+<!-- 2. Machine Learning Success Component -->
+<div class="card card-editorial" style="margin-bottom: 24px;">
+  <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // LOGISTIC REGRESSION</span>
+  <h3 style="margin: 8px 0 6px 0;">5-Fold Stratified Cross-Validation Results</h3>
+  <p style="font-size: 13px; color: var(--color-ink-muted); margin-bottom: 16px;">
+    The machine learning component was trained using 250 business success records. Logistic Regression was selected for the production pipeline because it achieved higher cross-validation performance than Random Forest on this dataset.
+  </p>
 
-  {% if metrics and "Logistic Regression" in metrics %}
-    {% set m = metrics["Logistic Regression"] %}
-    <div class="grid-4" style="text-align: center;">
-      <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Accuracy</div>
-        <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 700; margin-top: 4px;">{{ (m.accuracy * 100) | round(1) }}%</div>
+  <div class="grid-4" style="text-align: center;">
+    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Accuracy</div>
+      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">94.8% ± 3.49%</div>
+    </div>
+    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Precision</div>
+      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">86.1% ± 8.82%</div>
+    </div>
+    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Recall</div>
+      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">95.0% ± 6.67%</div>
+    </div>
+    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV F1-Score</div>
+      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">90.1% ± 6.64%</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 14px; font-size: 12px; color: var(--color-ink-muted);">
+    * Majority Class Baseline Accuracy: <strong>75.2%</strong>. Note: The success model is one component of the hybrid recommendation system, and does not represent the accuracy of the entire recommendation system.
+  </div>
+</div>
+
+<!-- 3. Live User Feedback Survey -->
+<div class="card card-editorial" style="background: #eaf3ed; border-left: 6px solid var(--color-brand);">
+  <h3 style="margin-top: 0; color: var(--color-brand);">Live User Recommender Accuracy Rate</h3>
+  <div style="display: flex; gap: 40px; align-items: center; margin-top: 10px;">
+    <div>
+      <div style="font-family: var(--font-mono); font-size: 38px; font-weight: 700; color: var(--color-brand); line-height: 1;">
+        {{ live_accuracy }}%
       </div>
-      <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Precision</div>
-        <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 700; margin-top: 4px;">{{ m.precision }}</div>
-      </div>
-      <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Recall</div>
-        <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ m.recall }}</div>
-      </div>
-      <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">F1-Score</div>
-        <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ m.f1 }}</div>
+      <div style="font-size: 12px; color: var(--color-ink-muted); text-transform: uppercase; font-family: var(--font-mono); margin-top: 4px;">
+        Live Realism Score
       </div>
     </div>
-  {% else %}
-    <p>No model metrics found. Click <strong>Retrain Model</strong> to fit the classifier on Dataset 1.</p>
-  {% endif %}
+    <div>
+      <p style="margin: 0; font-size: 14px;"><strong>Total Ratings:</strong> {{ total_votes }}</p>
+      <p style="margin: 0; font-size: 14px;"><strong>Positive Matches:</strong> {{ positive_votes }}</p>
+    </div>
+  </div>
 </div>
 {% endblock %}

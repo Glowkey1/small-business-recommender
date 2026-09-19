@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}
+  {% if roadmap and roadmap.business_type %}
+    Business Pathway: {{ roadmap.business_type }}
+  {% else %}
+    Business Pathway Unavailable
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if error or not roadmap %}
+  <div class="card card-editorial" style="border-left: 6px solid var(--color-accent);">
+    <h2>Pathway Unavailable</h2>
+    <p>{{ error or "The requested business could not be found in the active catalog." }}</p>
+    <a href="/find" class="btn btn-primary" style="margin-top: 12px;">Back to Recommender</a>
+  </div>
+{% else %}
+  <div class="card card-editorial" style="margin-bottom: 24px;">
+    <span class="mono-tag">STARTUP ROADMAP // {{ roadmap.business_type }}</span>
+    <h2>{{ roadmap.business_type }}</h2>
+    <div class="grid-2" style="margin-top: 16px;">
+      <div style="background: #eaf3ed; border: 1.5px solid var(--color-brand); padding: 16px;">
+        <strong style="color: var(--color-brand);">✓ Your Matching Skills:</strong>
+        <p style="margin-top: 4px; font-size: 13.5px;">{{ roadmap.matched_skills | join(', ') or 'None currently' }}</p>
+      </div>
+      <div style="background: #fbeae8; border: 1.5px solid var(--color-accent); padding: 16px;">
+        <strong style="color: var(--color-accent);">⚠ Skills to Acquire:</strong>
+        <p style="margin-top: 4px; font-size: 13.5px;">{{ roadmap.skill_gaps | join(', ') or 'All core skills present!' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Step-by-Step Implementation Pathway</h3>
+  <div style="margin-top: 16px;">
+    {% for s in roadmap.steps %}
+      <div class="phase-card">
+        <div class="phase-title">{{ s.phase }}</div>
+        <h4 style="margin: 4px 0 6px 0;">{{ s.title }}</h4>
+        <p style="font-size: 13.5px; color: var(--color-ink-muted);">{{ s.description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+  <div style="margin-top: 24px;">
+    <a href="/find" class="btn btn-secondary">← Back to Recommendations</a>
+  </div>
+{% endif %}
+{% endblock %}

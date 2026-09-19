@@ -3,49 +3,57 @@
 
 {% block content %}
 <div class="card card-editorial">
-  <span class="mono-tag">FEASIBILITY ENGINE // REAL CATALOG ATTRIBUTES</span>
-  <h2 style="margin: 8px 0 12px 0;">Find Your Business Match</h2>
-  <p class="subtitle">Enter your real parameters to filter candidate businesses and calculate compatibility.</p>
+  <span class="mono-tag">PHILIPPINE HYBRID RECOMMENDER // INPUT FORM</span>
+  <h2 style="margin: 8px 0 12px 0;">Find Your Compatible Small Business</h2>
+  <p class="subtitle">Complete the parameters below to evaluate financial feasibility, skills match, local market presence, and business success indicators.</p>
 
   <form action="/find" method="POST">
+    <!-- 1. Starting Capital -->
     <div class="form-group">
-      <label>Starting Capital (₱ PHP)</label>
+      <label>1. Starting Capital (₱ PHP)</label>
       <input type="number" name="capital" value="10000" min="0" step="500" required class="form-control">
+      <small style="color: var(--color-ink-muted); font-size: 12px;">* Hard constraint: Businesses requiring more capital than you enter are strictly excluded.</small>
     </div>
 
+    <!-- 2. Skills -->
     <div class="form-group">
-      <label>Select Your Existing Skills</label>
-      <div class="skills-grid">
+      <label>2. Select Your Skills (Multi-select)</label>
+      <input type="text" id="skillSearch" placeholder="Search skills (e.g. Cooking, Marketing, Social Media)..." class="form-control" style="margin-bottom: 8px;" onkeyup="filterSkills()">
+      <div class="skills-grid" id="skillsGrid">
         {% for s in skills %}
           <label class="skill-pill">
-            <input type="checkbox" name="skills" value="{{ s.name }}"> {{ s.name }}
+            <input type="checkbox" name="skills" value="{{ s }}"> <span>{{ s }}</span>
           </label>
         {% endfor %}
       </div>
     </div>
 
+    <!-- 3. Experience & Time -->
     <div class="grid-2">
       <div class="form-group">
-        <label>Experience Level</label>
+        <label>3. Experience Level</label>
         <select name="experience" class="form-control">
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Experienced">Experienced</option>
+          <option value="Beginner">Beginner (No formal business experience)</option>
+          <option value="Intermediate">Intermediate (Hands-on experience / past venture)</option>
+          <option value="Experienced">Experienced (Industry veteran / formal background)</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label>Available Daily Commitment</label>
+        <label>4. Available Commitment Time</label>
         <select name="available_time" class="form-control">
-          <option value="Less than 2 hours/day">Less than 2 hours/day</option>
-          <option value="2-4 hours/day">2-4 hours/day</option>
-          <option value="4-6 hours/day" selected>4-6 hours/day</option>
-          <option value="Full-Time (6+ hours/day)">Full-Time (6+ hours/day)</option>
+          <option value="1-2 hours/day">1-2 hours/day (Micro side-hustle)</option>
+          <option value="3-4 hours/day">3-4 hours/day (Part-time)</option>
+          <option value="5-6 hours/day" selected>5-6 hours/day (Dedicated)</option>
+          <option value="7-8 hours/day">7-8 hours/day (Full-time)</option>
+          <option value="Full-time">Full-time (8+ hours/day)</option>
         </select>
       </div>
     </div>
 
+    <!-- 5. Business Setup -->
     <div class="form-group">
-      <label>Preferred Business Setup</label>
+      <label>5. Preferred Business Setup</label>
       <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px;">
         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
           <input type="checkbox" name="setup" value="Online" checked> Online
@@ -56,12 +64,38 @@
         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
           <input type="checkbox" name="setup" value="Physical Store"> Physical Store
         </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" name="setup" value="Service / Mobile"> Service / Mobile
+        </label>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block" style="padding: 14px; margin-top: 10px;">
-      DISCOVER COMPATIBLE BUSINESSES
+    <!-- 6. Philippine Location -->
+    <div class="form-group">
+      <label>6. Philippine Municipality / City</label>
+      <input list="ph_locations" name="location" placeholder="Select or type municipality (e.g. Lipa City, Quezon City, Batangas)..." class="form-control" required>
+      <datalist id="ph_locations">
+        {% for m in municipalities %}
+          <option value="{{ m }}"></option>
+        {% endfor %}
+      </datalist>
+      <small style="color: var(--color-ink-muted); font-size: 12px;">* Uses real OpenStreetMap business presence and 2024 PSA population data across 250 municipalities.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" style="padding: 14px; margin-top: 10px; font-size: 15px;">
+      GET RECOMMENDATIONS
     </button>
   </form>
 </div>
+
+<script>
+function filterSkills() {
+  var input = document.getElementById('skillSearch').value.toLowerCase();
+  var pills = document.getElementById('skillsGrid').getElementsByClassName('skill-pill');
+  for (var i = 0; i < pills.length; i++) {
+    var text = pills[i].innerText.toLowerCase();
+    pills[i].style.display = text.indexOf(input) > -1 ? "flex" : "none";
+  }
+}
+</script>
 {% endblock %}

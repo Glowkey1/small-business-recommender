@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Matched Recommendations — SmallBiz Match{% endblock %}
+{% block title %}Top Recommendations — SmallBiz Match{% endblock %}
 
 {% block content %}
-<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
   <div>
-    <span class="mono-tag">FEASIBILITY MATCHES // ₱{{ "{:,.2f}".format(profile.capital) }} CAPITAL</span>
-    <h2>Recommended Business Opportunities</h2>
+    <span class="mono-tag">HYBRID FEASIBILITY MATCHES // ₱{{ "{:,.2f}".format(profile.capital) }} CAPITAL</span>
+    <h2>Recommended Business Ideas</h2>
     <p class="subtitle" style="margin-bottom: 0;">
-      Filtered strictly within your available budget and ranked by skill vector similarity.
+      Location: <strong>{{ profile.location or 'Nationwide Baseline' }}</strong> · Experience: <strong>{{ profile.experience }}</strong>
     </p>
   </div>
   <a href="/find" class="btn btn-secondary btn-sm">Adjust Filters</a>
@@ -27,36 +27,57 @@
         <span class="badge">{{ r.category }}</span>
       </div>
       <div class="biz-meta">
-        Setup: <strong>{{ r.business_setup }}</strong> · Minimum Staff: <strong>{{ r.people_needed }}</strong>
+        Setup: <strong>{{ r.business_setup }}</strong> · Required Staff: <strong>{{ r.people_needed }}</strong>
       </div>
+
+      <!-- Skills Match -->
       {% if r.matched_skills %}
         <div class="skills-match">✓ Matching Skills: {{ r.matched_skills | join(', ') }}</div>
       {% endif %}
-      {% if r.skill_gaps %}
-        <div class="skills-gap-preview">⚠ Skills to Acquire: {{ r.skill_gaps[:3] | join(', ') }}{% if r.skill_gaps | length > 3 %} +{{ r.skill_gaps | length - 3 }} more{% endif %}</div>
-      {% endif %}
+
+      <!-- Market Evidence -->
+      <div style="font-size: 12.5px; color: var(--color-ink-muted); margin: 6px 0; background: var(--color-surface-soft); padding: 6px 10px; border-left: 3px solid var(--color-brand);">
+        <strong>Market Evidence:</strong> {{ r.location_evidence }}
+      </div>
+
+      <!-- Why Recommended -->
+      <div style="margin-top: 6px;">
+        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-ink-muted); font-family: var(--font-mono);">Why Recommended:</span>
+        <ul style="font-size: 12px; color: var(--color-ink); margin-left: 18px; margin-top: 2px;">
+          {% for reason in r.reasons %}
+            <li>{{ reason }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
 
     <div class="biz-score-col">
       <div>
-        <div class="score-num">{{ r.compatibility_score }}%</div>
-        <div class="score-lbl">Compatibility</div>
+        <div class="score-num">{{ r.recommendation_score }}%</div>
+        <div class="score-lbl">Recommendation Score</div>
+        <div style="font-size: 10px; color: var(--color-ink-muted); margin-bottom: 8px;">(Statistical Match)</div>
       </div>
       <a href="/pathway/{{ r.business_type }}" class="btn btn-primary btn-sm btn-block">View Pathway</a>
     </div>
   </div>
 {% else %}
-  <div class="card card-editorial">
-    <h3>No Compatible Businesses Found</h3>
-    <p style="margin-top: 8px;">Try increasing your capital limit or selecting broader skill categories.</p>
-    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Refine Input</a>
+  <div class="card card-editorial" style="border-left: 6px solid var(--color-accent);">
+    <h3>No business ideas in the current catalog meet your starting-capital requirement.</h3>
+    <p style="margin-top: 8px;">
+      All business ideas in our 119-record Philippine catalog currently require a minimum capital exceeding ₱{{ "{:,.2f}".format(profile.capital) }}.
+    </p>
+    <p style="font-size: 14px; color: var(--color-ink-muted); margin-top: 4px;">
+      Suggestion: Increase your starting capital or explore micro-service setups requiring minimal initial equipment.
+    </p>
+    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Adjust Inputs</a>
   </div>
 {% endfor %}
 
+<!-- Live Feedback Survey -->
 <div class="card card-editorial" id="feedback-card" style="text-align: center; margin-top: 40px; background: var(--color-surface-soft);">
   <h4 style="margin-bottom: 6px;">Evaluate Recommendation Realism</h4>
   <p style="font-size: 14px; color: var(--color-ink-muted); margin-bottom: 16px;">
-    Are these business ideas feasible with your starting funds and aligned with your skills?
+    Are these business ideas feasible with your funds and aligned with your local market?
   </p>
   <div style="display: flex; justify-content: center; gap: 14px;">
     <button onclick="sendFeedback('yes')" class="btn btn-primary btn-sm">👍 Yes, Realistic Match</button>
