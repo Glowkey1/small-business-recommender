@@ -234,10 +234,16 @@ def process_dataset_2():
     else:
         merged["category"] = merged["category"].fillna("General")
 
-    merged["core_skills"] = merged.get("core_skills", "").fillna("")
-    merged["minimum_requirements"] = merged.get("minimum_requirements", "Basic workspace and standard equipment.").fillna("Basic workspace and standard equipment.")
-    merged["strategies"] = merged.get("strategies", "Focus on customer satisfaction and cash flow control.").fillna("Focus on customer satisfaction and cash flow control.")
-    merged["risks"] = merged.get("risks", "Competition and operational delays.").fillna("Competition and operational delays.")
+    for col, default_val in [
+        ("core_skills", ""),
+        ("minimum_requirements", "Basic workspace and standard equipment."),
+        ("strategies", "Focus on customer satisfaction and cash flow control."),
+        ("risks", "Competition and operational delays.")
+    ]:
+        if col not in merged.columns:
+            merged[col] = default_val
+        else:
+            merged[col] = merged[col].fillna(default_val)
 
     final_biz_path = os.path.join(FINAL_DIR, "final_business_dataset.csv")
     merged.to_csv(final_biz_path, index=False)
