@@ -1,8 +1,11 @@
-from flask import Blueprint, render_template, request, session, jsonify
+import re
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from flask_login import login_required, current_user
+from config import Config
 from ml.recommendation_engine import HybridBusinessRecommender
+from ml.validation import validate_recommendation_input
 from models import db
-from models.recommendation import RecommendationFeedback
+from models.recommendation import Recommendation, RecommendationFeedback
 from models.business import Business
 
 rec_bp = Blueprint("rec", __name__)
@@ -10,132 +13,121 @@ engine = HybridBusinessRecommender()
 
 @rec_bp.route("/api/locations", methods=["GET"])
 def api_locations():
-    """Returns sorted list of Philippine municipalities for the frontend dropdown."""
-    locs = engine.market_analyzer.get_locations()
-    return jsonify({"locations": locs})
+    return engine.market_analyzer.get_location_hierarchy()
 
 @rec_bp.route("/find", methods=["GET", "POST"])
 @login_required
 def find():
     if request.method == "POST":
-        capital = float(request.form.get("capital", 0))
-        skills = request.form.getlist("skills")
-        experience = request.form.get("experience", "Beginner")
-        available_time = request.form.get("available_time", "5-6 hours/day")
-        setups = request.form.getlist("setup") or ["Online / Home-Based"]
-        location = request.form.get("location", "").strip()
+        clean_profile, errors = validate_recommendation_input(
+            request.form, engine.market_analyzer, engine.selectable_skills
+        )
 
-        user_profile = {
-            "capital": capital,
-            "skills": skills,
-            "experience": experience,
-            "available_time": available_time,
-            "setup": setups,
-            "location": location
-        }
+        if errors:
+            hierarchy = engine.market_analyzer.get_location_hierarchy()
+            return render_template(
+                "user/recommendations_form.html",
+                skills=engine.selectable_skills,
+                hierarchy=hierarchy,
+                form_data=request.form,
+                errors=errors
+            ), 400
 
-        recs = engine.recommend(user_profile, top_n=5)
+        recs = engine.recommend(clean_profile, top_n=5)
 
-        # Store minimal metadata in session to avoid 4KB cookie overflow
-        session["last_recs"] = [
-            {
-                "id": r["id"],
-                "business_type": r["business_type"],
-                "category": r["category"],
-                "recommendation_score": r["recommendation_score"],
-                "startup_cost": r["startup_cost"],
-                "min_capital": r["min_capital"],
-                "matched_skills": r["matched_skills"],
-                "skill_gaps": r["skill_gaps"]
-            }
-            for r in recs
-        ]
-        session["last_profile"] = user_profile
+        if current_user.is_authenticated:
+            try:
+                for r in recs:
+                    rec_row = Recommendation(
+                        user_id=current_user.id,
+                        business_id=r["business_id"],
+                        compatibility_score=r["recommendation_score"]
+                    )
+                    db.session.add(rec_row)
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
 
-        return render_template("user/recommendations.html", recs=recs, profile=user_profile)
+        session["last_profile"] = clean_profile
 
-    # Standardized skills from skill_master.csv / catalog
-    skills_list = []
-    from config import Config
-    import pandas as pd
-    if Config.SKILL_MASTER_CSV.exists():
-        df_s = pd.read_csv(Config.SKILL_MASTER_CSV)
-        col = df_s.columns[0]
-        skills_list = sorted([str(s).strip().title() for s in df_s[col].dropna().unique() if len(str(s).strip()) > 2])
-    elif Config.FINAL_SKILLS_CSV.exists():
-        df_s = pd.read_csv(Config.FINAL_SKILLS_CSV)
-        col = df_s.columns[0]
-        skills_list = sorted([str(s).strip().title() for s in df_s[col].dropna().unique() if len(str(s).strip()) > 2])
+        return render_template(
+            "user/recommendations.html",
+            recs=recs,
+            profile=clean_profile
+        )
 
-    municipalities = engine.market_analyzer.get_locations()
+    saved_data = {}
+    if current_user.is_authenticated:
+        saved_data["capital"] = current_user.starting_capital
+        saved_data["experience"] = current_user.experience_level
+        saved_data["available_time"] = current_user.available_time
+        saved_data["setup"] = [current_user.preferred_setup] if current_user.preferred_setup else ["Online / Home-Based"]
+        saved_data["skills"] = [s.name for s in current_user.skills]
+    elif "last_profile" in session:
+        saved_data = session["last_profile"]
 
+    hierarchy = engine.market_analyzer.get_location_hierarchy()
     return render_template(
         "user/recommendations_form.html",
-        skills=skills_list,
-        municipalities=municipalities
+        skills=engine.selectable_skills,
+        hierarchy=hierarchy,
+        form_data=saved_data,
+        errors=[]
     )
 
-@rec_bp.route("/pathway/<business_type>")
-def pathway(business_type):
-    # Fetch original business catalog row
-    b = Business.query.filter_by(business_type=business_type).first()
-    if not b:
-        return render_template(
-            "user/pathway.html",
-            roadmap=None,
-            business=None,
-            error=f"Business '{business_type}' does not exist in the active Philippine catalog."
-        ), 404
+@rec_bp.route("/pathway/<int:biz_id>")
+def pathway(biz_id):
+    match = engine.df_businesses[engine.df_businesses["id"] == biz_id]
+    if match.empty:
+        return render_template("user/pathway.html", business=None, error="Pathway Unavailable"), 404
 
+    b = match.iloc[0].to_dict()
     prof = session.get("last_profile", {})
-    from ml.skill_normalizer import parse_skills_list
-    core_skills = parse_skills_list(b.core_skills)
-    user_skills = set(str(s).lower() for s in prof.get("skills", []))
 
-    matched = [s for s in core_skills if s.lower() in user_skills]
-    gaps = [s for s in core_skills if s.lower() not in user_skills]
+    s_score, matched, gaps = engine.calculate_skill_score(
+        prof.get("skills", []), str(b.get("core_skills", ""))
+    )
 
-    business_data = {
-        "business_type": b.business_type,
-        "category": b.category,
-        "startup_cost": b.startup_cost_display,
-        "min_capital": b.min_capital,
-        "people_needed": b.people_needed,
-        "minimum_requirements": b.minimum_requirements,
-        "strategies": b.strategies,
-        "risks": b.risks,
-        "business_setup": b.business_setup,
-        "experience_level": b.experience_required,
-        "core_skills": core_skills,
-        "matched_skills": matched,
-        "skill_gaps": gaps
-    }
-
-    # Construct the 9-Step Pathway
     steps = [
-        {"step": 1, "title": "Check Requirements", "action": f"Review baseline facility requirements: {b.minimum_requirements}."},
-        {"step": 2, "title": "Prepare Capital", "action": f"Ensure minimum seed fund of ₱{b.min_capital:,.0f} is allocated without taking high-interest debt."},
-        {"step": 3, "title": "Prepare Skills", "action": f"Skills already possessed: {', '.join(matched) or 'None'}. Priority competencies to acquire: {', '.join(gaps) or 'All core skills present!'}"},
-        {"step": 4, "title": "Choose Setup", "action": f"Set up operational channel: {b.business_setup}."},
-        {"step": 5, "title": "Prepare Equipment / Resources", "action": f"Procure essential equipment for a team size of {b.people_needed}."},
-        {"step": 6, "title": "Prepare Marketing", "action": "Establish online presence, local signage, and identify first 10 prospective customers."},
-        {"step": 7, "title": "Start Operations", "action": "Launch with a soft-opening or pilot order batch to validate order turnaround."},
-        {"step": 8, "title": "Monitor Risks", "action": f"Implement active defenses against catalog risks: {b.risks}."},
-        {"step": 9, "title": "Improve and Grow", "action": f"Deploy core survival and scaling strategy: {b.strategies}."}
+        {"step": 1, "title": "Check Requirements", "action": f"Review minimum catalog requirements: {b.get('minimum_requirements', 'Standard operational tools')}."},
+        {"step": 2, "title": "Prepare Capital", "action": f"Secure the minimum startup capital requirement: ₱{float(b.get('min_capital', 0)):,.0f}."},
+        {"step": 3, "title": "Prepare Skills", "action": f"Matching skills identified: {', '.join(matched) or 'None'}. Priority competencies to acquire: {', '.join(gaps) or 'All core skills present!'}"},
+        {"step": 4, "title": "Choose Setup", "action": f"Establish the business setup: {b.get('business_setup', 'Online / Home-Based')}."},
+        {"step": 5, "title": "Prepare Equipment / Resources", "action": f"Acquire necessary resources for {b.get('people_needed', '1 person')}."},
+        {"step": 6, "title": "Prepare Marketing", "action": "Develop customer outreach and launch marketing materials."},
+        {"step": 7, "title": "Start Operations", "action": "Commence initial business operations and fulfillment."},
+        {"step": 8, "title": "Monitor Risks", "action": f"Implement safeguards against catalog-documented risks: {b.get('risks', 'Market competition')}."},
+        {"step": 9, "title": "Improve the Business", "action": f"Deploy core growth strategy: {b.get('strategies', 'Maintain cost discipline')}."}
     ]
 
     return render_template(
         "user/pathway.html",
-        business=business_data,
+        business=b,
         steps=steps,
+        matched_skills=matched,
+        skill_gaps=gaps,
         profile=prof
     )
 
+@rec_bp.route("/pathway/<path:business_type>")
+def pathway_by_name(business_type):
+    clean_name = str(business_type).strip().lower()
+    match = engine.df_businesses[
+        engine.df_businesses["business_type"].astype(str).str.strip().str.lower() == clean_name
+    ]
+    if match.empty:
+        return render_template("user/pathway.html", business=None, error="Pathway Unavailable"), 404
+
+    biz_id = int(match.iloc[0]["id"])
+    return redirect(url_for("rec.pathway", biz_id=biz_id), code=301)
+
 @rec_bp.route("/feedback", methods=["POST"])
+@login_required
 def submit_feedback():
     rating = request.form.get("rating")
     is_acc = True if rating == "yes" else False
-    uid = current_user.id if getattr(current_user, "is_authenticated", False) else None
+    uid = current_user.id if current_user.is_authenticated else None
+
     feedback = RecommendationFeedback(user_id=uid, is_accurate=is_acc)
     db.session.add(feedback)
     db.session.commit()

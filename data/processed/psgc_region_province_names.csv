@@ -1,0 +1,37 @@
+level,psgc_code,name,region_psgc,note
+region,0300000000,Central Luzon (Region III),,official
+region,0400000000,CALABARZON (Region IV-A),,official
+region,0500000000,Bicol Region (Region V),,official
+region,0600000000,Western Visayas (Region VI),,official
+region,0900000000,Zamboanga Peninsula (Region IX),,official
+region,1000000000,Northern Mindanao (Region X),,official
+region,1300000000,National Capital Region (NCR),,official
+region,1600000000,Caraga (Region XIII),,official
+region,1700000000,MIMAROPA Region,,official
+province,0300800000,Bataan,0300000000,official
+province,0301400000,Bulacan,0300000000,official
+province,0305400000,Pampanga,0300000000,official
+province,0307100000,Zambales,0300000000,official
+province,0331400000,Olongapo City,0300000000,independent
+province,0401000000,Batangas,0400000000,official
+province,0402100000,Cavite,0400000000,official
+province,0403400000,Laguna,0400000000,official
+province,0405600000,Quezon,0400000000,official
+province,0405800000,Rizal,0400000000,official
+province,0431200000,Lucena City,0400000000,independent
+province,0501600000,Camarines Norte,0500000000,official
+province,0501700000,Camarines Sur,0500000000,official
+province,0504100000,Masbate,0500000000,official
+province,0601900000,Capiz,0600000000,official
+province,0630200000,Bacolod City,0600000000,independent
+province,0631000000,Iloilo City,0600000000,independent
+province,0907200000,Zamboanga del Norte,0900000000,official
+province,1004200000,Misamis Occidental,1000000000,official
+province,1030500000,Cagayan de Oro City,1000000000,independent
+province,1030900000,Iligan City,1000000000,independent
+province,1300000000,Metro Manila,1300000000,virtual_ncr
+province,1600200000,Agusan del Norte,1600000000,official
+province,1705100000,Occidental Mindoro,1700000000,official
+province,1705200000,Oriental Mindoro,1700000000,official
+province,1705300000,Palawan,1700000000,official
+province,1705900000,Romblon,1700000000,official

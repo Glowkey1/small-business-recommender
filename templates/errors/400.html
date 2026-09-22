@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}400 Bad Request — SmallBiz Match{% endblock %}
+{% block content %}
+<div class="card card-editorial" style="border-left: 6px solid var(--color-accent);">
+  <h2>400 — Bad Request</h2>
+  <p>{{ error or "The submitted parameters could not be validated." }}</p>
+  <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Back to Form</a>
+</div>
+{% endblock %}

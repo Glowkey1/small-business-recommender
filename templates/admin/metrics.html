@@ -3,86 +3,92 @@
 
 {% block content %}
 <h2>System & Machine Learning Information</h2>
-<p class="subtitle">Complete audit of Philippine datasets, trained success classification models, and live user validation.</p>
+<p class="subtitle">Complete audit of Philippine datasets, trained success classification models, and live user satisfaction poll.</p>
 
-<!-- 1. Dataset Statistics Table (Section 58 requirement) -->
 <div class="card card-editorial" style="margin-bottom: 24px;">
   <span class="mono-tag">AUTHENTIC DATASET AUDIT // REAL PHILIPPINE SOURCES</span>
   <h3 style="margin: 8px 0 16px 0;">Dataset Records Summary</h3>
   <div class="grid-3" style="text-align: center;">
     <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">119</div>
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">{{ dataset_counts.business_ideas }}</div>
       <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Business Ideas</div>
     </div>
     <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">163 / 158</div>
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">{{ dataset_counts.raw_skills }} / {{ dataset_counts.master_skills }}</div>
       <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Raw / Master Skills</div>
     </div>
     <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">152,657</div>
-      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Philippine OSM POIs</div>
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-brand);">{{ "{:,}".format(dataset_counts.osm_records) }}</div>
+      <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Philippine OSM Records</div>
     </div>
   </div>
 
   <div class="grid-2" style="text-align: center; margin-top: 16px;">
     <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-ink);">250</div>
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-ink);">{{ dataset_counts.municipalities }}</div>
       <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Municipalities / Cities (PSA 2024)</div>
     </div>
     <div style="background: var(--color-surface-soft); padding: 16px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-ink);">250</div>
+      <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--color-ink);">{{ dataset_counts.success_records }}</div>
       <div style="font-size: 12px; text-transform: uppercase; font-family: var(--font-mono); color: var(--color-ink-muted);">Success Records (62 Success / 188 Non-Success)</div>
     </div>
   </div>
 </div>
 
-<!-- 2. Machine Learning Success Component -->
 <div class="card card-editorial" style="margin-bottom: 24px;">
-  <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // LOGISTIC REGRESSION</span>
-  <h3 style="margin: 8px 0 6px 0;">5-Fold Stratified Cross-Validation Results</h3>
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+    <div>
+      <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // LOGISTIC REGRESSION</span>
+      <h3 style="margin: 4px 0 0 0;">5-Fold Stratified Cross-Validation Results</h3>
+    </div>
+    <form action="/admin/retrain" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-primary btn-sm">Retrain Success Model</button>
+    </form>
+  </div>
   <p style="font-size: 13px; color: var(--color-ink-muted); margin-bottom: 16px;">
-    The machine learning component was trained using 250 business success records. Logistic Regression was selected for the production pipeline because it achieved higher cross-validation performance than Random Forest on this dataset.
+    The success model is one component of the hybrid recommendation system and does not represent the accuracy of the complete recommender.
   </p>
 
-  <div class="grid-4" style="text-align: center;">
-    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Accuracy</div>
-      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">94.8% ± 3.49%</div>
+  {% if metrics_data and metrics_data.five_fold_cross_validation %}
+    {% set cv = metrics_data.five_fold_cross_validation %}
+    <div class="grid-4" style="text-align: center;">
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Accuracy</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.accuracy_mean * 100) | round(1) }}% ± {{ (cv.accuracy_std * 100) | round(2) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Precision</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.precision_mean * 100) | round(1) }}% ± {{ (cv.precision_std * 100) | round(2) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Recall</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ (cv.recall_mean * 100) | round(1) }}% ± {{ (cv.recall_std * 100) | round(2) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV F1-Score</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ (cv.f1_mean * 100) | round(1) }}% ± {{ (cv.f1_std * 100) | round(2) }}%</div>
+      </div>
     </div>
-    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Precision</div>
-      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">86.1% ± 8.82%</div>
-    </div>
-    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Recall</div>
-      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">95.0% ± 6.67%</div>
-    </div>
-    <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-      <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV F1-Score</div>
-      <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">90.1% ± 6.64%</div>
-    </div>
-  </div>
-
-  <div style="margin-top: 14px; font-size: 12px; color: var(--color-ink-muted);">
-    * Majority Class Baseline Accuracy: <strong>75.2%</strong>. Note: The success model is one component of the hybrid recommendation system, and does not represent the accuracy of the entire recommendation system.
-  </div>
+  {% else %}
+    <p>Model metrics file not loaded. Click 'Retrain Success Model' above.</p>
+  {% endif %}
 </div>
 
-<!-- 3. Live User Feedback Survey -->
 <div class="card card-editorial" style="background: #eaf3ed; border-left: 6px solid var(--color-brand);">
-  <h3 style="margin-top: 0; color: var(--color-brand);">Live User Recommender Accuracy Rate</h3>
-  <div style="display: flex; gap: 40px; align-items: center; margin-top: 10px;">
+  <h3 style="margin-top: 0; color: var(--color-brand);">User satisfaction (poll)</h3>
+  <div style="display: flex; gap: 40px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
     <div>
       <div style="font-family: var(--font-mono); font-size: 38px; font-weight: 700; color: var(--color-brand); line-height: 1;">
         {{ live_accuracy }}%
       </div>
       <div style="font-size: 12px; color: var(--color-ink-muted); text-transform: uppercase; font-family: var(--font-mono); margin-top: 4px;">
-        Live Realism Score
+        Satisfaction Ratio
       </div>
     </div>
     <div>
-      <p style="margin: 0; font-size: 14px;"><strong>Total Ratings:</strong> {{ total_votes }}</p>
-      <p style="margin: 0; font-size: 14px;"><strong>Positive Matches:</strong> {{ positive_votes }}</p>
+      <p style="margin: 0; font-size: 14px;"><strong>Total User Votes:</strong> {{ total_votes }}</p>
+      <p style="margin: 0; font-size: 14px;"><strong>Positive Ratings:</strong> {{ positive_votes }}</p>
     </div>
   </div>
 </div>

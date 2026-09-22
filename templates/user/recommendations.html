@@ -7,10 +7,14 @@
     <span class="mono-tag">HYBRID FEASIBILITY MATCHES // ₱{{ "{:,.2f}".format(profile.capital) }} CAPITAL</span>
     <h2>Recommended Business Ideas</h2>
     <p class="subtitle" style="margin-bottom: 0;">
-      Location: <strong>{{ profile.location or 'Nationwide Baseline' }}</strong> · Experience: <strong>{{ profile.experience }}</strong>
+      Location: <strong>{{ profile.location_display or 'Philippine Dataset' }}</strong> · Experience: <strong>{{ profile.experience }}</strong>
     </p>
   </div>
   <a href="/find" class="btn btn-secondary btn-sm">Adjust Filters</a>
+</div>
+
+<div class="alert alert-info" style="font-size: 13.5px;">
+  <strong>Notice:</strong> Recommendation Score is a weighted match of your inputs, not a probability of success. Time compatibility is estimated from the business setup and operational complexity.
 </div>
 
 {% for r in recs %}
@@ -18,68 +22,80 @@
     <div class="biz-cost-col">
       <div class="biz-cost-label">Required Capital</div>
       <div class="biz-cost-val">₱{{ "{:,.0f}".format(r.min_capital) }}</div>
-      <div style="font-size: 11px; color: var(--color-ink-muted); margin-top: 4px;">{{ r.startup_cost }}</div>
+      <div style="font-size: 12px; color: var(--color-ink-muted); margin-top: 4px;">{{ r.startup_cost }}</div>
     </div>
 
     <div class="biz-main-col">
-      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-        <h3>{{ r.business_type }}</h3>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap;">
+        <h3 style="margin: 0;">{{ r.business_type }}</h3>
         <span class="badge">{{ r.category }}</span>
+        {% if r.market_category %}
+          <span class="badge" style="background: #fdf3e7; color: var(--color-accent); border-color: var(--color-accent);">OSM: {{ r.market_category }}</span>
+        {% endif %}
       </div>
       <div class="biz-meta">
-        Setup: <strong>{{ r.business_setup }}</strong> · Required Staff: <strong>{{ r.people_needed }}</strong>
+        Setup: <strong>{{ r.business_setup }}</strong> · Required Staff: <strong>{{ r.people_needed }}</strong> · Level: <strong>{{ r.experience_level }}</strong>
       </div>
 
-      <!-- Skills Match -->
-      {% if r.matched_skills %}
-        <div class="skills-match">✓ Matching Skills: {{ r.matched_skills | join(', ') }}</div>
-      {% endif %}
+      <div style="margin: 6px 0;">
+        {% if r.matched_skills %}
+          <div class="skills-match">✓ Matching Skills: {{ r.matched_skills | join(', ') }}</div>
+        {% else %}
+          <div style="font-size: 13px; color: var(--color-ink-muted);">No skills selected</div>
+        {% endif %}
+      </div>
 
-      <!-- Market Evidence -->
-      <div style="font-size: 12.5px; color: var(--color-ink-muted); margin: 6px 0; background: var(--color-surface-soft); padding: 6px 10px; border-left: 3px solid var(--color-brand);">
+      <div style="font-size: 13px; color: var(--color-ink-muted); margin: 6px 0; background: var(--color-surface-soft); padding: 8px 10px; border-left: 3px solid var(--color-brand);">
         <strong>Market Evidence:</strong> {{ r.location_evidence }}
       </div>
 
-      <!-- Why Recommended -->
-      <div style="margin-top: 6px;">
-        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-ink-muted); font-family: var(--font-mono);">Why Recommended:</span>
-        <ul style="font-size: 12px; color: var(--color-ink); margin-left: 18px; margin-top: 2px;">
+      <div style="margin-top: 8px;">
+        <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--color-ink-muted); font-family: var(--font-mono);">Why Recommended:</span>
+        <ul style="font-size: 13px; color: var(--color-ink); margin-left: 18px; margin-top: 2px;">
           {% for reason in r.reasons %}
             <li>{{ reason }}</li>
           {% endfor %}
         </ul>
       </div>
+
+      <details style="margin-top: 10px; font-size: 13px;">
+        <summary style="cursor: pointer; font-weight: 600; color: var(--color-brand); min-height: 44px; display: inline-flex; align-items: center;">View Score Breakdown</summary>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-top: 8px; padding: 10px; background: var(--color-surface-soft);">
+          <div>Capital: <strong>{{ r.component_scores.capital }}%</strong></div>
+          <div>Skills: <strong>{{ r.component_scores.skills }}%</strong></div>
+          <div>Experience: <strong>{{ r.component_scores.experience }}%</strong></div>
+          <div>Setup: <strong>{{ r.component_scores.setup }}%</strong></div>
+          <div>Time: <strong>{{ r.component_scores.time }}%</strong></div>
+          <div>Location: <strong>{{ r.component_scores.location ~ '%' if r.component_scores.location is not none else 'Not available' }}</strong></div>
+          <div>Success Model: <strong>{{ r.component_scores.success ~ '%' if r.component_scores.success is not none else 'Not available' }}</strong></div>
+        </div>
+      </details>
     </div>
 
     <div class="biz-score-col">
       <div>
         <div class="score-num">{{ r.recommendation_score }}%</div>
         <div class="score-lbl">Recommendation Score</div>
-        <div style="font-size: 10px; color: var(--color-ink-muted); margin-bottom: 8px;">(Statistical Match)</div>
       </div>
-      <a href="/pathway/{{ r.business_type }}" class="btn btn-primary btn-sm btn-block">View Pathway</a>
+      <a href="{{ url_for('rec.pathway', biz_id=r.id) }}" class="btn btn-primary btn-sm btn-block">View Pathway</a>
     </div>
   </div>
 {% else %}
   <div class="card card-editorial" style="border-left: 6px solid var(--color-accent);">
     <h3>No business ideas in the current catalog meet your starting-capital requirement.</h3>
     <p style="margin-top: 8px;">
-      All business ideas in our 119-record Philippine catalog currently require a minimum capital exceeding ₱{{ "{:,.2f}".format(profile.capital) }}.
+      All business ideas in our 119-record Philippine catalog require starting capital exceeding ₱{{ "{:,.2f}".format(profile.capital) }}.
     </p>
-    <p style="font-size: 14px; color: var(--color-ink-muted); margin-top: 4px;">
-      Suggestion: Increase your starting capital or explore micro-service setups requiring minimal initial equipment.
-    </p>
-    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Adjust Inputs</a>
+    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Increase Capital or Adjust Inputs</a>
   </div>
 {% endfor %}
 
-<!-- Live Feedback Survey -->
 <div class="card card-editorial" id="feedback-card" style="text-align: center; margin-top: 40px; background: var(--color-surface-soft);">
-  <h4 style="margin-bottom: 6px;">Evaluate Recommendation Realism</h4>
+  <h4 style="margin-bottom: 6px;">User satisfaction (poll)</h4>
   <p style="font-size: 14px; color: var(--color-ink-muted); margin-bottom: 16px;">
     Are these business ideas feasible with your funds and aligned with your local market?
   </p>
-  <div style="display: flex; justify-content: center; gap: 14px;">
+  <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
     <button onclick="sendFeedback('yes')" class="btn btn-primary btn-sm">👍 Yes, Realistic Match</button>
     <button onclick="sendFeedback('no')" class="btn btn-secondary btn-sm">👎 Not a Good Fit</button>
   </div>
@@ -89,9 +105,14 @@
 function sendFeedback(choice) {
   const formData = new FormData();
   formData.append('rating', choice);
-  fetch('/feedback', { method: 'POST', body: formData })
-    .then(res => res.text())
-    .then(html => { document.getElementById('feedback-card').innerHTML = html; });
+  formData.append('csrf_token', '{{ csrf_token() }}');
+  fetch('/feedback', {
+    method: 'POST',
+    headers: { 'X-CSRF-Token': '{{ csrf_token() }}' },
+    body: formData
+  })
+  .then(res => res.text())
+  .then(html => { document.getElementById('feedback-card').innerHTML = html; });
 }
 </script>
 {% endblock %}

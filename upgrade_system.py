@@ -1,3 +1,7 @@
+import os, sys
+if os.getenv("ALLOW_UPGRADE_SYSTEM") != "1":
+    print("ERROR: upgrade_system.py contains legacy embedded code. Set ALLOW_UPGRADE_SYSTEM=1 to run.")
+    sys.exit(1)
 # upgrade_system.py
 """
 Complete in-place upgrade script for Small Business Idea Recommender.

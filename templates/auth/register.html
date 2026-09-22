@@ -6,6 +6,7 @@
   <span class="mono-tag">REGISTRATION // FREE FOUNDER ACCOUNT</span>
   <h2 style="margin: 8px 0 16px 0;">Create Account</h2>
   <form method="POST" action="/register{% if next %}?next={{ next }}{% endif %}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label>Full Name / Username</label>
       <input type="text" name="username" value="{{ username or '' }}" required class="form-control" placeholder="Juan dela Cruz">

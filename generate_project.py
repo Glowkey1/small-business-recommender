@@ -1,3 +1,7 @@
+import os, sys
+if os.getenv("ALLOW_UPGRADE_SYSTEM") != "1":
+    print("ERROR: generate_project.py contains legacy embedded code. Set ALLOW_UPGRADE_SYSTEM=1 to run.")
+    sys.exit(1)
 # generate_project.py
 import os
 import json

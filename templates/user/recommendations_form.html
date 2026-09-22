@@ -3,99 +3,162 @@
 
 {% block content %}
 <div class="card card-editorial">
-  <span class="mono-tag">PHILIPPINE HYBRID RECOMMENDER // INPUT FORM</span>
+  <span class="mono-tag">PHILIPPINE HYBRID RECOMMENDER // STEP-BY-STEP</span>
   <h2 style="margin: 8px 0 12px 0;">Find Your Compatible Small Business</h2>
-  <p class="subtitle">Complete the parameters below to evaluate financial feasibility, skills match, local market presence, and business success indicators.</p>
+  <p class="subtitle">Complete the form below to discover businesses that fit your budget, background, and local market.</p>
 
-  <form action="/find" method="POST">
-    <!-- 1. Starting Capital -->
-    <div class="form-group">
-      <label>1. Starting Capital (₱ PHP)</label>
-      <input type="number" name="capital" value="10000" min="0" step="500" required class="form-control">
-      <small style="color: var(--color-ink-muted); font-size: 12px;">* Hard constraint: Businesses requiring more capital than you enter are strictly excluded.</small>
-    </div>
-
-    <!-- 2. Skills -->
-    <div class="form-group">
-      <label>2. Select Your Skills (Multi-select)</label>
-      <input type="text" id="skillSearch" placeholder="Search skills (e.g. Cooking, Marketing, Social Media)..." class="form-control" style="margin-bottom: 8px;" onkeyup="filterSkills()">
-      <div class="skills-grid" id="skillsGrid">
-        {% for s in skills %}
-          <label class="skill-pill">
-            <input type="checkbox" name="skills" value="{{ s }}"> <span>{{ s }}</span>
-          </label>
+  {% if errors %}
+    <div class="alert alert-danger">
+      <strong>Please correct the following errors:</strong>
+      <ul style="margin-left: 20px; margin-top: 6px;">
+        {% for err in errors %}
+          <li>{{ err }}</li>
         {% endfor %}
-      </div>
+      </ul>
     </div>
+  {% endif %}
 
-    <!-- 3. Experience & Time -->
-    <div class="grid-2">
+  <div class="wizard-progress" id="wizardProgress">
+    <div class="wizard-step-indicator active" data-step="1">1. Capital</div>
+    <div class="wizard-step-indicator" data-step="2">2. Skills</div>
+    <div class="wizard-step-indicator" data-step="3">3. Background</div>
+    <div class="wizard-step-indicator" data-step="4">4. Location</div>
+    <div class="wizard-step-indicator" data-step="5">5. Review</div>
+  </div>
+
+  <form action="/find" method="POST" id="recForm">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <!-- STEP 1: Capital -->
+    <div class="wizard-section active" id="section1">
       <div class="form-group">
-        <label>3. Experience Level</label>
-        <select name="experience" class="form-control">
-          <option value="Beginner">Beginner (No formal business experience)</option>
-          <option value="Intermediate">Intermediate (Hands-on experience / past venture)</option>
-          <option value="Experienced">Experienced (Industry veteran / formal background)</option>
-        </select>
+        <label>Starting Capital (₱ PHP)</label>
+        <input type="number" name="capital" id="capInput" value="{{ form_data.capital if form_data.capital is defined else '10000' }}" min="0" max="100000000" step="500" required class="form-control">
+        <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-top: 6px;">
+          * Hard Constraint: Businesses requiring more capital than this amount are strictly excluded.
+        </small>
+      </div>
+    </div>
+
+    <!-- STEP 2: Skills -->
+    <div class="wizard-section" id="section2">
+      <div class="form-group">
+        <label>Select Your Skills (Multi-select)</label>
+        <input type="text" id="skillSearch" placeholder="Filter skills..." class="form-control" style="margin-bottom: 10px;">
+        <div class="skills-grid" id="skillsGrid">
+          {% for s in skills %}
+            <label class="skill-pill">
+              <input type="checkbox" name="skills" value="{{ s }}" {% if form_data.skills and s in form_data.skills %}checked{% endif %}>
+              <span>{{ s }}</span>
+            </label>
+          {% endfor %}
+        </div>
+        <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-top: 6px;">
+          Leave unchecked if you are starting with no specific business skills.
+        </small>
+      </div>
+    </div>
+
+    <!-- STEP 3: Experience, Time, Setup -->
+    <div class="wizard-section" id="section3">
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Experience Level</label>
+          <select name="experience" class="form-control">
+            <option value="Beginner" {% if form_data.experience == 'Beginner' %}selected{% endif %}>Beginner (First-time entrepreneur)</option>
+            <option value="Intermediate" {% if form_data.experience == 'Intermediate' %}selected{% endif %}>Intermediate (Hands-on experience)</option>
+            <option value="Experienced" {% if form_data.experience == 'Experienced' %}selected{% endif %}>Experienced (Industry veteran)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Available Daily Time</label>
+          <select name="available_time" class="form-control">
+            <option value="1-2 hours/day" {% if form_data.available_time == '1-2 hours/day' %}selected{% endif %}>1-2 hours/day (Micro side-hustle)</option>
+            <option value="3-4 hours/day" {% if form_data.available_time == '3-4 hours/day' %}selected{% endif %}>3-4 hours/day (Part-time)</option>
+            <option value="5-6 hours/day" {% if not form_data.available_time or form_data.available_time == '5-6 hours/day' %}selected{% endif %}>5-6 hours/day (Dedicated)</option>
+            <option value="7-8 hours/day" {% if form_data.available_time == '7-8 hours/day' %}selected{% endif %}>7-8 hours/day (Full-time)</option>
+            <option value="Full-time" {% if form_data.available_time == 'Full-time' %}selected{% endif %}>Full-time (8+ hours/day)</option>
+          </select>
+        </div>
       </div>
 
       <div class="form-group">
-        <label>4. Available Commitment Time</label>
-        <select name="available_time" class="form-control">
-          <option value="1-2 hours/day">1-2 hours/day (Micro side-hustle)</option>
-          <option value="3-4 hours/day">3-4 hours/day (Part-time)</option>
-          <option value="5-6 hours/day" selected>5-6 hours/day (Dedicated)</option>
-          <option value="7-8 hours/day">7-8 hours/day (Full-time)</option>
-          <option value="Full-time">Full-time (8+ hours/day)</option>
-        </select>
+        <label>Preferred Business Setup (Select one or more)</label>
+        <div class="setup-grid">
+          {% set sel_setups = form_data.setup if form_data.setup else ['Online / Home-Based'] %}
+          <label class="setup-target"><input type="checkbox" name="setup" value="Online" {% if 'Online' in sel_setups or 'Online / Home-Based' in sel_setups %}checked{% endif %}> <span>Online</span></label>
+          <label class="setup-target"><input type="checkbox" name="setup" value="Home-Based" {% if 'Home-Based' in sel_setups or 'Online / Home-Based' in sel_setups %}checked{% endif %}> <span>Home-Based</span></label>
+          <label class="setup-target"><input type="checkbox" name="setup" value="Physical Store" {% if 'Physical Store' in sel_setups %}checked{% endif %}> <span>Physical Store</span></label>
+          <label class="setup-target"><input type="checkbox" name="setup" value="Service / Mobile" {% if 'Service / Mobile' in sel_setups %}checked{% endif %}> <span>Service / Mobile</span></label>
+        </div>
       </div>
     </div>
 
-    <!-- 5. Business Setup -->
-    <div class="form-group">
-      <label>5. Preferred Business Setup</label>
-      <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px;">
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-          <input type="checkbox" name="setup" value="Online" checked> Online
-        </label>
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-          <input type="checkbox" name="setup" value="Home-Based" checked> Home-Based
-        </label>
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-          <input type="checkbox" name="setup" value="Physical Store"> Physical Store
-        </label>
-        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-          <input type="checkbox" name="setup" value="Service / Mobile"> Service / Mobile
-        </label>
+    <!-- STEP 4: Cascading Location -->
+    <div class="wizard-section" id="section4">
+      <div class="form-group">
+        <label>Philippine Location (Cascading Selection)</label>
+        <div class="grid-3">
+          <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">1. Region</label>
+            <select id="regionSelect" class="form-control" aria-label="Select Region">
+              <option value="">-- Choose Region --</option>
+              {% for reg in hierarchy.regions %}
+                <option value="{{ reg.code }}">{{ reg.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">2. Province</label>
+            <select id="provinceSelect" class="form-control" aria-label="Select Province">
+              <option value="">-- Choose Province --</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">3. City / Municipality</label>
+            <select name="location" id="citySelect" class="form-control" required aria-label="Select Municipality">
+              <option value="">-- Choose Municipality --</option>
+              {% for reg in hierarchy.regions %}
+                {% for prov in reg.provinces %}
+                  <optgroup label="{{ reg.name }} — {{ prov.name }}">
+                    {% for city in prov.cities %}
+                      <option value="{{ city.code }}" {% if form_data.location == city.code %}selected{% endif %}>{{ city.name }}</option>
+                    {% endfor %}
+                  </optgroup>
+                {% endfor %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-top: 6px;">
+          Coverage: 250 municipalities in 9 regions in the current dataset. Uses PSGC 10-digit codes.
+        </small>
       </div>
     </div>
 
-    <!-- 6. Philippine Location -->
-    <div class="form-group">
-      <label>6. Philippine Municipality / City</label>
-      <input list="ph_locations" name="location" placeholder="Select or type municipality (e.g. Lipa City, Quezon City, Batangas)..." class="form-control" required>
-      <datalist id="ph_locations">
-        {% for m in municipalities %}
-          <option value="{{ m }}"></option>
-        {% endfor %}
-      </datalist>
-      <small style="color: var(--color-ink-muted); font-size: 12px;">* Uses real OpenStreetMap business presence and 2024 PSA population data across 250 municipalities.</small>
+    <!-- STEP 5: Review -->
+    <div class="wizard-section" id="section5">
+      <h3 style="font-size: 18px; margin-bottom: 12px;">Review Your Submission</h3>
+      <div class="card" style="background: var(--color-surface-soft); padding: 16px; margin-bottom: 20px;">
+        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Capital:</strong> ₱<span id="revCap">10,000</span></div>
+        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Selected Skills:</strong> <span id="revSkills">None</span></div>
+        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Experience:</strong> <span id="revExp">Beginner</span></div>
+        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Available Time:</strong> <span id="revTime">5-6 hours/day</span></div>
+        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Setups:</strong> <span id="revSetup">Online / Home-Based</span></div>
+        <div style="font-size: 14px;"><strong>Location:</strong> <span id="revLoc">Please select a municipality</span></div>
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-primary btn-block" style="padding: 14px; margin-top: 10px; font-size: 15px;">
-      GET RECOMMENDATIONS
-    </button>
+    <div class="wizard-nav-bar">
+      <button type="button" class="btn btn-secondary" id="btnPrev" style="display: none;">Back</button>
+      <button type="button" class="btn btn-primary" id="btnNext">Next</button>
+      <button type="submit" class="btn btn-primary" id="btnSubmit" style="display: none;">GET RECOMMENDATIONS</button>
+    </div>
   </form>
 </div>
 
 <script>
-function filterSkills() {
-  var input = document.getElementById('skillSearch').value.toLowerCase();
-  var pills = document.getElementById('skillsGrid').getElementsByClassName('skill-pill');
-  for (var i = 0; i < pills.length; i++) {
-    var text = pills[i].innerText.toLowerCase();
-    pills[i].style.display = text.indexOf(input) > -1 ? "flex" : "none";
-  }
-}
+window.LOCATION_HIERARCHY = {{ hierarchy | tojson }};
 </script>
 {% endblock %}

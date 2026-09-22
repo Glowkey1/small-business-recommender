@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f4c3a">
   <title>{% block title %}SmallBiz Match{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
@@ -13,7 +18,14 @@
         <span class="brand-dot"></span>
         SMALLBIZ MATCH
       </a>
-      <nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation" aria-expanded="false" aria-controls="primaryNav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav id="primaryNav" class="nav-menu">
         <a href="/find">Find Ideas</a>
         {% if current_user.is_authenticated %}
           <a href="/dashboard">Dashboard</a>
@@ -30,6 +42,7 @@
       </nav>
     </div>
   </header>
+
   <main class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -40,5 +53,7 @@
     {% endwith %}
     {% block content %}{% endblock %}
   </main>
+
+  <script src="/static/js/main.js"></script>
 </body>
 </html>

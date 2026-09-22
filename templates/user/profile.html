@@ -3,7 +3,8 @@
 {% block content %}
 <div class="card">
   <h2>Your Business Profile</h2>
-  <form method="POST">
+   <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label>Starting Capital (₱ PHP)</label>
       <input type="number" name="capital" value="{{ current_user.starting_capital }}" class="form-control" required>

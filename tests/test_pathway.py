@@ -1,48 +1,41 @@
 import pytest
 from app import create_app
-from models import db
-from models.business import Business
 
 @pytest.fixture
-def app():
+def client():
     app = create_app()
     app.config["TESTING"] = True
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    app.config["WTF_CSRF_ENABLED"] = False
+    with app.test_client() as client:
+        yield client
 
-    with app.app_context():
-        db.create_all()
-        test_biz = Business(
-            business_type="Sample Test Agency",
-            category="Services",
-            startup_cost_display="₱15,000 - ₱30,000",
-            min_capital=15000.0,
-            core_skills="marketing, design",
-            people_needed="2-3 people",
-            minimum_requirements="Laptop, internet connection",
-            strategies="Focus on client retention",
-            risks="Client acquisition cost",
-            business_setup="Online / Home-Based",
-            experience_required="Beginner"
-        )
-        db.session.add(test_biz)
-        db.session.commit()
-        yield app
-        db.session.remove()
-        db.drop_all()
+def test_pathway_known_catalog_business_renders_successfully(client):
+    """Task 3 Test: Known catalog business (e.g. ID 1) returns 200 without DB dependency."""
+    res = client.get("/pathway/1")
+    assert res.status_code == 200
+    html = res.get_data(as_text=True)
+    assert "9-Step Implementation Pathway" in html
+    assert "The catalog does not list permit or licensing requirements" in html
 
-@pytest.fixture
-def client(app):
-    return app.test_client()
+def test_pathway_slash_name_redirects_cleanly(client):
+    """Task 3 Test: Business names with '/' redirect 301 to ID URL."""
+    res = client.get("/pathway/Hostel / PG", follow_redirects=True)
+    assert res.status_code == 200
+    html = res.get_data(as_text=True)
+    assert "Hostel / PG" in html
 
-def test_pathway_unknown_business_returns_404(client):
-    response = client.get("/pathway/NonexistentRandomBusiness123")
-    assert response.status_code == 404
-    html = response.get_data(as_text=True)
+def test_pathway_unknown_returns_404(client):
+    """Task 3 Test: Unknown pathway returns friendly 404 template."""
+    res = client.get("/pathway/9999")
+    assert res.status_code == 404
+    html = res.get_data(as_text=True)
     assert "Pathway Unavailable" in html
 
-def test_pathway_known_business_renders_successfully(client):
-    response = client.get("/pathway/Sample Test Agency")
-    assert response.status_code == 200
-    html = response.get_data(as_text=True)
-    assert "Sample Test Agency" in html
+def test_all_119_catalog_pathways_return_200(client):
+    """Task 3 Test: Verify all 119 business IDs render 200 on fresh startup."""
+    from ml.recommendation_engine import HybridBusinessRecommender
+    engine = HybridBusinessRecommender()
+    for idx, row in engine.df_businesses.iterrows():
+        biz_id = int(row["id"])
+        res = client.get(f"/pathway/{biz_id}")
+        assert res.status_code == 200, f"Pathway for ID {biz_id} failed with {res.status_code}"

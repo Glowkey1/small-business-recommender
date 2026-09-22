@@ -31,3 +31,21 @@ def test_recommender_produces_differentiated_scores(engine):
     scores_low = [r["compatibility_score"] for r in recs_low]
     assert not all(s == 69.0 for s in scores_low), "Still producing universal 69.0!"
     assert recs_low[0]["business_type"] != recs_high[0]["business_type"]
+def test_skill_master_alias_map_integrity(engine):
+    """Bug 2 Regression: Ensure skill_master.csv columns are not read backwards and aliases contain no commas."""
+    # 1. Check raw alias resolution to single canonical name
+    assert engine.skill_alias_map.get("ads") == "Advertising", f"Expected 'Advertising', got {engine.skill_alias_map.get('ads')}"
+    assert engine.skill_alias_map.get("crm") == "CRM", f"Expected 'CRM', got {engine.skill_alias_map.get('crm')}"
+    assert engine.skill_alias_map.get("seo") == "SEO", f"Expected 'SEO', got {engine.skill_alias_map.get('seo')}"
+    assert engine.skill_alias_map.get("advertising") == "Advertising"
+
+    # 2. Zero comma-containing values in alias_map
+    corrupted = [(k, v) for k, v in engine.skill_alias_map.items() if "," in v]
+    assert corrupted == [], f"Found {len(corrupted)} corrupted alias values with commas: {corrupted[:5]}"
+
+    # 3. No catalog business produces a corrupted skill string
+    for _, row in engine.df_businesses.iterrows():
+        tokens = engine.parse_skills(row.get("core_skills", ""))
+        for t in tokens:
+            canon = engine.skill_alias_map.get(t.lower(), t)
+            assert "," not in canon, f"Business {row.get('business_type')} produced corrupted skill canon: '{canon}'"

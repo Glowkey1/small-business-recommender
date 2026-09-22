@@ -4,6 +4,68 @@
   "successful_records": 62,
   "not_successful_records": 188,
   "majority_baseline_accuracy": 0.752,
+  "feature_metadata": {
+    "age": {
+      "median": 40.0,
+      "min": 18.0,
+      "max": 60.0
+    },
+    "education": {
+      "median": 3.0,
+      "min": 1.0,
+      "max": 5.0
+    },
+    "initial_capital": {
+      "median": 1.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "financial_record_keeping": {
+      "median": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "internet_usage": {
+      "median": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "business_plan": {
+      "median": 1.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "marketing_effort": {
+      "median": 4.0,
+      "min": 1.0,
+      "max": 7.0
+    },
+    "partnership": {
+      "median": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "parent_business_experience": {
+      "median": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "industry_experience": {
+      "median": 10.0,
+      "min": 0.0,
+      "max": 20.0
+    },
+    "owner_gender": {
+      "median": 1.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "professional_advice": {
+      "median": 4.0,
+      "min": 1.0,
+      "max": 7.0
+    }
+  },
   "test_metrics": {
     "accuracy": 0.9,
     "precision": 0.7059,
@@ -18,7 +80,34 @@
         0,
         12
       ]
-    ]
+    ],
+    "classification_report": {
+      "0": {
+        "precision": 1.0,
+        "recall": 0.868421052631579,
+        "f1-score": 0.9295774647887324,
+        "support": 38.0
+      },
+      "1": {
+        "precision": 0.7058823529411765,
+        "recall": 1.0,
+        "f1-score": 0.8275862068965517,
+        "support": 12.0
+      },
+      "accuracy": 0.9,
+      "macro avg": {
+        "precision": 0.8529411764705883,
+        "recall": 0.9342105263157895,
+        "f1-score": 0.878581835842642,
+        "support": 50.0
+      },
+      "weighted avg": {
+        "precision": 0.9294117647058823,
+        "recall": 0.9,
+        "f1-score": 0.905099562894609,
+        "support": 50.0
+      }
+    }
   },
   "five_fold_cross_validation": {
     "accuracy_mean": 0.948,
@@ -31,7 +120,40 @@
     "f1_std": 0.0664
   },
   "random_forest_comparison": {
-    "accuracy_mean": 0.872,
-    "f1_mean": 0.6696
+    "test_accuracy": 0.8,
+    "test_f1": 0.4444,
+    "cv_accuracy_mean": 0.872,
+    "cv_accuracy_std": 0.0325,
+    "cv_precision_mean": 0.9083,
+    "cv_recall_mean": 0.5513,
+    "cv_f1_mean": 0.6696,
+    "cv_f1_std": 0.1071,
+    "classification_report": {
+      "0": {
+        "precision": 0.8181818181818182,
+        "recall": 0.9473684210526315,
+        "f1-score": 0.8780487804878049,
+        "support": 38.0
+      },
+      "1": {
+        "precision": 0.6666666666666666,
+        "recall": 0.3333333333333333,
+        "f1-score": 0.4444444444444444,
+        "support": 12.0
+      },
+      "accuracy": 0.8,
+      "macro avg": {
+        "precision": 0.7424242424242424,
+        "recall": 0.6403508771929824,
+        "f1-score": 0.6612466124661247,
+        "support": 50.0
+      },
+      "weighted avg": {
+        "precision": 0.7818181818181819,
+        "recall": 0.8,
+        "f1-score": 0.7739837398373984,
+        "support": 50.0
+      }
+    }
   }
 }
