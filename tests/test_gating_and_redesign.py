@@ -5,9 +5,7 @@ from models.user import User
 
 @pytest.fixture
 def app_instance():
-    app = create_app()
-    app.config["TESTING"] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    app = create_app(test_config={"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:", "WTF_CSRF_ENABLED": False})
     app.config["WTF_CSRF_ENABLED"] = False
 
     with app.app_context():

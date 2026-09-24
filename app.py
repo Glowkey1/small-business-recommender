@@ -13,9 +13,11 @@ from routes.recommendation import rec_bp
 from routes.business import biz_bp
 from routes.admin import admin_bp
 
-def create_app(config_class=Config):
+def create_app(config_class=Config, test_config=None):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    if test_config:
+        app.config.update(test_config)
 
     os.makedirs(os.path.join(app.root_path, "instance"), exist_ok=True)
     db.init_app(app)

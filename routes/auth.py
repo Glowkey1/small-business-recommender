@@ -61,7 +61,7 @@ def login():
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter((User.email == email) | (User.username == email)).first()
         if user and user.check_password(password):
             login_user(user)
             if next_page and is_safe_url(next_page):
