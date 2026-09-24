@@ -162,7 +162,7 @@ class HybridBusinessRecommender:
 
         exact_ratio = len(matched) / len(biz_canonical) if biz_canonical else 0.0
 
-        # Partial credit using TF-IDF cosine similarity
+        # Partial credit via cosine similarity from TF-IDF vectorizer
         tfidf_sim = 0.0
         if self.vectorizer is not None:
             try:
@@ -322,7 +322,6 @@ class HybridBusinessRecommender:
         eligible_records = [r.to_dict() for _, r in self.df_businesses.iterrows()]
         raw_success_scores = self.success_service.predict_success_scores(user_profile, eligible_records)
 
-        # Min-max scaling across candidate set for ranking differentiation
         valid_succ = [s for s in raw_success_scores if s is not None]
         if valid_succ:
             min_s, max_s = min(valid_succ), max(valid_succ)
@@ -427,7 +426,13 @@ class HybridBusinessRecommender:
                 }
             })
 
-        # Re-rank near-ties to ensure diverse top-5 candidate profiles
-        return self.select_diverse_top_n(results, top_n=top_n)
+        # Diverse top 5 re-ranking
+        top_results = self.select_diverse_top_n(results, top_n=top_n)
+
+        # Re-sort final top-5 descending by score so highest recommendation is first
+        top_results.sort(
+            key=lambda x: (-x["raw_final_score"], -x["component_scores"]["skills"] if x["component_scores"]["skills"] is not None else 0, x["business_type"])
+        )
+        return top_results
 
 BusinessRecommenderEngine = HybridBusinessRecommender

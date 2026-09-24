@@ -1,120 +1,128 @@
 business_type,market_category,basis
-Bakery,Food,catalog_match
-Restaurant,Food,catalog_match
-Food Truck,Food,catalog_match
-Cloud Kitchen,Food,catalog_match
-Catering Service,Food,catalog_match
-Fruit Juice Center,Food,catalog_match
-Street Food Stall,Food,catalog_match
-Meal Prep Subscription,Food,catalog_match
-Packaged Food Brand,Food,catalog_match
-Franchise Food Outlet,Food,catalog_match
-Grocery Store,Retail,catalog_match
-Bookstore,Retail,catalog_match
-Hardware Store,Retail,catalog_match
-Fashion Boutique,Retail,catalog_match
-Organic Store,Retail,catalog_match
-Small Shop / Retail,Retail,catalog_match
-Artificial Jewellery Shop,Retail,catalog_match
-Textile Trading,Retail,catalog_match
-Wholesale Distribution,Retail,catalog_match
-Water Purifier Sales,Retail,catalog_match
-Eco Friendly Products,Retail,catalog_match
-Second-Hand Electronics Store,Retail,catalog_match
-Mobile Repair Shop,Technology,catalog_match
-IT Services Company,Technology,catalog_match
-Software Company,Technology,catalog_match
-App Development Studio,Technology,catalog_match
-AI Services Company,Technology,catalog_match
-Telecom Franchise,Technology,catalog_match
-3D Printing Lab,Technology,catalog_match
-Digital Signage Solutions,Technology,catalog_match
-Laundry Services,Personal Services,catalog_match
-Pet Grooming Studio,Personal Services,catalog_match
-Home Cleaning Service,Personal Services,catalog_match
-Pet Care Services,Personal Services,catalog_match
-Fitness Gym,Personal Services,catalog_match
-Driving School,Education,catalog_match
-Tuition Center,Education,catalog_match
-Skill Training Institute,Education,catalog_match
-Language Training Center,Education,catalog_match
-Online Tutoring Platform,Education,catalog_match
-Coaching Institute,Education,catalog_match
-Computer Training Center,Education,catalog_match
-Day Care Center,Education,catalog_match
-Photography Studio,Professional Services,catalog_match
-Business Consultancy,Professional Services,catalog_match
-HR Consulting,Professional Services,catalog_match
-Recruitment Boutique,Professional Services,catalog_match
 Advertising Agency,Professional Services,catalog_match
-Digital Marketing Agency,Professional Services,catalog_match
-Social Media Agency,Professional Services,catalog_match
-Content Creation Agency,Professional Services,catalog_match
-Real Estate Brokerage,Professional Services,catalog_match
-Supply Chain Consultancy,Professional Services,catalog_match
-Education Consultancy,Professional Services,catalog_match
-Video Production House,Professional Services,catalog_match
-Podcast Production Studio,Professional Services,catalog_match
-Drone Photography Services,Professional Services,catalog_match
-Event Management,Professional Services,catalog_match
-Wedding Planning,Professional Services,catalog_match
-Event Decor Service,Professional Services,catalog_match
-Stock Trading Firm,Financial Services,catalog_match
-Trading / Investment,Financial Services,catalog_match
-Financial Advisory,Financial Services,catalog_match
-Medical Store,Healthcare,catalog_match
-Used Car Dealership,Automotive,catalog_match
-Vehicle Rental,Automotive,catalog_match
-Mobile Car Wash,Automotive,catalog_match
-EV Charging Point,Automotive,catalog_match
-Hostel / PG,Accommodation,catalog_match
-Travel Agency,Tourism,catalog_match
-Construction Contracting,Skilled Trades,catalog_match
-Electrical Contracting,Skilled Trades,catalog_match
-Fabrication Unit,Skilled Trades,catalog_match
-Garment Manufacturing,Skilled Trades,catalog_match
-Handicrafts Business,Skilled Trades,catalog_match
-Home Interior Services,Skilled Trades,catalog_match
-Jewellery Manufacturing,Skilled Trades,catalog_match
-Manufacturing Unit,Skilled Trades,catalog_match
-Printing Press,Skilled Trades,catalog_match
-Repair & Service Center,Skilled Trades,catalog_match
-Wood Furniture Unit,Skilled Trades,catalog_match
-Green Energy Installation,Skilled Trades,catalog_match
-Custom T-Shirt Printing,Skilled Trades,catalog_match
-Solar Panel Maintenance,Skilled Trades,catalog_match
 Affiliate Marketing,,online_independent
-Blog Website,,online_independent
-E-Commerce Store,,online_independent
-Freelancing,,online_independent
-Online Course Platform,,online_independent
-Online Reselling,,online_independent
-SaaS / App Business,,online_independent
-Web Hosting Business,,online_independent
-YouTube / Content Creation,,online_independent
-Digital Products Store,,online_independent
 Agri Equipment Rental,,no_osm_counterpart
+App Development Studio,Technology,catalog_match
+Artificial Jewellery Shop,Retail,catalog_match
+Bakery,Food,catalog_match
 Battery Recycling Unit,,no_osm_counterpart
 Bicycle Rental,,no_osm_counterpart
-Cab Aggregator,,no_osm_counterpart
+Blog Website,,online_independent
+Bookstore,Retail,catalog_match
+Business Consultancy,Professional Services,catalog_match
+Cab Aggregator,,deprioritized
+Catering Service,Food,catalog_match
+Cloud Kitchen,Food,catalog_match
+Coaching Institute,Education,catalog_match
 Cold Storage,,no_osm_counterpart
+Computer Training Center,Education,catalog_match
+Construction Contracting,Skilled Trades,catalog_match
+Content Creation Agency,Professional Services,catalog_match
 Courier Franchise,,no_osm_counterpart
 Dairy Farm,,no_osm_counterpart
+Day Care Center,Education,catalog_match
+Digital Marketing Agency,Professional Services,catalog_match
+Driving School,Education,catalog_match
 Drone Services,,no_osm_counterpart
+E-Commerce Store,,no_osm_counterpart
+Electrical Contracting,Skilled Trades,catalog_match
+Event Management,Professional Services,catalog_match
 Export Import Business,,no_osm_counterpart
+Fabrication Unit,Skilled Trades,catalog_match
+Fashion Boutique,Retail,catalog_match
+Fitness Gym,Personal Services,catalog_match
+Food Truck,Food,catalog_match
+Freelancing,,online_independent
 Franchise Business,,no_osm_counterpart
+Fruit Juice Center,Food,catalog_match
+Garment Manufacturing,Skilled Trades,catalog_match
+Grocery Store,Retail,catalog_match
+Handicrafts Business,Skilled Trades,catalog_match
+Hardware Store,Retail,catalog_match
+Home Interior Services,Skilled Trades,catalog_match
+Hostel / PG,Accommodation,catalog_match
+IT Services Company,Technology,catalog_match
+Jewellery Manufacturing,Skilled Trades,catalog_match
+Laundry Services,Personal Services,catalog_match
 Logistics Company,,no_osm_counterpart
+Manufacturing Unit,Skilled Trades,catalog_match
+Medical Store,Healthcare,catalog_match
+Mobile Repair Shop,Technology,catalog_match
+Online Course Platform,,online_independent
+Online Reselling,,no_osm_counterpart
 Organic Farming,,no_osm_counterpart
+Packaged Food Brand,Food,catalog_match
+Pet Care Services,Personal Services,catalog_match
+Photography Studio,Professional Services,catalog_match
+Printing Press,Skilled Trades,catalog_match
+Real Estate Brokerage,Professional Services,catalog_match
+Repair & Service Center,Skilled Trades,catalog_match
+Restaurant,Food,catalog_match
 Rice Mill,,no_osm_counterpart
+SaaS / App Business,,online_independent
 Security Services,,no_osm_counterpart
 Seed Distribution,,no_osm_counterpart
+Skill Training Institute,Education,catalog_match
+Small Shop / Retail,Retail,catalog_match
+Social Media Agency,Professional Services,catalog_match
+Software Company,Technology,catalog_match
 Startup,,no_osm_counterpart
+Stock Trading Firm,,deprioritized
 Storage Warehouse,,no_osm_counterpart
+Street Food Stall,Food,catalog_match
+Supply Chain Consultancy,Professional Services,catalog_match
+Telecom Franchise,Technology,catalog_match
+Textile Trading,Retail,catalog_match
+Trading / Investment,Financial Services,catalog_match
 Transport Business,,no_osm_counterpart
+Travel Agency,Tourism,catalog_match
+Tuition Center,Education,catalog_match
+Used Car Dealership,Automotive,catalog_match
+Vehicle Rental,Automotive,catalog_match
+Video Production House,Professional Services,catalog_match
+Water Purifier Sales,Retail,catalog_match
+Web Hosting Business,,no_osm_counterpart
+Wedding Planning,Professional Services,catalog_match
+Wholesale Distribution,Retail,catalog_match
+Wood Furniture Unit,Skilled Trades,catalog_match
+YouTube / Content Creation,,online_independent
 Agro Processing Unit,,no_osm_counterpart
+AI Services Company,Technology,catalog_match
 Bio Fertilizer Unit,,no_osm_counterpart
-Call Center,,no_osm_counterpart
+Call Center,,deprioritized
+Digital Products Store,,online_independent
+Eco Friendly Products,Retail,catalog_match
+Education Consultancy,Professional Services,catalog_match
 Export Handicrafts,,no_osm_counterpart
+Financial Advisory,Financial Services,catalog_match
+Franchise Food Outlet,Food,catalog_match
+Green Energy Installation,Skilled Trades,catalog_match
+HR Consulting,Professional Services,catalog_match
 Agriculture / Dairy / Poultry,,no_osm_counterpart
-Art Workshop Studio,,no_osm_counterpart
+EV Charging Point,Automotive,catalog_match
+Home Cleaning Service,Personal Services,catalog_match
+Pet Grooming Studio,Personal Services,catalog_match
+Custom T-Shirt Printing,Skilled Trades,catalog_match
+Drone Photography Services,Professional Services,catalog_match
+Organic Store,Retail,catalog_match
+3D Printing Lab,Technology,catalog_match
+Podcast Production Studio,Professional Services,catalog_match
+Online Tutoring Platform,Education,catalog_match
+Mobile Car Wash,Automotive,catalog_match
+Solar Panel Maintenance,Skilled Trades,catalog_match
+Event Decor Service,Professional Services,catalog_match
+Meal Prep Subscription,Food,catalog_match
+Language Training Center,Education,catalog_match
 Mini Logistics Hub,,no_osm_counterpart
+Second-Hand Electronics Store,Retail,catalog_match
+Digital Signage Solutions,Technology,catalog_match
+Art Workshop Studio,,no_osm_counterpart
+Recruitment Boutique,Professional Services,catalog_match
+Sari-sari Store,Retail,catalog_match
+Home-Based Packed Meals / Ulam Service,Food,catalog_match
+Motorcycle Wash & Detailing,Automotive,catalog_match
+Kakanin & Native Delicacies,Food,catalog_match
+Printing & Photocopy Services,Technology,catalog_match
+Ukay-ukay / Preloved Clothing,Retail,catalog_match
+Seedling Nursery & Plant Care,Skilled Trades,catalog_match
+Farm Produce Reselling,Retail,catalog_match

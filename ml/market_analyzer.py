@@ -21,7 +21,8 @@ def format_city_display_name(raw_name: str) -> str:
 
 class PhilippineMarketAnalyzer:
     def __init__(self, market_features_path: Path = None, category_map_path: Path = None, psgc_names_path: Path = None):
-        self.market_features_path = market_features_path or Config.MUNICIPALITY_MARKET_CSV
+        # Exclusively lock to the CALABARZON market features file
+        self.market_features_path = Config.DATA_DIR / "processed" / "calabarzon_market_features.csv"
         self.category_map_path = category_map_path or Config.CATEGORY_MAP_CSV
         self.psgc_names_path = psgc_names_path or Config.PSGC_NAMES_CSV
 
@@ -61,37 +62,48 @@ class PhilippineMarketAnalyzer:
 
     def _load_market_data(self):
         if not self.market_features_path.exists():
+            logger.error(f"Missing {self.market_features_path}")
             return
         try:
             df = pd.read_csv(self.market_features_path)
-            for c in ["adm3_psgc", "province_psgc", "region_psgc"]:
-                if c in df.columns:
-                    df[c] = df[c].apply(lambda x: f"{int(float(x)):010d}" if pd.notna(x) else "")
 
-            # NCR grouped under virtual province Metro Manila (1300000000)
-            df.loc[df["region_psgc"] == "1300000000", "province_psgc"] = "1300000000"
+            for c in ["adm3_psgc", "province_psgc", "region_psgc", "municipality_psgc"]:
+                if c in df.columns:
+                    df[c] = df[c].apply(lambda x: f"{int(float(x)):010d}" if pd.notna(x) and str(x).strip() != "" else "")
+
+            if "adm3_psgc" not in df.columns and "municipality_psgc" in df.columns:
+                df["adm3_psgc"] = df["municipality_psgc"]
+            if "municipality_city" not in df.columns and "municipality" in df.columns:
+                df["municipality_city"] = df["municipality"]
+            if "total_osm_records" not in df.columns and "total_businesses" in df.columns:
+                df["total_osm_records"] = df["total_businesses"]
+            if "population_2024" not in df.columns and "population" in df.columns:
+                df["population_2024"] = df["population"]
+
             df["display_city"] = df["municipality_city"].apply(format_city_display_name)
             self.df_market = df
 
             qualifying = df[
-                (df["total_osm_records"] >= 25) &
+                (df.get("total_osm_records", 0) >= 25) &
                 (df["population_2024"].notna()) &
                 (df["population_2024"] > 0)
             ]
 
             for cat in VALID_MARKET_CATEGORIES:
                 col = f"businesses_{cat.lower().replace(' ', '_')}_per_1000_people"
-                if col in qualifying.columns:
-                    series = qualifying[col].dropna()
+                alt_col = f"{cat.lower().replace(' ', '_')}_per_1000"
+                active_col = col if col in qualifying.columns else (alt_col if alt_col in qualifying.columns else None)
+                if active_col and active_col in qualifying.columns:
+                    series = qualifying[active_col].dropna()
                     if len(series) > 0:
                         self.density_cutoffs[cat] = {
                             "p25": float(series.quantile(0.25)),
                             "p75": float(series.quantile(0.75)),
                             "p90": float(series.quantile(0.90))
                         }
-            logger.info(f"Loaded {len(self.df_market)} Philippine municipality market records.")
+            logger.info(f"Loaded {len(self.df_market)} CALABARZON municipality records.")
         except Exception as e:
-            logger.error(f"Failed to load market features: {e}")
+            logger.error(f"Failed to load market data: {e}")
 
     def get_market_category(self, business_type: str) -> str:
         return self.category_map.get(str(business_type).strip().lower(), None)
@@ -99,12 +111,11 @@ class PhilippineMarketAnalyzer:
     def get_location_hierarchy(self) -> dict:
         regions_out = []
         flat_labels = []
-
-        if self.df_market.empty:
+        if self.df_market.empty or "region_psgc" not in self.df_market.columns:
             return {"regions": [], "locations": []}
 
         for r_code, r_group in self.df_market.groupby("region_psgc"):
-            r_name = self.region_names.get(r_code, f"Region {r_code}")
+            r_name = self.region_names.get(r_code, "CALABARZON (Region IV-A)")
             prov_list = []
             for p_code, p_group in r_group.groupby("province_psgc"):
                 p_name = self.province_names.get(p_code, f"Province {p_code}")
@@ -112,7 +123,7 @@ class PhilippineMarketAnalyzer:
                 for _, row in p_group.sort_values("display_city").iterrows():
                     psgc = row["adm3_psgc"]
                     c_name = row["display_city"]
-                    total_osm = int(row["total_osm_records"]) if pd.notna(row["total_osm_records"]) else 0
+                    total_osm = int(row.get("total_osm_records", 0)) if pd.notna(row.get("total_osm_records")) else 0
                     city_list.append({"code": psgc, "name": c_name, "total_osm": total_osm})
                     flat_labels.append(f"{c_name}, {p_name} ({psgc})")
                 prov_list.append({"code": p_code, "name": p_name, "cities": city_list})
@@ -131,7 +142,8 @@ class PhilippineMarketAnalyzer:
                 "total_osm": None,
                 "population": None,
                 "density_per_1000": None,
-                "category": None
+                "category": None,
+                "data_quality": "N/A"
             }
 
         if self.df_market.empty or not psgc_code:
@@ -142,31 +154,38 @@ class PhilippineMarketAnalyzer:
                 "total_osm": None,
                 "population": None,
                 "density_per_1000": None,
-                "category": cat
+                "category": cat,
+                "data_quality": "INSUFFICIENT"
             }
 
         clean_psgc = str(psgc_code).strip().zfill(10)
         match = self.df_market[self.df_market["adm3_psgc"] == clean_psgc]
+
+        if match.empty:
+            match = self.df_market[self.df_market["display_city"].str.lower() == str(psgc_code).strip().lower()]
+
         if match.empty:
             return {
                 "location_score": None,
-                "evidence_text": f"Location PSGC {clean_psgc} not found in Philippine market database.",
+                "evidence_text": f"Location PSGC {clean_psgc} not found in CALABARZON database.",
                 "osm_count": None,
                 "total_osm": None,
                 "population": None,
                 "density_per_1000": None,
-                "category": cat
+                "category": cat,
+                "data_quality": "INSUFFICIENT"
             }
 
         row = match.iloc[0]
         city_name = row["display_city"]
-        prov_code = row["province_psgc"]
-        prov_name = self.province_names.get(prov_code, "Philippines")
-        total_osm = int(row["total_osm_records"]) if pd.notna(row["total_osm_records"]) else 0
+        prov_code = row.get("province_psgc", "")
+        prov_name = self.province_names.get(prov_code, "CALABARZON")
+        total_osm = int(row.get("total_osm_records", 0))
+        data_quality = str(row.get("data_quality", "LOW"))
 
         cat_key = cat.lower().replace(" ", "_")
-        count_col = f"businesses_{cat_key}"
-        rate_col = f"businesses_{cat_key}_per_1000_people"
+        count_col = f"businesses_{cat_key}" if f"businesses_{cat_key}" in row else f"{cat_key}_count"
+        rate_col = f"businesses_{cat_key}_per_1000_people" if f"businesses_{cat_key}_per_1000_people" in row else f"{cat_key}_per_1000"
 
         osm_count = int(row[count_col]) if count_col in row and pd.notna(row[count_col]) else 0
         density = float(row[rate_col]) if rate_col in row and pd.notna(row[rate_col]) else 0.0
@@ -178,15 +197,9 @@ class PhilippineMarketAnalyzer:
         tiers = Config.LOCATION_SCORES
         cutoffs = self.density_cutoffs.get(cat, {"p25": 0.05, "p75": 0.35, "p90": 0.70})
 
-        # 1. Check missing population first (Task 1 safe handling for Iloilo, Lucena, etc.)
+        # Missing population safe handling (e.g. Lucena City)
         if not has_pop:
-            if osm_count >= 5:
-                score = tiers["missing_pop_high"]
-            elif osm_count >= 1:
-                score = tiers["missing_pop_low"]
-            else:
-                score = tiers["zero"]
-
+            score = tiers["missing_pop_high"] if osm_count >= 5 else (tiers["missing_pop_low"] if osm_count >= 1 else tiers["zero"])
             evidence = (
                 f"Mapped businesses in the available OpenStreetMap data: {osm_count} {cat} businesses in "
                 f"{city_name}, {prov_name}. Population data unavailable for this market calculation."
@@ -198,10 +211,11 @@ class PhilippineMarketAnalyzer:
                 "total_osm": total_osm,
                 "population": None,
                 "density_per_1000": None,
-                "category": cat
+                "category": cat,
+                "data_quality": "LOW"
             }
 
-        # 2. Check for limited OSM data (< 25 records) when population is present
+        # Limited OSM data check (< 25 records)
         if total_osm < 25:
             return {
                 "location_score": None,
@@ -210,10 +224,10 @@ class PhilippineMarketAnalyzer:
                 "total_osm": total_osm,
                 "population": pop_num,
                 "density_per_1000": None,
-                "category": cat
+                "category": cat,
+                "data_quality": "INSUFFICIENT"
             }
 
-        # 3. Density-based percentiles
         if osm_count == 0:
             score = tiers["zero"]
         elif density < cutoffs["p25"]:
@@ -237,5 +251,6 @@ class PhilippineMarketAnalyzer:
             "total_osm": total_osm,
             "population": pop_num,
             "density_per_1000": density,
-            "category": cat
+            "category": cat,
+            "data_quality": data_quality
         }
