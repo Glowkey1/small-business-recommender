@@ -138,7 +138,7 @@ def process_dataset_1():
         logging.warning("No CSV found in dataset_1 raw folder.")
         return None
 
-    df = pd.read_csv(files[0])
+    df = pd.read_csv(files[0], encoding="utf-8-sig")
     df = standardize_cols(df).drop_duplicates().reset_index(drop=True)
 
     success_col = next((c for c in df.columns if "success" in c), None)
@@ -156,39 +156,42 @@ def process_dataset_1():
     logging.info(f"Dataset 1 cleaned ({len(df)} rows). Saved to {out}")
     return df
 
+# Note: this function also overwrites data/final/final_skill_dataset.csv, so back that file up before running it.
+def find_business_files():
+    def _scan(directory):
+        if not directory or not os.path.exists(directory):
+            return []
+        pattern = os.path.join(directory, "*.csv")
+        return sorted(
+            [
+                f for f in glob.glob(pattern)
+                if "business" in os.path.basename(f).lower()
+                and "attribute" not in os.path.basename(f).lower()
+            ],
+            key=lambda x: os.path.basename(x).lower()
+        )
+
+    # 1. Search RAW_D2_DIR first
+    files = _scan(RAW_D2_DIR)
+    if files:
+        return files
+
+    # 2. Search data/backup
+    data_dir = getattr(Config, "DATA_DIR", os.path.abspath(os.path.join(str(RAW_D2_DIR), "..", "..")))
+    backup_dir = os.path.join(str(data_dir), "backup")
+    return _scan(backup_dir)
+
 def process_dataset_2():
-    def _find_business_files():
-        def _scan(directory):
-            if not directory or not os.path.exists(directory):
-                return []
-            pattern = os.path.join(directory, "*.csv")
-            return sorted(
-                [
-                    f for f in glob.glob(pattern)
-                    if "business" in os.path.basename(f).lower()
-                    and "attribute" not in os.path.basename(f).lower()
-                ],
-                key=lambda x: os.path.basename(x).lower()
-            )
-
-        # 1. Search RAW_D2_DIR first
-        files = _scan(RAW_D2_DIR)
-        if files:
-            return files
-
-        # 2. Fallback to data/backup
-        data_dir = getattr(Config, "DATA_DIR", os.path.abspath(os.path.join(str(RAW_D2_DIR), "..", "..")))
-        backup_dir = os.path.join(str(data_dir), "backup")
-        return _scan(backup_dir)
-
-    biz_files = _find_business_files()
+    # Note: this function also overwrites data/final/final_skill_dataset.csv, so back that file up before running it.
+    biz_files = find_business_files()
     if not biz_files:
         logging.error("No valid business CSV files found in dataset_2 or backup directories.")
         return None, None
 
-    dfs = [standardize_cols(pd.read_csv(f)) for f in biz_files]
+    dfs = [standardize_cols(pd.read_csv(f, encoding="utf-8-sig")) for f in biz_files]
     merged = pd.concat(dfs, ignore_index=True)
 
+    # First column matching 'type', 'name', or exactly 'business', otherwise None (never default to columns[0])
     name_col = next((c for c in merged.columns if "type" in c or "name" in c or c == "business"), None)
     if name_col is None:
         logging.error("No valid business name/type column found in the business files. Aborting.")
@@ -208,6 +211,7 @@ def process_dataset_2():
     merged = merged.rename(columns=col_map)
     merged["business_type"] = merged[name_col].astype(str).str.strip()
 
+    # Guard: abort if any business_type is blank, 'nan', or all digits
     invalid_mask = (
         (merged["business_type"] == "") |
         (merged["business_type"].str.lower() == "nan") |

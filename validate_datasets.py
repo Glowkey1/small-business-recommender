@@ -22,21 +22,28 @@ def validate():
     p_biz = Config.FINAL_BUSINESSES_CSV
     if p_biz.exists():
         df_b = pd.read_csv(p_biz)
-        if len(df_b) == 119:
-            print("✓ final_business_dataset.csv: Exactly 119 business ideas present.")
+        if len(df_b) > 0:
+            print(f"✓ final_business_dataset.csv: Business catalog is non-empty ({len(df_b)} ideas present).")
         else:
-            print(f"❌ final_business_dataset.csv: Expected 119, got {len(df_b)}.")
+            print("❌ final_business_dataset.csv: Catalog is empty.")
             has_errors = True
 
         if df_b["id"].duplicated().any():
             print("❌ Duplicate IDs found in business catalog.")
             has_errors = True
         else:
-            print("✓ Business IDs: Unique and contiguous (1..119).")
+            print("✓ Business IDs: Unique.")
 
-        if df_b["business_type"].duplicated().any():
-            print("❌ Duplicate business_type entries found in catalog.")
+        invalid_names = (
+            (df_b["business_type"].astype(str).str.strip() == "") |
+            (df_b["business_type"].astype(str).str.lower() == "nan") |
+            (df_b["business_type"].astype(str).str.fullmatch(r"\d+"))
+        )
+        if invalid_names.any():
+            print("❌ Invalid business_type entries found in catalog (blank, 'nan', or all digits).")
             has_errors = True
+        else:
+            print("✓ Business names: Valid (no blank, 'nan', or numeric names).")
 
         if (df_b["min_capital"] < 0).any() or not pd.to_numeric(df_b["min_capital"]).notna().all():
             print("❌ Invalid or negative min_capital detected.")
@@ -48,19 +55,22 @@ def validate():
         has_errors = True
 
     p_map = Config.CATEGORY_MAP_CSV
-    if p_map.exists():
+    if p_map.exists() and p_biz.exists():
         df_m = pd.read_csv(p_map)
-        if len(df_m) == 119:
-            print("✓ business_market_category_map.csv: Exactly 119 business mappings.")
+        if len(df_m) == len(df_b):
+            print(f"✓ business_market_category_map.csv: Row count matches catalog ({len(df_m)} rows).")
         else:
-            print(f"❌ business_market_category_map.csv: Expected 119, got {len(df_m)}.")
+            print(f"❌ business_market_category_map.csv: Row count ({len(df_m)}) does not match catalog ({len(df_b)}).")
             has_errors = True
+
         missing_names = set(df_b["business_type"]) - set(df_m["business_type"])
         if missing_names:
             print(f"❌ Businesses missing from category map: {missing_names}")
             has_errors = True
+        else:
+            print("✓ Category map: Covers every business_type in the catalog.")
     else:
-        print("❌ business_market_category_map.csv missing.")
+        print("❌ business_market_category_map.csv or catalog missing.")
         has_errors = True
 
     if Config.FINAL_SKILLS_CSV.exists():

@@ -90,7 +90,7 @@ def pathway(biz_id):
 
     steps = [
         {"step": 1, "title": "Check Requirements", "action": f"Review minimum catalog requirements: {b.get('minimum_requirements', 'Standard operational tools')}."},
-        {"step": 2, "title": "Prepare Capital", "action": f"Secure the minimum startup capital requirement: ₱{float(b.get('min_capital', 0)):,.0f}."},
+        {"step": 2, "title": "Prepare Capital", "action": f"The catalog estimates ₱{float(b.get('min_capital', 0)):,.0f} for a full start. You can begin with less and scale up."},
         {"step": 3, "title": "Prepare Skills", "action": f"Matching skills identified: {', '.join(matched) or 'None'}. Priority competencies to acquire: {', '.join(gaps) or 'All core skills present!'}"},
         {"step": 4, "title": "Choose Setup", "action": f"Establish the business setup: {b.get('business_setup', 'Online / Home-Based')}."},
         {"step": 5, "title": "Prepare Equipment / Resources", "action": f"Acquire necessary resources for {b.get('people_needed', '1 person')}."},

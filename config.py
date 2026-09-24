@@ -28,7 +28,6 @@ def resolve_db_uri():
     abs_path = (BASE_DIR / path_part).as_posix()
     return f"sqlite:///{abs_path}"
 
-# Generate ephemeral secret key if unset in environment (no hardcoded credentials)
 _env_secret = os.getenv("SECRET_KEY")
 if not _env_secret:
     logging.warning("SECRET_KEY unset in environment. Generating ephemeral 32-byte session secret.")
@@ -83,11 +82,12 @@ class Config:
     }
 
     RECOMMENDATION_WEIGHTS = {
-        "capital": 0.30,
+        "capital": 0.26,
         "skills": 0.25,
         "experience": 0.10,
         "setup": 0.10,
         "time": 0.05,
         "location": 0.10,
-        "success": 0.10
+        "success": 0.08,
+        "team": 0.06
     }

@@ -10,7 +10,7 @@ def client():
         yield client
 
 def test_pathway_known_catalog_business_renders_successfully(client):
-    """Task 3 Test: Known catalog business (e.g. ID 1) returns 200 without DB dependency."""
+    """Known catalog business (e.g. ID 1) returns 200 without DB dependency."""
     res = client.get("/pathway/1")
     assert res.status_code == 200
     html = res.get_data(as_text=True)
@@ -18,21 +18,21 @@ def test_pathway_known_catalog_business_renders_successfully(client):
     assert "The catalog does not list permit or licensing requirements" in html
 
 def test_pathway_slash_name_redirects_cleanly(client):
-    """Task 3 Test: Business names with '/' redirect 301 to ID URL."""
+    """Business names with '/' redirect 301 to ID URL."""
     res = client.get("/pathway/Hostel / PG", follow_redirects=True)
     assert res.status_code == 200
     html = res.get_data(as_text=True)
     assert "Hostel / PG" in html
 
 def test_pathway_unknown_returns_404(client):
-    """Task 3 Test: Unknown pathway returns friendly 404 template."""
+    """Unknown pathway returns friendly 404 template."""
     res = client.get("/pathway/9999")
     assert res.status_code == 404
     html = res.get_data(as_text=True)
     assert "Pathway Unavailable" in html
 
-def test_all_119_catalog_pathways_return_200(client):
-    """Task 3 Test: Verify all 119 business IDs render 200 on fresh startup."""
+def test_all_catalog_pathways_return_200(client):
+    """Verify all business IDs render 200 on fresh startup."""
     from ml.recommendation_engine import HybridBusinessRecommender
     engine = HybridBusinessRecommender()
     for idx, row in engine.df_businesses.iterrows():

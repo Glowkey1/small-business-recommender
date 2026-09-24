@@ -6,13 +6,15 @@ def validate_recommendation_input(form_data, market_analyzer, selectable_skills)
     errors = []
     clean = {}
 
-    # 1. Capital Validation
+    # 1. Capital Validation: accept any numeric amount >= 1; keep existing error messages
     raw_cap = form_data.get("capital", "")
     cap_str = re.sub(r"[₱,\s]", "", str(raw_cap))
     try:
         cap_val = float(cap_str)
         if not math.isfinite(cap_val) or cap_val < 0:
             errors.append("Starting capital must be a non-negative number.")
+        elif cap_val < 1:
+            errors.append("Starting capital must be at least ₱1.")
         elif cap_val > Config.MAX_CAPITAL:
             errors.append(f"Starting capital cannot exceed ₱{Config.MAX_CAPITAL:,.0f}.")
         else:

@@ -4,7 +4,7 @@
 {% block content %}
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
   <div>
-    <span class="mono-tag">HYBRID FEASIBILITY MATCHES // ₱{{ "{:,.2f}".format(profile.capital) }} CAPITAL</span>
+    <span class="mono-tag">FEASIBILITY MATCHES // ₱{{ "{:,.2f}".format(profile.capital) }} CAPITAL</span>
     <h2>Recommended Business Ideas</h2>
     <p class="subtitle" style="margin-bottom: 0;">
       Location: <strong>{{ profile.location_display or 'Philippine Dataset' }}</strong> · Experience: <strong>{{ profile.experience }}</strong>
@@ -12,6 +12,12 @@
   </div>
   <a href="/find" class="btn btn-secondary btn-sm">Adjust Filters</a>
 </div>
+
+{% if not profile.skills or profile.skills | length == 0 %}
+  <div class="alert alert-info" style="font-size: 13.5px; margin-bottom: 16px; border-left: 6px solid var(--color-brand);">
+    <strong>Tip:</strong> Select your skills so similar businesses can be separated.
+  </div>
+{% endif %}
 
 <div class="alert alert-info" style="font-size: 13.5px;">
   <strong>Notice:</strong> Recommendation Score is a weighted match of your inputs, not a probability of success. Time compatibility is estimated from the business setup and operational complexity.
@@ -31,6 +37,9 @@
         <span class="badge">{{ r.category }}</span>
         {% if r.market_category %}
           <span class="badge" style="background: #fdf3e7; color: var(--color-accent); border-color: var(--color-accent);">OSM: {{ r.market_category }}</span>
+        {% endif %}
+        {% if not r.affordable %}
+          <span class="badge" style="background: #fff3cd; color: #856404; border-color: #ffeeba;">Start small — budget gap ₱{{ "{:,.0f}".format(r.budget_gap) }}</span>
         {% endif %}
       </div>
       <div class="biz-meta">
@@ -62,12 +71,13 @@
         <summary style="cursor: pointer; font-weight: 600; color: var(--color-brand); min-height: 44px; display: inline-flex; align-items: center;">View Score Breakdown</summary>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-top: 8px; padding: 10px; background: var(--color-surface-soft);">
           <div>Capital: <strong>{{ r.component_scores.capital }}%</strong></div>
-          <div>Skills: <strong>{{ r.component_scores.skills }}%</strong></div>
+          <div>Skills: <strong>{{ r.component_scores.skills ~ '%' if r.component_scores.skills is not none else 'Omitted (No skills)' }}</strong></div>
           <div>Experience: <strong>{{ r.component_scores.experience }}%</strong></div>
           <div>Setup: <strong>{{ r.component_scores.setup }}%</strong></div>
           <div>Time: <strong>{{ r.component_scores.time }}%</strong></div>
           <div>Location: <strong>{{ r.component_scores.location ~ '%' if r.component_scores.location is not none else 'Not available' }}</strong></div>
           <div>Success Model: <strong>{{ r.component_scores.success ~ '%' if r.component_scores.success is not none else 'Not available' }}</strong></div>
+          <div>Team Size: <strong>{{ r.component_scores.team }}%</strong></div>
         </div>
       </details>
     </div>
@@ -82,11 +92,11 @@
   </div>
 {% else %}
   <div class="card card-editorial" style="border-left: 6px solid var(--color-accent);">
-    <h3>No business ideas in the current catalog meet your starting-capital requirement.</h3>
+    <h3>No business recommendations available.</h3>
     <p style="margin-top: 8px;">
-      All business ideas in our 119-record Philippine catalog require starting capital exceeding ₱{{ "{:,.2f}".format(profile.capital) }}.
+      Try adjusting your skills, location, or setup preferences.
     </p>
-    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Increase Capital or Adjust Inputs</a>
+    <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Adjust Inputs</a>
   </div>
 {% endfor %}
 
