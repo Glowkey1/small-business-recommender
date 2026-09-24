@@ -157,21 +157,43 @@ def process_dataset_1():
     return df
 
 def process_dataset_2():
-    biz_files = [
-        f for f in glob.glob(os.path.join(RAW_D2_DIR, "*.csv"))
-        if "business" in os.path.basename(f).lower() and "attribute" not in os.path.basename(f).lower()
-    ]
-    if not biz_files:
-        biz_files = [f for f in glob.glob(os.path.join(RAW_D2_DIR, "*.csv")) if "attribute" not in os.path.basename(f).lower()]
+    def _find_business_files():
+        def _scan(directory):
+            if not directory or not os.path.exists(directory):
+                return []
+            pattern = os.path.join(directory, "*.csv")
+            return sorted(
+                [
+                    f for f in glob.glob(pattern)
+                    if "business" in os.path.basename(f).lower()
+                    and "attribute" not in os.path.basename(f).lower()
+                ],
+                key=lambda x: os.path.basename(x).lower()
+            )
 
+        # 1. Search RAW_D2_DIR first
+        files = _scan(RAW_D2_DIR)
+        if files:
+            return files
+
+        # 2. Fallback to data/backup
+        data_dir = getattr(Config, "DATA_DIR", os.path.abspath(os.path.join(str(RAW_D2_DIR), "..", "..")))
+        backup_dir = os.path.join(str(data_dir), "backup")
+        return _scan(backup_dir)
+
+    biz_files = _find_business_files()
     if not biz_files:
-        logging.error("No catalog CSV files found in dataset_2 raw folder.")
+        logging.error("No valid business CSV files found in dataset_2 or backup directories.")
         return None, None
 
     dfs = [standardize_cols(pd.read_csv(f)) for f in biz_files]
     merged = pd.concat(dfs, ignore_index=True)
 
-    name_col = next((c for c in merged.columns if "type" in c or "name" in c or c == "business"), merged.columns[0])
+    name_col = next((c for c in merged.columns if "type" in c or "name" in c or c == "business"), None)
+    if name_col is None:
+        logging.error("No valid business name/type column found in the business files. Aborting.")
+        return None, None
+
     merged = merged.drop_duplicates(subset=[name_col]).reset_index(drop=True)
 
     col_map = {}
@@ -185,6 +207,16 @@ def process_dataset_2():
 
     merged = merged.rename(columns=col_map)
     merged["business_type"] = merged[name_col].astype(str).str.strip()
+
+    invalid_mask = (
+        (merged["business_type"] == "") |
+        (merged["business_type"].str.lower() == "nan") |
+        merged["business_type"].str.fullmatch(r"\d+")
+    )
+    if invalid_mask.any():
+        bad_sample = merged.loc[invalid_mask, "business_type"].iloc[0]
+        logging.error(f"Invalid business_type values found ('{bad_sample}'). Aborting to protect existing catalog.")
+        return None, None
 
     if "id" in merged.columns:
         merged = merged.drop(columns=["id"])
@@ -264,11 +296,12 @@ def process_dataset_2():
     return merged, skills_df
 
 if __name__ == "__main__":
+    print("Starting preprocessing...")
     process_dataset_1()
     df, _ = process_dataset_2()
     if df is not None:
         print("\n" + "=" * 60)
-        print("RESULTING CATALOG DISTRIBUTIONS (N=119)")
+        print(f"RESULTING CATALOG DISTRIBUTIONS (N={len(df)})")
         print("=" * 60)
         print("\n--- min_capital value_counts ---")
         print(df['min_capital'].value_counts())
@@ -277,3 +310,5 @@ if __name__ == "__main__":
         print("\n--- experience_level value_counts ---")
         print(df['experience_level'].value_counts())
         print("=" * 60)
+    else:
+        print("❌ process_dataset_2() returned None.")
