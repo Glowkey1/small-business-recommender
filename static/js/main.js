@@ -1,6 +1,6 @@
-// Mobile Navigation, Outside-Click Dismiss, Escape Key, and Wizard Logic
+// Mobile Navigation, Outside-Click Dismiss, Escape Key, Wizard, and Direct Form Submission
 document.addEventListener("DOMContentLoaded", function () {
-  // 1. Mobile Menu Toggle with Outside Click & Escape Handlers
+  // 1. Mobile Menu Toggle
   const navToggle = document.getElementById("navToggle");
   const primaryNav = document.getElementById("primaryNav");
 
@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Close on outside click
     document.addEventListener("click", function (e) {
       if (primaryNav.classList.contains("is-open")) {
         if (!primaryNav.contains(e.target) && e.target !== navToggle && !navToggle.contains(e.target)) {
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Close on Escape key and return focus to toggle button
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && primaryNav.classList.contains("is-open")) {
         closeMenu();
@@ -43,13 +41,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 2. Cascading Philippine Locations
+  // 2. Cascading Locations
   const regSelect = document.getElementById("regionSelect");
   const provSelect = document.getElementById("provinceSelect");
   const citySelect = document.getElementById("citySelect");
 
   if (regSelect && provSelect && citySelect && window.LOCATION_HIERARCHY) {
     const data = window.LOCATION_HIERARCHY;
+    const regions = data.regions || [];
 
     regSelect.addEventListener("change", function () {
       const regCode = this.value;
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
       citySelect.innerHTML = '<option value="">-- Choose Municipality --</option>';
 
       if (!regCode) return;
-      const regObj = data.regions.find(r => r.code === regCode);
+      const regObj = regions.find(r => r.code === regCode);
       if (regObj && regObj.provinces) {
         regObj.provinces.forEach(p => {
           const opt = document.createElement("option");
@@ -74,8 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
       citySelect.innerHTML = '<option value="">-- Choose Municipality --</option>';
 
       if (!provCode) return;
-      const regObj = data.regions.find(r => r.code === regCode);
-      if (regObj) {
+      const regObj = regions.find(r => r.code === regCode);
+      if (regObj && regObj.provinces) {
         const provObj = regObj.provinces.find(p => p.code === provCode);
         if (provObj && provObj.cities) {
           provObj.cities.forEach(c => {
@@ -89,13 +88,34 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 3. Multi-Step Wizard Flow
+  // 3. Multi-Step Wizard Flow with Step Validation
   let currentStep = 1;
   const maxStep = 5;
 
   const btnPrev = document.getElementById("btnPrev");
   const btnNext = document.getElementById("btnNext");
   const btnSubmit = document.getElementById("btnSubmit");
+  const recForm = document.getElementById("recForm");
+
+  function validateStep(step) {
+    if (step === 1) {
+      const cap = document.getElementById("capInput");
+      if (!cap || !cap.value || parseFloat(cap.value) < 1) {
+        alert("Please enter a starting capital of at least ₱1.");
+        if (cap) cap.focus();
+        return false;
+      }
+    }
+    if (step === 4) {
+      const city = document.getElementById("citySelect");
+      if (!city || !city.value) {
+        alert("Please select a Philippine City / Municipality in Step 4.");
+        if (city) city.focus();
+        return false;
+      }
+    }
+    return true;
+  }
 
   function updateWizard() {
     for (let i = 1; i <= maxStep; i++) {
@@ -111,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Populate review summary step
     if (currentStep === maxStep) {
-      const cap = document.getElementById("capInput")?.value || "10000";
+      const cap = document.getElementById("capInput")?.value || "1000";
       const checkedSkills = Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(cb => cb.value);
       const exp = document.querySelector('select[name="experience"]')?.value || "Beginner";
       const time = document.querySelector('select[name="available_time"]')?.value || "5-6 hours/day";
@@ -126,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const elLoc = document.getElementById("revLoc");
 
       if (elCap) elCap.textContent = Number(cap).toLocaleString();
-      if (elSkills) elSkills.textContent = checkedSkills.length ? checkedSkills.join(", ") : "No skills selected";
+      if (elSkills) elSkills.textContent = checkedSkills.length ? checkedSkills.join(", ") : "None";
       if (elExp) elExp.textContent = exp;
       if (elTime) elTime.textContent = time;
       if (elSetup) elSetup.textContent = checkedSetups.join(", ") || "None";
@@ -134,8 +154,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Clickable step indicator tabs
+  document.querySelectorAll(".wizard-step-indicator").forEach(ind => {
+    ind.style.cursor = "pointer";
+    ind.addEventListener("click", function () {
+      const target = parseInt(this.getAttribute("data-step"), 10);
+      if (target < currentStep || validateStep(currentStep)) {
+        currentStep = target;
+        updateWizard();
+      }
+    });
+  });
+
   if (btnNext && btnPrev) {
     btnNext.addEventListener("click", function () {
+      if (!validateStep(currentStep)) return;
       if (currentStep < maxStep) {
         currentStep++;
         updateWizard();
@@ -150,7 +183,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 4. Skill Filter
+  // Explicit submit handler that ensures all steps are valid before submitting
+  if (btnSubmit && recForm) {
+    btnSubmit.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (!validateStep(1)) {
+        currentStep = 1;
+        updateWizard();
+        return;
+      }
+      if (!validateStep(4)) {
+        currentStep = 4;
+        updateWizard();
+        return;
+      }
+      recForm.submit();
+    });
+  }
+
+  // Skill search filter
   const skillSearch = document.getElementById("skillSearch");
   if (skillSearch) {
     skillSearch.addEventListener("input", function () {
