@@ -24,7 +24,6 @@
     <div class="wizard-step-indicator" data-step="2">2. Skills</div>
     <div class="wizard-step-indicator" data-step="3">3. Background</div>
     <div class="wizard-step-indicator" data-step="4">4. Location</div>
-    <div class="wizard-step-indicator" data-step="5">5. Review</div>
   </div>
 
   <form action="/find" method="POST" id="recForm" novalidate>
@@ -33,10 +32,10 @@
     <!-- STEP 1: Capital -->
     <div class="wizard-section active" id="section1">
       <div class="form-group">
-        <label>Starting Capital (₱ PHP)</label>
+        <label>Starting Capital (PHP)</label>
         <input type="number" name="capital" id="capInput" value="{{ form_data.capital if form_data.capital is defined and form_data.capital else '1000' }}" min="1" max="100000000" step="any" required class="form-control">
         <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-top: 6px;">
-          No minimum. You can start small with any amount, even ₱1,000.
+          No minimum. Recommendations prioritize businesses you can start with this amount; full setup costs are shown separately.
         </small>
       </div>
     </div>
@@ -44,14 +43,21 @@
     <!-- STEP 2: Skills -->
     <div class="wizard-section" id="section2">
       <div class="form-group">
-        <label>Select Your Skills (Multi-select)</label>
-        <input type="text" id="skillSearch" placeholder="Filter skills..." class="form-control" style="margin-bottom: 10px;">
-        <div class="skills-grid" id="skillsGrid">
-          {% for s in skills %}
-            <label class="skill-pill">
-              <input type="checkbox" name="skills" value="{{ s }}" {% if form_data.skills and s in form_data.skills %}checked{% endif %}>
-              <span>{{ s }}</span>
-            </label>
+        <label>Select Your Skills by Business Field</label>
+        <input type="text" id="skillSearch" placeholder="Filter skills..." class="form-control" style="margin-bottom: 12px;">
+        <div id="skillsGrid">
+          {% for group in skill_groups %}
+            <section class="skill-field">
+              <h4 class="skill-field-title">{{ group.field }} <span class="skill-count">{{ group.skills|length }}</span></h4>
+              <div class="skills-grid">
+                {% for s in group.skills %}
+                  <label class="skill-pill">
+                    <input type="checkbox" name="skills" value="{{ s }}" {% if form_data.skills and s in form_data.skills %}checked{% endif %}>
+                    <span>{{ s }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </section>
           {% endfor %}
         </div>
         <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-top: 6px;">
@@ -87,9 +93,9 @@
       <div class="form-group">
         <label>Preferred Business Setup (Select one or more)</label>
         <div class="setup-grid">
-          {% set sel_setups = form_data.setup if form_data.setup else ['Online / Home-Based'] %}
-          <label class="setup-target"><input type="checkbox" name="setup" value="Online" {% if 'Online' in sel_setups or 'Online / Home-Based' in sel_setups %}checked{% endif %}> <span>Online</span></label>
-          <label class="setup-target"><input type="checkbox" name="setup" value="Home-Based" {% if 'Home-Based' in sel_setups or 'Online / Home-Based' in sel_setups %}checked{% endif %}> <span>Home-Based</span></label>
+          {% set sel_setups = form_data.setup if form_data.setup is defined and form_data.setup else [] %}
+          <label class="setup-target"><input type="checkbox" name="setup" value="Online" {% if 'Online' in sel_setups %}checked{% endif %}> <span>Online</span></label>
+          <label class="setup-target"><input type="checkbox" name="setup" value="Home-Based" {% if 'Home-Based' in sel_setups %}checked{% endif %}> <span>Home-Based</span></label>
           <label class="setup-target"><input type="checkbox" name="setup" value="Physical Store" {% if 'Physical Store' in sel_setups %}checked{% endif %}> <span>Physical Store</span></label>
           <label class="setup-target"><input type="checkbox" name="setup" value="Service / Mobile" {% if 'Service / Mobile' in sel_setups %}checked{% endif %}> <span>Service / Mobile</span></label>
         </div>
@@ -99,20 +105,19 @@
     <!-- STEP 4: Cascading Location -->
     <div class="wizard-section" id="section4">
       <div class="form-group">
-        <label>Philippine Location (Cascading Selection)</label>
+        <label>Philippine Location</label>
         <div class="grid-3">
           <div>
             <label style="font-size: 12px; margin-bottom: 4px;">1. Region</label>
-            <select id="regionSelect" class="form-control" aria-label="Select Region">
-              <option value="">-- Choose Region --</option>
-              {% for reg in hierarchy.regions %}
-                <option value="{{ reg.code }}">{{ reg.name }}</option>
+            <select name="region" id="regionSelect" class="form-control" aria-label="Select Region">
+              {% for region in hierarchy.regions %}
+                <option value="{{ region.code }}" {% if form_data.region == region.code or (not form_data.region and loop.first) %}selected{% endif %}>{{ region.name }}</option>
               {% endfor %}
             </select>
           </div>
           <div>
             <label style="font-size: 12px; margin-bottom: 4px;">2. Province</label>
-            <select id="provinceSelect" class="form-control" aria-label="Select Province">
+            <select name="province" id="provinceSelect" class="form-control" aria-label="Select Province">
               <option value="">-- Choose Province --</option>
             </select>
           </div>
@@ -120,34 +125,12 @@
             <label style="font-size: 12px; margin-bottom: 4px;">3. City / Municipality</label>
             <select name="location" id="citySelect" class="form-control" required aria-label="Select Municipality">
               <option value="">-- Choose Municipality --</option>
-              {% for reg in hierarchy.regions %}
-                {% for prov in reg.provinces %}
-                  <optgroup label="{{ reg.name }} — {{ prov.name }}">
-                    {% for city in prov.cities %}
-                      <option value="{{ city.code }}" {% if form_data.location == city.code %}selected{% endif %}>{{ city.name }}</option>
-                    {% endfor %}
-                  </optgroup>
-                {% endfor %}
-              {% endfor %}
             </select>
           </div>
         </div>
         <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-top: 6px;">
-          Coverage: 250 municipalities in 9 regions in the current dataset. Uses PSGC 10-digit codes.
+          Coverage: {{ market_count }} municipalities in {{ region_count }} region{% if region_count != 1 %}s{% endif %} in the current dataset. Uses PSGC 10-digit codes.
         </small>
-      </div>
-    </div>
-
-    <!-- STEP 5: Review -->
-    <div class="wizard-section" id="section5">
-      <h3 style="font-size: 18px; margin-bottom: 12px;">Review Your Submission</h3>
-      <div class="card" style="background: var(--color-surface-soft); padding: 16px; margin-bottom: 20px;">
-        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Capital:</strong> ₱<span id="revCap">1,000</span></div>
-        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Selected Skills:</strong> <span id="revSkills">None</span></div>
-        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Experience:</strong> <span id="revExp">Beginner</span></div>
-        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Available Time:</strong> <span id="revTime">5-6 hours/day</span></div>
-        <div style="font-size: 14px; margin-bottom: 8px;"><strong>Setups:</strong> <span id="revSetup">Online / Home-Based</span></div>
-        <div style="font-size: 14px;"><strong>Location:</strong> <span id="revLoc">Please select a municipality</span></div>
       </div>
     </div>
 
@@ -160,7 +143,66 @@
   </form>
 </div>
 
+<script type="application/json" id="locationHierarchy">{{ hierarchy | tojson }}</script>
 <script>
-window.LOCATION_HIERARCHY = {{ hierarchy | tojson }};
+(function () {
+  var dataEl = document.getElementById("locationHierarchy");
+  var regionSelect = document.getElementById("regionSelect");
+  var provinceSelect = document.getElementById("provinceSelect");
+  var citySelect = document.getElementById("citySelect");
+  if (!dataEl || !regionSelect || !provinceSelect || !citySelect) return;
+
+  var hierarchy = JSON.parse(dataEl.textContent);
+  var regions = hierarchy.regions || [];
+  var selectedProvince = {{ (form_data.province or '') | tojson }};
+  var selectedCity = {{ (form_data.location or '') | tojson }};
+
+  function selectedRegion() {
+    return regions.find(function (r) { return r.code === regionSelect.value; }) || null;
+  }
+
+  function fillProvinces() {
+    var region = selectedRegion();
+    provinceSelect.innerHTML = '<option value="">-- Choose Province --</option>';
+    if (region) {
+      region.provinces.forEach(function (p) {
+        var opt = document.createElement("option");
+        opt.value = p.code;
+        opt.textContent = p.name;
+        provinceSelect.appendChild(opt);
+      });
+      if (selectedProvince && region.provinces.some(function (p) { return p.code === selectedProvince; })) {
+        provinceSelect.value = selectedProvince;
+      } else if (region.provinces.length === 1) {
+        provinceSelect.value = region.provinces[0].code;
+      }
+    }
+    fillCities();
+  }
+
+  function fillCities() {
+    var region = selectedRegion();
+    var province = region ? region.provinces.find(function (p) { return p.code === provinceSelect.value; }) : null;
+    citySelect.innerHTML = '<option value="">-- Choose Municipality --</option>';
+    if (province) {
+      province.cities.forEach(function (c) {
+        var opt = document.createElement("option");
+        opt.value = c.code;
+        opt.textContent = c.name;
+        citySelect.appendChild(opt);
+      });
+      if (selectedCity && province.cities.some(function (c) { return c.code === selectedCity; })) {
+        citySelect.value = selectedCity;
+      }
+    }
+    selectedCity = "";
+  }
+
+  regionSelect.addEventListener("change", function () { selectedProvince = ""; fillProvinces(); });
+  provinceSelect.addEventListener("change", fillCities);
+
+  fillProvinces();
+})();
 </script>
+
 {% endblock %}

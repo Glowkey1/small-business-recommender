@@ -1,0 +1,321 @@
+{
+  "status": "ok",
+  "generated_at": "2026-10-20T09:31:18.569301+00:00",
+  "k": 5,
+  "relevance_threshold": 1,
+  "profile_count": 30,
+  "recommender_version": "7c060e9b4401",
+  "weights_source": "models\\recommendation_weights_draft.json",
+  "weights": {
+    "capital": 0.2403433476,
+    "skills": 0.2403433476,
+    "experience": 0.1180257511,
+    "setup": 0.1180257511,
+    "time": 0.0536480687,
+    "location": 0.1652360515,
+    "success": 0.0,
+    "team": 0.0643776824
+  },
+  "catalog_size": 127,
+  "labeling": {
+    "worksheet_rows": 3810,
+    "labeled_rows": 3810,
+    "unlabeled_rows": 0,
+    "completion": 1.0
+  },
+  "proxy_metrics": {
+    "coverage_at_k": 0.5748,
+    "category_diversity_at_k": 0.7389,
+    "budget_feasibility_at_k": 0.9044
+  },
+  "label_scope": "full_catalog",
+  "full_catalog_profile_count": 30,
+  "metrics": {
+    "k": 5,
+    "threshold": 1,
+    "profile_count": 30,
+    "per_profile": {
+      "P01": {
+        "k": 5,
+        "precision": 0.6,
+        "recall": 0.09375,
+        "ndcg": 0.8866167491742403,
+        "average_precision": 0.6,
+        "relevant_count": 3,
+        "labeled_count": 5
+      },
+      "P02": {
+        "k": 5,
+        "precision": 0.6,
+        "recall": 0.10714285714285714,
+        "ndcg": 0.8866167491742403,
+        "average_precision": 0.6,
+        "relevant_count": 3,
+        "labeled_count": 5
+      },
+      "P03": {
+        "k": 5,
+        "precision": 0.4,
+        "recall": 0.1111111111111111,
+        "ndcg": 0.7246005029668242,
+        "average_precision": 0.3333333333333333,
+        "relevant_count": 2,
+        "labeled_count": 5
+      },
+      "P04": {
+        "k": 5,
+        "precision": 1.0,
+        "recall": 0.14705882352941177,
+        "ndcg": 1.0,
+        "average_precision": 1.0,
+        "relevant_count": 5,
+        "labeled_count": 5
+      },
+      "P05": {
+        "k": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "ndcg": 0.0,
+        "average_precision": 0.0,
+        "relevant_count": 0,
+        "labeled_count": 1
+      },
+      "P06": {
+        "k": 5,
+        "precision": 0.8,
+        "recall": 0.19047619047619047,
+        "ndcg": 0.8687949224876583,
+        "average_precision": 0.8,
+        "relevant_count": 4,
+        "labeled_count": 5
+      },
+      "P07": {
+        "k": 5,
+        "precision": 1.0,
+        "recall": 0.05813953488372093,
+        "ndcg": 0.9125299483251055,
+        "average_precision": 1.0,
+        "relevant_count": 5,
+        "labeled_count": 5
+      },
+      "P08": {
+        "k": 5,
+        "precision": 1.0,
+        "recall": 0.05813953488372093,
+        "ndcg": 1.0,
+        "average_precision": 1.0,
+        "relevant_count": 5,
+        "labeled_count": 5
+      },
+      "P09": {
+        "k": 5,
+        "precision": 0.3333333333333333,
+        "recall": 0.03571428571428571,
+        "ndcg": 0.3391602052736161,
+        "average_precision": 0.3333333333333333,
+        "relevant_count": 1,
+        "labeled_count": 3
+      },
+      "P10": {
+        "k": 5,
+        "precision": 0.2,
+        "recall": 0.029411764705882353,
+        "ndcg": 0.12389007283034914,
+        "average_precision": 0.2,
+        "relevant_count": 1,
+        "labeled_count": 5
+      },
+      "P11": {
+        "k": 5,
+        "precision": 0.5,
+        "recall": 0.03125,
+        "ndcg": 0.6062493248765826,
+        "average_precision": 0.5,
+        "relevant_count": 1,
+        "labeled_count": 2
+      },
+      "P12": {
+        "k": 5,
+        "precision": 0.2,
+        "recall": 0.01639344262295082,
+        "ndcg": 0.1695801026368081,
+        "average_precision": 0.06666666666666667,
+        "relevant_count": 1,
+        "labeled_count": 5
+      },
+      "P13": {
+        "k": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "ndcg": 0.0,
+        "average_precision": 0.0,
+        "relevant_count": 0,
+        "labeled_count": 1
+      },
+      "P14": {
+        "k": 5,
+        "precision": 0.2,
+        "recall": 0.047619047619047616,
+        "ndcg": 0.3391602052736162,
+        "average_precision": 0.2,
+        "relevant_count": 1,
+        "labeled_count": 5
+      },
+      "P15": {
+        "k": 5,
+        "precision": 0.4,
+        "recall": 0.09523809523809523,
+        "ndcg": 0.4852285551163227,
+        "average_precision": 0.3,
+        "relevant_count": 2,
+        "labeled_count": 5
+      },
+      "P16": {
+        "k": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "ndcg": 0.0,
+        "average_precision": 0.0,
+        "relevant_count": 0,
+        "labeled_count": 2
+      },
+      "P17": {
+        "k": 5,
+        "precision": 0.2,
+        "recall": 0.14285714285714285,
+        "ndcg": 0.2344977993624063,
+        "average_precision": 0.1,
+        "relevant_count": 1,
+        "labeled_count": 5
+      },
+      "P18": {
+        "k": 5,
+        "precision": 0.8,
+        "recall": 0.046511627906976744,
+        "ndcg": 0.8687949224876583,
+        "average_precision": 0.8,
+        "relevant_count": 4,
+        "labeled_count": 5
+      },
+      "P19": {
+        "k": 5,
+        "precision": 0.2,
+        "recall": 0.05555555555555555,
+        "ndcg": 0.6062493248765826,
+        "average_precision": 0.2,
+        "relevant_count": 1,
+        "labeled_count": 5
+      },
+      "P20": {
+        "k": 5,
+        "precision": 0.6,
+        "recall": 0.04918032786885246,
+        "ndcg": 0.7227265726449518,
+        "average_precision": 0.6,
+        "relevant_count": 3,
+        "labeled_count": 5
+      },
+      "P21": {
+        "k": 5,
+        "precision": 1.0,
+        "recall": 0.17857142857142858,
+        "ndcg": 0.8869465982421281,
+        "average_precision": 1.0,
+        "relevant_count": 5,
+        "labeled_count": 5
+      },
+      "P22": {
+        "k": 5,
+        "precision": 0.8,
+        "recall": 0.19047619047619047,
+        "ndcg": 0.8539316501572936,
+        "average_precision": 0.76,
+        "relevant_count": 4,
+        "labeled_count": 5
+      },
+      "P23": {
+        "k": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "ndcg": 0.0,
+        "average_precision": 0.0,
+        "relevant_count": 0,
+        "labeled_count": 5
+      },
+      "P24": {
+        "k": 5,
+        "precision": 0.8,
+        "recall": 0.046511627906976744,
+        "ndcg": 0.8687949224876583,
+        "average_precision": 0.8,
+        "relevant_count": 4,
+        "labeled_count": 5
+      },
+      "P25": {
+        "k": 5,
+        "precision": 0.2,
+        "recall": 0.16666666666666666,
+        "ndcg": 0.6062493248765826,
+        "average_precision": 0.2,
+        "relevant_count": 1,
+        "labeled_count": 5
+      },
+      "P26": {
+        "k": 5,
+        "precision": 0.8,
+        "recall": 0.06557377049180328,
+        "ndcg": 0.8687949224876583,
+        "average_precision": 0.8,
+        "relevant_count": 4,
+        "labeled_count": 5
+      },
+      "P27": {
+        "k": 5,
+        "precision": 0.6,
+        "recall": 0.15,
+        "ndcg": 0.4468535299918564,
+        "average_precision": 0.2866666666666666,
+        "relevant_count": 3,
+        "labeled_count": 5
+      },
+      "P28": {
+        "k": 5,
+        "precision": 0.75,
+        "recall": 0.14285714285714285,
+        "ndcg": 0.7227265726449518,
+        "average_precision": 0.75,
+        "relevant_count": 3,
+        "labeled_count": 4
+      },
+      "P29": {
+        "k": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "ndcg": 0.0,
+        "average_precision": 0.0,
+        "relevant_count": 0,
+        "labeled_count": 5
+      },
+      "P30": {
+        "k": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "ndcg": 0.0,
+        "average_precision": 0.0,
+        "relevant_count": 0,
+        "labeled_count": 5
+      }
+    },
+    "aggregate": {
+      "precision_at_5": 0.4661,
+      "recall_at_5": 0.0752,
+      "ndcg_at_5": 0.5343,
+      "average_precision_at_5": 0.441,
+      "relevant_count": 67,
+      "labeled_count": 133,
+      "coverage_at_k": 0.5748,
+      "category_diversity_at_k": 0.7389,
+      "budget_feasibility_at_k": 0.9044
+    }
+  }
+}

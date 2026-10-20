@@ -1,6 +1,8 @@
 import os
 import sys
 import re
+import json
+import hashlib
 import logging
 import joblib
 import pandas as pd
@@ -12,6 +14,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from config import Config, validate_weights
 from ml.skill_normalizer import normalize_skill_name, parse_skills_list, GENERIC_STOP_FRAGMENTS
+from ml.skill_fields import SKILL_SYNONYM_MERGES, canonical_skill
+from ml.skill_catalog import catalog_alias_map, catalog_skill_graph, catalog_skill_names
 from ml.market_analyzer import PhilippineMarketAnalyzer
 from ml.success_model_service import SuccessModelService
 
@@ -43,10 +47,18 @@ def combine_scores(component_scores: dict, weights: dict) -> float:
     score_sum = sum(v * weights[k] for k, v in component_scores.items() if v is not None)
     return score_sum / active_weights_sum
 
+def safe_capital_value(value, fallback: float) -> float:
+    try:
+        amount = float(value)
+    except (TypeError, ValueError):
+        return fallback
+    if not np.isfinite(amount) or amount < 0:
+        return fallback
+    return amount
+
 class HybridBusinessRecommender:
     def __init__(self, catalog_path=None, tfidf_path=None):
-        self.weights = Config.RECOMMENDATION_WEIGHTS
-        validate_weights(self.weights)
+        self.weights = self._load_weights()
 
         self.catalog_path = Path(catalog_path) if catalog_path else Config.FINAL_BUSINESSES_CSV
         self.tfidf_path = Path(tfidf_path) if tfidf_path else (Config.ML_MODELS_PATH / "tfidf_vectorizer.pkl")
@@ -55,35 +67,95 @@ class HybridBusinessRecommender:
         self.vectorizer = None
         self.skill_alias_map = {}
         self.selectable_skills = []
+        self.catalog_skills = []
+        self.skill_related_by_name = {}
+        self.skill_related_by_target = {}
+        self.business_skill_map = {}
 
         self.market_analyzer = PhilippineMarketAnalyzer(Config.MUNICIPALITY_MARKET_CSV)
         self.success_service = SuccessModelService(Config.SUCCESS_MODEL_JOBLIB, Config.SUCCESS_METRICS_JSON)
 
         self._load_skill_master()
+        self._load_skill_catalog()
         self.load_catalog()
         self.load_vectorizer()
 
-    def _load_skill_master(self):
-        if Config.SKILL_MASTER_CSV.exists():
+    def _load_weights(self):
+        path = Config.RECOMMENDATION_WEIGHTS_JSON
+        if path.exists():
             try:
-                df_sm = pd.read_csv(Config.SKILL_MASTER_CSV)
-                name_col = "skill_name" if "skill_name" in df_sm.columns else df_sm.columns[0]
-                terms_col = "source_terms" if "source_terms" in df_sm.columns else (df_sm.columns[1] if len(df_sm.columns) > 1 else None)
+                with open(path, "r", encoding="utf-8") as handle:
+                    payload = json.load(handle)
+                weights = payload.get("weights", payload)
+                if not isinstance(weights, dict):
+                    raise ValueError("weights payload must be a dictionary")
+                expected = set(Config.RECOMMENDATION_WEIGHTS)
+                if set(weights) != expected:
+                    raise ValueError("weight keys do not match the recommender schema")
+                weights = {key: float(value) for key, value in weights.items()}
+                validate_weights(weights)
+                logger.info("Loaded tuned recommendation weights from %s", path)
+                return weights
+            except Exception as exc:
+                logger.error(
+                    "Could not load tuned recommendation weights from %s: %s. "
+                    "Using baseline weights.",
+                    path,
+                    exc,
+                )
+        return dict(Config.RECOMMENDATION_WEIGHTS)
 
-                for _, r in df_sm.iterrows():
-                    canonical = str(r[name_col]).strip()
-                    if not canonical:
-                        continue
-                    self.skill_alias_map[canonical.lower()] = canonical
+    def _load_skill_master(self):
+        if not Config.SKILL_MASTER_CSV.exists():
+            return
+        try:
+            df_sm = pd.read_csv(Config.SKILL_MASTER_CSV)
+            name_col = "skill_name" if "skill_name" in df_sm.columns else df_sm.columns[0]
+            terms_col = "source_terms" if "source_terms" in df_sm.columns else (df_sm.columns[1] if len(df_sm.columns) > 1 else None)
 
-                    if terms_col and pd.notna(r[terms_col]):
-                        for raw_term in str(r[terms_col]).split(","):
-                            raw_term = raw_term.strip().lower()
-                            if raw_term:
-                                self.skill_alias_map[raw_term] = canonical
-                logger.info(f"Loaded {len(self.skill_alias_map)} clean skill aliases from skill_master.csv.")
-            except Exception as e:
-                logger.error(f"Error loading skill master: {e}")
+            for _, r in df_sm.iterrows():
+                canonical = str(r[name_col]).strip()
+                if not canonical:
+                    continue
+                self.skill_alias_map[canonical.lower()] = canonical
+
+                if terms_col and pd.notna(r[terms_col]):
+                    for raw_term in str(r[terms_col]).split(","):
+                        raw_term = raw_term.strip().lower()
+                        if raw_term:
+                            self.skill_alias_map[raw_term] = canonical
+
+            for alias, name in list(self.skill_alias_map.items()):
+                self.skill_alias_map[alias] = canonical_skill(name)
+            for old, new in SKILL_SYNONYM_MERGES.items():
+                self.skill_alias_map[old.lower()] = canonical_skill(new)
+
+            logger.info(f"Loaded {len(self.skill_alias_map)} clean skill aliases from skill_master.csv.")
+        except Exception as e:
+            logger.error(f"Error loading skill master: {e}")
+
+    def _load_skill_catalog(self):
+        try:
+            self.catalog_skills = catalog_skill_names()
+            for alias, target in catalog_alias_map().items():
+                if alias and alias not in self.skill_alias_map:
+                    self.skill_alias_map[alias] = target
+
+            graph = catalog_skill_graph()
+            self.skill_related_by_name = graph.get("by_name", {})
+            self.skill_related_by_target = graph.get("by_target", {})
+            self.business_skill_map = graph.get("business_skills", {})
+
+            logger.info(
+                f"Loaded {len(self.catalog_skills)} selectable skills and "
+                f"{len(self.business_skill_map)} business skill links from skill_catalog.csv."
+            )
+        except Exception as e:
+            logger.error(f"Error loading skill catalog: {e}")
+            self.catalog_skills = []
+            self.skill_related_by_name = {}
+            self.skill_related_by_target = {}
+            self.business_skill_map = {}
 
     def load_catalog(self):
         if not self.catalog_path.exists():
@@ -101,6 +173,7 @@ class HybridBusinessRecommender:
                     canon = self.skill_alias_map.get(t.lower(), t)
                     if canon.lower() not in GENERIC_STOP_FRAGMENTS and len(canon) > 2 and "," not in canon:
                         master_set.add(canon)
+            master_set.update(self.catalog_skills)
             self.selectable_skills = sorted(list(master_set))
         except Exception as e:
             logger.error(f"Failed to load business catalog: {e}")
@@ -119,6 +192,17 @@ class HybridBusinessRecommender:
         corpus = self.df_businesses["core_skills"].dropna().astype(str) if not self.df_businesses.empty else ["skills"]
         self.vectorizer.fit(corpus)
 
+    def artifact_version(self, k=5):
+        payload = json.dumps(
+            {
+                "weights": self.weights,
+                "k": k,
+                "catalog_rows": len(self.df_businesses),
+            },
+            sort_keys=True,
+        )
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
+
     def parse_skills(self, skills_raw):
         return parse_skills_list(skills_raw)
 
@@ -132,10 +216,18 @@ class HybridBusinessRecommender:
             return round(0.70 + 0.30 * ((ratio - 1.0) / 0.5), 3)
         return round(0.70 * (user_cap / min_cap), 3)
 
-    def calculate_skill_score(self, user_skills: list, core_skills_str: str) -> tuple:
+    def _skill_target(self, skill):
+        return canonical_skill(self.skill_alias_map.get(str(skill).lower(), str(skill)))
+
+    def _biz_skill_targets(self, core_skills_str: str, business_id=None) -> list:
+        if business_id is not None:
+            mapped = self.business_skill_map.get(int(business_id))
+            if mapped:
+                return sorted(mapped, key=str.lower)
+
         biz_tokens = parse_skills_list(core_skills_str)
         if not biz_tokens:
-            return (0.60, [], []) if user_skills else (None, [], [])
+            return []
 
         biz_canonical = []
         for t in biz_tokens:
@@ -143,22 +235,17 @@ class HybridBusinessRecommender:
             if canon.lower() not in GENERIC_STOP_FRAGMENTS and "," not in canon:
                 biz_canonical.append(canon)
 
-        if not biz_canonical:
-            biz_canonical = biz_tokens
+        return biz_canonical or biz_tokens
 
-        # Omit skills component if no skills selected (renormalizes other weights)
+    def _combined_skill_score(self, user_skills: list, biz_canonical: list, core_skills_str: str) -> tuple:
+        if not biz_canonical:
+            return (0.60, [], []) if user_skills else (None, [], [])
         if not user_skills:
             return None, [], biz_canonical
 
-        user_norm_set = set(self.skill_alias_map.get(s.lower(), s).lower() for s in user_skills if s)
-
-        matched = []
-        gaps = []
-        for bs in biz_canonical:
-            if bs.lower() in user_norm_set:
-                matched.append(bs)
-            else:
-                gaps.append(bs)
+        user_target_set = {self._skill_target(s).lower() for s in user_skills if s}
+        matched = [bs for bs in biz_canonical if bs.lower() in user_target_set]
+        gaps = [bs for bs in biz_canonical if bs.lower() not in user_target_set]
 
         exact_ratio = len(matched) / len(biz_canonical) if biz_canonical else 0.0
 
@@ -181,6 +268,62 @@ class HybridBusinessRecommender:
             combined_skill = 0.75 * exact_ratio + 0.25 * min(1.0, tfidf_sim)
 
         return round(combined_skill, 3), matched, gaps
+
+    def calculate_skill_score(self, user_skills: list, core_skills_str: str) -> tuple:
+        biz_canonical = self._biz_skill_targets(core_skills_str)
+        return self._combined_skill_score(user_skills, biz_canonical, core_skills_str)
+
+    def skill_related_ids(self, skill) -> set:
+        key = str(skill).strip().lower()
+        ids = set(self.skill_related_by_name.get(key, set()))
+        target = self._skill_target(skill).lower()
+        ids.update(self.skill_related_by_target.get(target, set()))
+        return ids
+
+    def skill_match_details(self, user_skills: list, business_id: int, core_skills_str: str) -> dict:
+        if not user_skills:
+            return {
+                "score": None,
+                "matched": [],
+                "matched_targets": [],
+                "gaps": [],
+                "related": [],
+            }
+
+        business_id = int(business_id)
+        biz_canonical = self._biz_skill_targets(core_skills_str, business_id)
+        score, matched_targets, gaps = self._combined_skill_score(
+            user_skills, biz_canonical, core_skills_str
+        )
+
+        related = [
+            s for s in user_skills
+            if s and business_id in self.skill_related_ids(s)
+        ]
+
+        matched_target_lower = {m.lower() for m in matched_targets}
+        for target in (self._skill_target(s) for s in related):
+            if target.lower() not in matched_target_lower:
+                matched_targets.append(target)
+                matched_target_lower.add(target.lower())
+
+        matched = [
+            s for s in user_skills
+            if s and self._skill_target(s).lower() in matched_target_lower
+        ]
+        for s in related:
+            if s not in matched:
+                matched.append(s)
+
+        gaps = [g for g in gaps if g.lower() not in matched_target_lower]
+
+        return {
+            "score": score,
+            "matched": matched,
+            "matched_targets": matched_targets,
+            "gaps": gaps,
+            "related": related,
+        }
 
     def calculate_experience_score(self, user_exp: str, biz_exp: str) -> float:
         levels = {"beginner": 1, "intermediate": 2, "experienced": 3}
@@ -255,54 +398,65 @@ class HybridBusinessRecommender:
             if avg_p <= 6: return 0.40
             return 0.20
 
+    @staticmethod
+    def _diversity_features(candidate: dict) -> tuple:
+        category = str(candidate.get("market_category") or candidate.get("category") or "").strip().lower()
+        setup = str(candidate.get("business_setup", "")).strip().lower()
+        skills = {
+            str(s).strip().lower()
+            for s in list(candidate.get("matched_skills", [])) + list(candidate.get("skill_gaps", []))
+            if s
+        }
+        return category, setup, skills
+
     def select_diverse_top_n(self, candidates: list, top_n: int = 5) -> list:
         if len(candidates) <= top_n:
-            return candidates
+            return list(candidates)
 
         selected = []
-        selected_signatures = []
-        pool = candidates.copy()
-        PENALTY = 0.02
+        pool = list(candidates)
+        relevance_weight = 0.80
 
         while pool and len(selected) < top_n:
             best_idx = 0
             best_effective_score = -1e9
+            best_raw_score = -1e9
+            best_skill_score = -1e9
 
             for i, cand in enumerate(pool):
                 raw_score = cand["raw_final_score"]
-                sig = (
-                    cand["min_capital"],
-                    str(cand.get("business_setup", "")).strip().lower(),
-                    str(cand.get("experience_level", "")).strip().lower()
-                )
+                skill_score = cand["component_scores"]["skills"] or 0.0
+                max_similarity = 0.0
 
-                shares_profile = sum(1 for s in selected_signatures if s == sig)
-                penalty = shares_profile * PENALTY
-                effective_score = raw_score - penalty
+                if selected:
+                    cat, setup, skills = self._diversity_features(cand)
+                    for chosen in selected:
+                        chosen_cat, chosen_setup, chosen_skills = self._diversity_features(chosen)
+                        category_match = 1.0 if cat and cat == chosen_cat else 0.0
+                        setup_match = 1.0 if setup and setup == chosen_setup else 0.0
+                        union = skills | chosen_skills
+                        skill_overlap = len(skills & chosen_skills) / len(union) if union else 0.0
+                        similarity = 0.5 * category_match + 0.3 * skill_overlap + 0.2 * setup_match
+                        max_similarity = max(max_similarity, similarity)
 
-                skill_score = cand["component_scores"]["skills"] if cand["component_scores"]["skills"] is not None else 0.0
-                best_cand = pool[best_idx]
-                best_skill = best_cand["component_scores"]["skills"] if best_cand["component_scores"]["skills"] is not None else 0.0
+                effective_score = relevance_weight * raw_score - (1 - relevance_weight) * max_similarity
 
-                if (effective_score > best_effective_score) or (
-                    np.isclose(effective_score, best_effective_score, atol=1e-5) and
-                    (raw_score > best_cand["raw_final_score"] or
-                     (np.isclose(raw_score, best_cand["raw_final_score"], atol=1e-5) and
-                      (skill_score > best_skill or
-                       (np.isclose(skill_score, best_skill, atol=1e-5) and
-                        cand["business_type"] < best_cand["business_type"]))))
+                if (effective_score > best_effective_score + 1e-9) or (
+                    np.isclose(effective_score, best_effective_score, atol=1e-9)
+                    and (raw_score > best_raw_score + 1e-9 or (
+                        np.isclose(raw_score, best_raw_score, atol=1e-9)
+                        and (skill_score > best_skill_score + 1e-9 or (
+                            np.isclose(skill_score, best_skill_score, atol=1e-9)
+                            and cand["business_type"] < pool[best_idx]["business_type"]
+                        ))
+                    ))
                 ):
                     best_effective_score = effective_score
+                    best_raw_score = raw_score
+                    best_skill_score = skill_score
                     best_idx = i
 
-            chosen = pool.pop(best_idx)
-            chosen_sig = (
-                chosen["min_capital"],
-                str(chosen.get("business_setup", "")).strip().lower(),
-                str(chosen.get("experience_level", "")).strip().lower()
-            )
-            selected.append(chosen)
-            selected_signatures.append(chosen_sig)
+            selected.append(pool.pop(best_idx))
 
         return selected
 
@@ -335,11 +489,21 @@ class HybridBusinessRecommender:
         results = []
         for idx, row in enumerate(eligible_records):
             min_cap = float(row.get("min_capital", 0.0))
-            budget_gap = max(0.0, min_cap - user_cap)
+            micro_cap = safe_capital_value(row.get("micro_start_capital"), min_cap)
+            full_cap = safe_capital_value(row.get("full_start_capital"), min_cap)
+            budget_gap = max(0.0, micro_cap - user_cap)
+            full_setup_gap = max(0.0, full_cap - user_cap)
             affordable = (budget_gap == 0.0)
 
-            s_cap = self.calculate_capital_score(user_cap, min_cap)
-            s_skill, matched, gaps = self.calculate_skill_score(user_skills, str(row.get("core_skills", "")))
+            s_cap = self.calculate_capital_score(user_cap, micro_cap)
+            skill_info = self.skill_match_details(
+                user_skills, int(row["id"]), str(row.get("core_skills", ""))
+            )
+            s_skill = skill_info["score"]
+            matched = skill_info["matched"]
+            gaps = skill_info["gaps"]
+            related_skills = skill_info["related"]
+            skill_related = bool(matched)
             s_exp = self.calculate_experience_score(user_exp, str(row.get("experience_level", "Beginner")))
             s_setup = self.calculate_setup_score(user_setups, str(row.get("business_setup", "")))
             s_time = self.calculate_time_score(available_time, str(row.get("business_setup", "")), str(row.get("people_needed", "")))
@@ -366,9 +530,11 @@ class HybridBusinessRecommender:
 
             reasons = []
             if affordable:
-                reasons.append(f"Within your starting capital (₱{user_cap:,.0f} vs ₱{min_cap:,.0f} minimum)")
+                reasons.append(f"Start-small cost fits your ₱{user_cap:,.0f} budget (₱{micro_cap:,.0f} to begin)")
             else:
-                reasons.append(f"Catalog estimates ₱{min_cap:,.0f} for a full start; you are ₱{budget_gap:,.0f} short, so begin small and grow.")
+                reasons.append(f"Start-small estimate is ₱{micro_cap:,.0f}; you are ₱{budget_gap:,.0f} short, so begin with the smallest version and reinvest.")
+            if full_setup_gap > 0:
+                reasons.append(f"Full setup budget is ₱{full_cap:,.0f} (₱{full_setup_gap:,.0f} beyond your current funds)")
 
             if user_skills:
                 if matched:
@@ -384,11 +550,8 @@ class HybridBusinessRecommender:
             if s_setup >= 0.85:
                 reasons.append(f"Compatible with your preferred setup: {row.get('business_setup')}")
 
-            if s_loc is not None:
+            if s_loc is not None and s_loc >= 0.75:
                 reasons.append("Has relevant market presence in your location")
-
-            if s_succ_raw is not None:
-                reasons.append(f"Model-based success score {int(round(s_succ_raw * 100))}% (one component of the ranking)")
 
             results.append({
                 "id": int(row["id"]),
@@ -398,7 +561,11 @@ class HybridBusinessRecommender:
                 "market_category": loc_result["category"],
                 "startup_cost": row.get("startup_cost", f"₱{min_cap:,.0f}"),
                 "min_capital": min_cap,
+                "micro_start_capital": micro_cap,
+                "full_start_capital": full_cap,
+                "start_small_description": row.get("start_small_description", ""),
                 "budget_gap": budget_gap,
+                "full_setup_gap": full_setup_gap,
                 "affordable": affordable,
                 "people_needed": row.get("people_needed", "1 person"),
                 "business_setup": row.get("business_setup", "Online / Home-Based"),
@@ -408,6 +575,8 @@ class HybridBusinessRecommender:
                 "risks": row.get("risks", ""),
                 "matched_skills": matched,
                 "skill_gaps": gaps,
+                "related_skills": related_skills,
+                "skill_related": skill_related,
                 "location_evidence": loc_result["evidence_text"],
                 "reasons": reasons[:6],
                 "raw_final_score": final_score,
@@ -426,8 +595,18 @@ class HybridBusinessRecommender:
                 }
             })
 
-        # Diverse top 5 re-ranking
-        top_results = self.select_diverse_top_n(results, top_n=top_n)
+        if user_skills:
+            # Strict skill mode: only return businesses connected to a selected skill.
+            pool = [r for r in results if r["skill_related"]]
+            if not pool:
+                return []
+        else:
+            # Prefer start-small-affordable options; fall back to the closest matches
+            affordable_results = [r for r in results if r["affordable"]]
+            pool = affordable_results if len(affordable_results) >= top_n else results
+
+        # Diverse top-N selection (MMR)
+        top_results = self.select_diverse_top_n(pool, top_n=top_n)
 
         # Re-sort final top-5 descending by score so highest recommendation is first
         top_results.sort(

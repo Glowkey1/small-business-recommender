@@ -1,0 +1,32 @@
+{
+  "status": "unlabeled",
+  "generated_at": "2026-10-20T09:27:27.792785+00:00",
+  "k": 5,
+  "relevance_threshold": 1,
+  "profile_count": 30,
+  "recommender_version": "9dccf5a573b6",
+  "weights_source": "active",
+  "weights": {
+    "capital": 0.28,
+    "skills": 0.28,
+    "experience": 0.11,
+    "setup": 0.11,
+    "time": 0.05,
+    "location": 0.11,
+    "success": 0.0,
+    "team": 0.06
+  },
+  "catalog_size": 127,
+  "labeling": {
+    "worksheet_rows": 212,
+    "labeled_rows": 0,
+    "unlabeled_rows": 212,
+    "completion": 0.0
+  },
+  "proxy_metrics": {
+    "coverage_at_k": 0.5748,
+    "category_diversity_at_k": 0.7456,
+    "budget_feasibility_at_k": 0.9044
+  },
+  "message": "Relevance labels are incomplete. Precision, recall, NDCG, and MAP are unavailable until every worksheet row is labeled."
+}

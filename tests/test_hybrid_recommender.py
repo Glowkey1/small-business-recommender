@@ -35,9 +35,26 @@ def test_hard_capital_filter_boundaries(engine):
     assert len(recs) == 5, f"Expected 5 results, got {len(recs)}"
     for r in recs:
         assert "budget_gap" in r
+        assert "full_setup_gap" in r
         assert "affordable" in r
-        assert r["affordable"] == (r["min_capital"] <= 1000)
-        assert r["budget_gap"] == max(0.0, r["min_capital"] - 1000)
+        assert r["affordable"] == (r["micro_start_capital"] <= 1000)
+        assert r["budget_gap"] == max(0.0, r["micro_start_capital"] - 1000)
+        assert r["full_setup_gap"] == max(0.0, r["full_start_capital"] - 1000)
+
+def test_affordable_results_are_preferred_when_enough_exist(engine):
+    """With enough start-small-affordable options, unaffordable businesses are excluded."""
+    lipa = engine.market_analyzer.df_market.iloc[0]
+    recs = engine.recommend({"capital": 50000, "skills": [], "location": lipa["adm3_psgc"]}, top_n=5)
+    assert len(recs) == 5
+    assert all(r["affordable"] for r in recs)
+
+def test_unsupported_market_category_returns_no_location_score(engine):
+    """Categories without density/count columns are not scored as zero-density."""
+    lipa = engine.market_analyzer.df_market.iloc[0]
+    res = engine.market_analyzer.analyze_location_market(lipa["adm3_psgc"], "Advertising Agency")
+    assert res["location_score"] is None
+    assert res["data_quality"] == "UNSUPPORTED"
+    assert "not available" in res["evidence_text"].lower()
 
 def test_omitted_location_for_online_business(engine):
     """Location is omitted for online/unmapped businesses (score is None)."""
@@ -52,6 +69,64 @@ def test_empty_skills_omitted_from_scoring(engine):
     assert len(recs) > 0
     assert any("No skills selected" in r["reasons"] for r in recs)
     assert recs[0]["component_scores"]["skills"] is None
+
+def test_skill_selected_results_only_include_connected_businesses(engine):
+    lipa = engine.market_analyzer.df_market.iloc[0]
+    recs = engine.recommend(
+        {"capital": 10000, "skills": ["Cooking"], "location": lipa["adm3_psgc"]},
+        top_n=5,
+    )
+    assert recs
+    assert all(r["skill_related"] for r in recs)
+    assert all(r["matched_skills"] for r in recs)
+    assert all("Cooking" in r["related_skills"] for r in recs)
+
+
+def test_sparse_skill_returns_fewer_than_five(engine):
+    lipa = engine.market_analyzer.df_market.iloc[0]
+    recs = engine.recommend(
+        {"capital": 10000, "skills": ["Programming"], "location": lipa["adm3_psgc"]},
+        top_n=5,
+    )
+    assert len(recs) == 1
+    assert recs[0]["business_type"] == "App Development Studio"
+    assert recs[0]["skill_related"] is True
+
+
+def test_over_budget_skill_match_is_included(engine):
+    lipa = engine.market_analyzer.df_market.iloc[0]
+    recs = engine.recommend(
+        {"capital": 10000, "skills": ["Programming"], "location": lipa["adm3_psgc"]},
+        top_n=5,
+    )
+    assert recs[0]["affordable"] is False
+    assert recs[0]["budget_gap"] > 0
+
+
+def test_catalog_links_resolve_selected_skill_aliases(engine):
+    assert 53 in engine.skill_related_ids("Menu Development")
+    recs = engine.recommend(
+        {"capital": 200000, "skills": ["Menu Development"]},
+        top_n=5,
+    )
+    assert recs
+    assert all(r["skill_related"] for r in recs)
+
+
+def test_unmatched_skill_returns_no_results(engine):
+    assert engine.recommend({"capital": 10000, "skills": ["NotARealSkill"]}, top_n=5) == []
+
+
+def test_results_include_micro_and_full_capital(engine):
+    """Every result exposes micro and full start capital for the results page."""
+    recs = engine.recommend({"capital": 50000, "skills": ["Cooking"]}, top_n=5)
+    assert len(recs) > 0
+    for r in recs:
+        assert "micro_start_capital" in r
+        assert "full_start_capital" in r
+        assert r["micro_start_capital"] >= 0
+        assert r["full_start_capital"] >= 0
+        assert r["micro_start_capital"] <= r["full_start_capital"]
 
 def test_score_range_and_deterministic_sort(engine):
     """Recommendation scores strictly 0-100% and deterministically sorted."""
@@ -76,6 +151,42 @@ def test_recommendation_weights_sum_to_one():
     total = sum(Config.RECOMMENDATION_WEIGHTS.values())
     assert abs(total - 1.0) < 1e-6, f"Weights must sum to 1.0, got {total}"
 
+def test_mmr_selects_diverse_categories(engine):
+    """MMR re-ranking prefers a different market category over a near-duplicate."""
+    def candidate(name, category, score):
+        return {
+            "business_type": name,
+            "category": category,
+            "market_category": category,
+            "business_setup": "Online",
+            "matched_skills": ["Cooking"],
+            "skill_gaps": [],
+            "raw_final_score": score,
+            "component_scores": {"skills": 80.0},
+        }
+
+    candidates = [
+        candidate("A1", "Food", 0.90),
+        candidate("A2", "Food", 0.895),
+        candidate("B1", "Retail", 0.89),
+        candidate("B2", "Retail", 0.885),
+    ]
+    picked = engine.select_diverse_top_n(candidates, top_n=2)
+    assert [c["business_type"] for c in picked] == ["A1", "B1"]
+
+def test_removed_skills_map_to_retained_matches(engine):
+    """Pruned form skills still match via aliases instead of appearing as gaps."""
+    from ml.skill_fields import canonical_skill
+    assert canonical_skill("Menu") == "Cooking"
+    assert canonical_skill("Recipe") == "Cooking"
+    assert "Menu" not in engine.selectable_skills
+    assert "Recipe" not in engine.selectable_skills
+    assert "Cooking" in engine.selectable_skills
+
+def test_success_model_not_weighted_in_ranking():
+    """The success model remains advisory until it is validated."""
+    assert Config.RECOMMENDATION_WEIGHTS["success"] == 0.0
+
 def test_recommender_determinism_identical_runs(engine):
     """Verify two runs with identical inputs produce identical output."""
     lipa = engine.market_analyzer.df_market.iloc[0]
@@ -90,7 +201,8 @@ def test_recommender_determinism_identical_runs(engine):
     run1 = engine.recommend(profile, top_n=5)
     run2 = engine.recommend(profile, top_n=5)
 
-    assert len(run1) == len(run2) == 5
+    assert len(run1) == len(run2)
+    assert 0 < len(run1) <= 5
     for r1, r2 in zip(run1, run2):
         assert r1["id"] == r2["id"]
         assert r1["business_type"] == r2["business_type"]

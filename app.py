@@ -19,6 +19,8 @@ def create_app(config_class=Config, test_config=None):
     if test_config:
         app.config.update(test_config)
 
+    app.config.setdefault("TEMPLATES_AUTO_RELOAD", True)
+
     os.makedirs(os.path.join(app.root_path, "instance"), exist_ok=True)
     db.init_app(app)
 

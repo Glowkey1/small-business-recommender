@@ -374,6 +374,44 @@ label.skill-pill,
   flex-shrink: 0;
 }
 
+.skill-field {
+  margin-bottom: 18px;
+}
+
+.skill-field:last-child {
+  margin-bottom: 0;
+}
+
+.skill-field-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-brand);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.skill-count {
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  border: 1px solid var(--color-brand);
+  padding: 1px 6px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.skill-field .skills-grid {
+  max-height: none;
+  overflow: visible;
+}
+
 .setup-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr));
@@ -411,6 +449,82 @@ label.setup-target,
   accent-color: var(--color-brand);
   cursor: pointer;
   flex-shrink: 0;
+}
+
+/* Results Toolbar, Skill Gaps, Save State */
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.filter-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-brand);
+  cursor: pointer;
+}
+
+.results-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.start-small-note {
+  font-size: 13px;
+  color: var(--color-ink);
+  background: var(--color-surface-soft);
+  border-left: 3px solid var(--color-accent);
+  padding: 8px 10px;
+  margin: 8px 0;
+}
+
+.skill-gaps {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.skill-gaps-label {
+  font-weight: 700;
+  color: var(--color-ink-muted);
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+  font-size: 12px;
+}
+
+.skill-chip-more {
+  color: var(--color-ink-muted);
+  font-style: italic;
+}
+
+.biz-score-col .btn + .btn {
+  margin-top: 8px;
 }
 
 /* Results Recommendation Cards */

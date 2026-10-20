@@ -1,0 +1,155 @@
+skill_name,field,maps_to,aliases,related_business_ids,related_business_types,source
+Baking,Food & Beverage,Baking,,6;123,Bakery; Kakanin & Native Delicacies,catalog_core_skill
+Cooking,Food & Beverage,Cooking,Menu; Nutrition; Recipe,14;33;53;71;113;121;123,Cloud Kitchen; Food Truck; Packaged Food Brand; Street Food Stall; Meal Prep Subscription; Home-Based Packed Meals / Ulam Service; Kakanin & Native Delicacies,catalog_core_skill
+Food Costing,Food & Beverage,Food Costing,,121,Home-Based Packed Meals / Ulam Service,catalog_core_skill
+Food Safety,Food & Beverage,Hygiene,food handling; food hygiene,6;36;71,Bakery; Fruit Juice Center; Street Food Stall,curated_extension
+Meal Planning,Food & Beverage,Planning,meal prep planning; menu planning,13;113,Catering Service; Meal Prep Subscription,curated_extension
+Menu Development,Food & Beverage,Cooking,menu design; recipe development,14;53;71;121;123,Cloud Kitchen; Packaged Food Brand; Street Food Stall; Home-Based Packed Meals / Ulam Service; Kakanin & Native Delicacies,curated_extension
+Portion Control,Food & Beverage,Food Costing,portioning; yield control,121,Home-Based Packed Meals / Ulam Service,curated_extension
+Animal Care,Agriculture & Environment,Animal Care,Animal; feed,21;54,Dairy Farm; Pet Care Services,catalog_core_skill
+Composting,Agriculture & Environment,Gardening,compost production; organic composting,52,Organic Farming,curated_extension
+Gardening,Agriculture & Environment,Gardening,Agri; Agriculture; crop; Soil,52;63;126,Organic Farming; Seed Distribution; Seedling Nursery & Plant Care,catalog_core_skill
+Irrigation,Agriculture & Environment,Gardening,watering systems; irrigation systems,52;126,Organic Farming; Seedling Nursery & Plant Care,curated_extension
+Livestock Management,Agriculture & Environment,Animal Care,livestock raising; animal husbandry,21,Dairy Farm,curated_extension
+Pest Management,Agriculture & Environment,Plant Care,pest control; integrated pest management,126,Seedling Nursery & Plant Care,curated_extension
+Plant Care,Agriculture & Environment,Plant Care,,126,Seedling Nursery & Plant Care,catalog_core_skill
+Propagation,Agriculture & Environment,Propagation,,126,Seedling Nursery & Plant Care,catalog_core_skill
+Soil Testing,Agriculture & Environment,Gardening,soil analysis; soil health,52;63,Organic Farming; Seed Distribution,curated_extension
+Booking,Retail & Sales,Booking,,77;80,Travel Agency; Vehicle Rental,catalog_core_skill
+Cash Handling,Retail & Sales,Sales,cashiering; cash reconciliation,120;125,Sari-sari Store; Ukay-ukay / Preloved Clothing,curated_extension
+Demo,Retail & Sales,Demo,,82,Water Purifier Sales,catalog_core_skill
+Fashion Curation,Retail & Sales,Fashion Curation,,125,Ukay-ukay / Preloved Clothing,catalog_core_skill
+Inventory Management,Retail & Sales,Inventory Management,inventory; Stock,6;10;16;38;70;115;120;127,Bakery; Bookstore; Cold Storage; Grocery Store; Storage Warehouse; Mini Logistics Hub; Sari-sari Store; Farm Produce Reselling,catalog_core_skill
+Merchandising,Retail & Sales,Merchandising,,106,Organic Store,catalog_core_skill
+Price Setting,Retail & Sales,Pricing,pricing strategy,5;38;51;65;110,Artificial Jewellery Shop; Grocery Store; Online Reselling; Small Shop / Retail; Mobile Car Wash,curated_extension
+Pricing,Retail & Sales,Pricing,,5;38;51;65;110,Artificial Jewellery Shop; Grocery Store; Online Reselling; Small Shop / Retail; Mobile Car Wash,catalog_core_skill
+Sales,Retail & Sales,Sales,,1;5;17;31;32;116;120;125;127,Advertising Agency; Artificial Jewellery Shop; Computer Training Center; Fashion Boutique; Fitness Gym; Second-Hand Electronics Store; Sari-sari Store; Ukay-ukay / Preloved Clothing; Farm Produce Reselling,catalog_core_skill
+Stock Auditing,Retail & Sales,Inventory Management,stock counts; inventory audit,6;38;70;120,Bakery; Grocery Store; Storage Warehouse; Sari-sari Store,curated_extension
+Upselling,Retail & Sales,Sales,upsell; cross-selling,31;32,Fashion Boutique; Fitness Gym,curated_extension
+Visual Merchandising,Retail & Sales,Merchandising,store display; retail display,106,Organic Store,curated_extension
+Advertising,Marketing & Creative,Advertising,Ads,23;26,Digital Marketing Agency; E-Commerce Store,catalog_core_skill
+Audio,Marketing & Creative,Audio,,108,Podcast Production Studio,catalog_core_skill
+Branding,Marketing & Creative,Branding,,93,Eco Friendly Products,catalog_core_skill
+Cinematography,Marketing & Creative,Cinematography,,105,Drone Photography Services,catalog_core_skill
+Content Creation,Marketing & Creative,Content Creation,content,2;66,Affiliate Marketing; Social Media Agency,catalog_core_skill
+Copywriting,Marketing & Creative,Writing,ad copy,9,Blog Website,curated_extension
+Creativity,Marketing & Creative,Creativity,creation; Creative,1;92;118,Advertising Agency; Digital Products Store; Art Workshop Studio,catalog_core_skill
+Design,Marketing & Creative,Design,,5;39;41;44;56;104;112,Artificial Jewellery Shop; Handicrafts Business; Home Interior Services; Jewellery Manufacturing; Printing Press; Custom T-Shirt Printing; Event Decor Service,catalog_core_skill
+Editing,Marketing & Creative,Editing,,19;55;81;87;105;108,Content Creation Agency; Photography Studio; Video Production House; YouTube / Content Creation; Drone Photography Services; Podcast Production Studio,catalog_core_skill
+Filming,Marketing & Creative,Filming,,81,Video Production House,catalog_core_skill
+Graphic Design,Marketing & Creative,Design,visual design,39;56;104,Handicrafts Business; Printing Press; Custom T-Shirt Printing,curated_extension
+Marketing,Marketing & Creative,Marketing,,1;2;15;50;57;92,Advertising Agency; Affiliate Marketing; Coaching Institute; Online Course Platform; Real Estate Brokerage; Digital Products Store,catalog_core_skill
+Paid Advertising,Marketing & Creative,Advertising,paid ads; PPC; digital ads,23;26,Digital Marketing Agency; E-Commerce Store,curated_extension
+Photography,Marketing & Creative,Photography,,125,Ukay-ukay / Preloved Clothing,catalog_core_skill
+Presentation,Marketing & Creative,Presentation,,123,Kakanin & Native Delicacies,catalog_core_skill
+Printing,Marketing & Creative,Printing,,56;104;124,Printing Press; Custom T-Shirt Printing; Printing & Photocopy Services,catalog_core_skill
+Scripting,Marketing & Creative,Scripting,,108,Podcast Production Studio,catalog_core_skill
+SEO,Marketing & Creative,SEO,,2;9;23,Affiliate Marketing; Blog Website; Digital Marketing Agency,catalog_core_skill
+Shooting,Marketing & Creative,Shooting,,55,Photography Studio,catalog_core_skill
+Social Media,Marketing & Creative,Social Media,,121;125,Home-Based Packed Meals / Ulam Service; Ukay-ukay / Preloved Clothing,catalog_core_skill
+Social Media Management,Marketing & Creative,Social Media,social media marketing,121;125,Home-Based Packed Meals / Ulam Service; Ukay-ukay / Preloved Clothing,curated_extension
+Storytelling,Marketing & Creative,Storytelling,,19;87,Content Creation Agency; YouTube / Content Creation,catalog_core_skill
+Styling,Marketing & Creative,Styling,,31,Fashion Boutique,catalog_core_skill
+Video Editing,Marketing & Creative,Editing,video post-production,55;81;87;105;108,Photography Studio; Video Production House; YouTube / Content Creation; Drone Photography Services; Podcast Production Studio,curated_extension
+Writing,Marketing & Creative,Writing,,9,Blog Website,catalog_core_skill
+Analytics,Technology & Data,Analytics,Analysis; trends,23;25;66;74;75,Digital Marketing Agency; Drone Services; Social Media Agency; Textile Trading; Trading / Investment,catalog_core_skill
+API Integration,Technology & Data,Integration,systems integration,117,Digital Signage Solutions,curated_extension
+CAD,Technology & Data,CAD,,107,3D Printing Lab,catalog_core_skill
+Computer Literacy,Technology & Data,Computer Literacy,,124,Printing & Photocopy Services,catalog_core_skill
+CRM,Technology & Data,CRM,,91,Call Center,catalog_core_skill
+Data Management,Technology & Data,Data Management,data,25,Drone Services,catalog_core_skill
+Data Processing,Technology & Data,Data Management,data cleaning,25,Drone Services,curated_extension
+Data Visualization,Technology & Data,Analytics,dashboards,23;25;66;74;75,Digital Marketing Agency; Drone Services; Social Media Agency; Textile Trading; Trading / Investment,curated_extension
+Deployment,Technology & Data,Deployment,,62;89,Security Services; AI Services Company,catalog_core_skill
+Development,Technology & Data,Development,AI; Artificial Intelligence; Dev; Infrastructure; software; Tech; Technology,12;43;61;67;83;89;117,Cab Aggregator; IT Services Company; SaaS / App Business; Software Company; Web Hosting Business; AI Services Company; Digital Signage Solutions,catalog_core_skill
+Integration,Technology & Data,Integration,,117,Digital Signage Solutions,catalog_core_skill
+Mobile App Development,Technology & Data,Programming,app development,4,App Development Studio,curated_extension
+Optimization,Technology & Data,Optimization,,72,Supply Chain Consultancy,catalog_core_skill
+Piloting,Technology & Data,Piloting,Flying,25;105,Drone Services; Drone Photography Services,catalog_core_skill
+Programming,Technology & Data,Programming,,4,App Development Studio,catalog_core_skill
+Prototyping,Technology & Data,Prototyping,,107,3D Printing Lab,catalog_core_skill
+Testing,Technology & Data,Testing,,4,App Development Studio,catalog_core_skill
+UI/UX Design,Technology & Data,UX,UI design; UX design; user experience; user interface,4,App Development Studio,curated_extension
+Web Development,Technology & Data,Development,website development,43;61;67;83;89,IT Services Company; SaaS / App Business; Software Company; Web Hosting Business; AI Services Company,curated_extension
+Appliance Repair,Trades & Manufacturing,Diagnostics,home appliance repair,58,Repair & Service Center,curated_extension
+Carpentry,Trades & Manufacturing,Carpentry,building,86;118,Wood Furniture Unit; Art Workshop Studio,catalog_core_skill
+Diagnostics,Trades & Manufacturing,Diagnostics,Diagnosis,49;58;111;116,Mobile Repair Shop; Repair & Service Center; Solar Panel Maintenance; Second-Hand Electronics Store,catalog_core_skill
+Electrical,Trades & Manufacturing,Electrical,Solar,98;111,Green Energy Installation; Solar Panel Maintenance,catalog_core_skill
+Estimation,Trades & Manufacturing,Estimation,,18;27,Construction Contracting; Electrical Contracting,catalog_core_skill
+Finishing,Trades & Manufacturing,Finishing,,86,Wood Furniture Unit,catalog_core_skill
+Formulation,Trades & Manufacturing,Formulation,Chemical,90,Bio Fertilizer Unit,catalog_core_skill
+Maintenance,Trades & Manufacturing,Maintenance,Hardware; machine; setup,3;8;80;98;101;107;117,Agri Equipment Rental; Bicycle Rental; Vehicle Rental; Green Energy Installation; EV Charging Point; 3D Printing Lab; Digital Signage Solutions,catalog_core_skill
+Preventive Maintenance,Trades & Manufacturing,Maintenance,planned maintenance,3;80;101;107,Agri Equipment Rental; Vehicle Rental; EV Charging Point; 3D Printing Lab,curated_extension
+Processing,Trades & Manufacturing,Processing,,60;88,Rice Mill; Agro Processing Unit,catalog_core_skill
+Production,Trades & Manufacturing,Production,,30;37;47,Fabrication Unit; Garment Manufacturing; Manufacturing Unit,catalog_core_skill
+Quality Control,Trades & Manufacturing,Quality Control,consistency; Control; purity; Qa; QC; Quality; Quality Assurance; Quality Inspection; Quality Management; Temperature,9;16;30;37;44;56;67;75;95;102;127,Blog Website; Cold Storage; Fabrication Unit; Garment Manufacturing; Jewellery Manufacturing; Printing Press; Software Company; Trading / Investment; Export Handicrafts; Home Cleaning Service; Farm Produce Reselling,catalog_core_skill
+Safety,Trades & Manufacturing,Safety,,7;24;27;70;111,Battery Recycling Unit; Driving School; Electrical Contracting; Storage Warehouse; Solar Panel Maintenance,catalog_core_skill
+Sewing,Trades & Manufacturing,Production,garment construction,37,Garment Manufacturing,curated_extension
+Solar Installation,Trades & Manufacturing,Electrical,PV installation,98;111,Green Energy Installation; Solar Panel Maintenance,curated_extension
+Soldering,Trades & Manufacturing,Soldering,,49,Mobile Repair Shop,catalog_core_skill
+Standardization,Trades & Manufacturing,Standardization,,53,Packaged Food Brand,catalog_core_skill
+Upholstery,Trades & Manufacturing,Finishing,furniture upholstery,86,Wood Furniture Unit,curated_extension
+Vehicle Detailing,Trades & Manufacturing,Vehicle Detailing,Detailing; Vehicle,79;110;122,Used Car Dealership; Mobile Car Wash; Motorcycle Wash & Detailing,catalog_core_skill
+Welding,Trades & Manufacturing,Welding,,30,Fabrication Unit,catalog_core_skill
+Wiring,Trades & Manufacturing,Wiring,,27,Electrical Contracting,catalog_core_skill
+Coordination,Logistics & Operations,Coordination,,84,Wedding Planning,catalog_core_skill
+Customs Documentation,Logistics & Operations,Documentation,customs clearance,29,Export Import Business,curated_extension
+Delivery,Logistics & Operations,Delivery,Speed,34;43;71,Freelancing; IT Services Company; Street Food Stall,catalog_core_skill
+Distribution,Logistics & Operations,Distribution,,108,Podcast Production Studio,catalog_core_skill
+Fleet Management,Logistics & Operations,Logistics,vehicle fleet,12;100,Cab Aggregator; Agriculture / Dairy / Poultry,curated_extension
+Logistics,Logistics & Operations,Logistics,,12;13;20;60;100;113,Cab Aggregator; Catering Service; Courier Franchise; Rice Mill; Agriculture / Dairy / Poultry; Meal Prep Subscription,catalog_core_skill
+Packaging,Logistics & Operations,Packaging,,14;121;123,Cloud Kitchen; Home-Based Packed Meals / Ulam Service; Kakanin & Native Delicacies,catalog_core_skill
+Procurement,Logistics & Operations,Sourcing,purchasing,26;39;51;74;85;93;106,E-Commerce Store; Handicrafts Business; Online Reselling; Textile Trading; Wholesale Distribution; Eco Friendly Products; Organic Store,curated_extension
+Route Optimization,Logistics & Operations,Routing,route planning,46;76;115,Logistics Company; Transport Business; Mini Logistics Hub,curated_extension
+Routing,Logistics & Operations,Routing,Route,46;76;115,Logistics Company; Transport Business; Mini Logistics Hub,catalog_core_skill
+Scheduling,Logistics & Operations,Scheduling,,3;102,Agri Equipment Rental; Home Cleaning Service,catalog_core_skill
+Sourcing,Logistics & Operations,Sourcing,materials; Supply,26;39;51;74;85;93;106;119,E-Commerce Store; Handicrafts Business; Online Reselling; Textile Trading; Wholesale Distribution; Eco Friendly Products; Organic Store; Recruitment Boutique,catalog_core_skill
+Storage,Logistics & Operations,Storage,,88,Agro Processing Unit,catalog_core_skill
+Tracking,Logistics & Operations,Tracking,,20;115,Courier Franchise; Mini Logistics Hub,catalog_core_skill
+Warehouse Management,Logistics & Operations,Inventory Management,warehouse operations,16;70;115,Cold Storage; Storage Warehouse; Mini Logistics Hub,curated_extension
+Accounting,Business & Finance,Basic Bookkeeping,financial accounting,120,Sari-sari Store,curated_extension
+Basic Bookkeeping,Business & Finance,Basic Bookkeeping,,120,Sari-sari Store,catalog_core_skill
+Billing,Business & Finance,Billing,,101;106,EV Charging Point; Organic Store,catalog_core_skill
+Budgeting,Business & Finance,Costing,budget planning,14;76,Cloud Kitchen; Transport Business,curated_extension
+Compliance,Business & Finance,Compliance,Risk,7;29;69;75;96,Battery Recycling Unit; Export Import Business; Stock Trading Firm; Trading / Investment; Financial Advisory,catalog_core_skill
+Consulting,Business & Finance,Consulting,,89,AI Services Company,catalog_core_skill
+Costing,Business & Finance,Costing,Cost; Cost Management,14;76,Cloud Kitchen; Transport Business,catalog_core_skill
+Documentation,Business & Finance,Documentation,Document Formatting,11;29;94;124,Business Consultancy; Export Import Business; Education Consultancy; Printing & Photocopy Services,catalog_core_skill
+Evaluation,Business & Finance,Evaluation,,79,Used Car Dealership,catalog_core_skill
+Invoicing,Business & Finance,Billing,invoice preparation,101;106,EV Charging Point; Organic Store,curated_extension
+Management,Business & Finance,Management,mgmt,10;18;42;59;69;83;85;100;104;114;119,Bookstore; Construction Contracting; Hostel / PG; Restaurant; Stock Trading Firm; Web Hosting Business; Wholesale Distribution; Agriculture / Dairy / Poultry; Custom T-Shirt Printing; Language Training Center; Recruitment Boutique,catalog_core_skill
+Market Research,Business & Finance,Analytics,customer research,23;66;74;75,Digital Marketing Agency; Social Media Agency; Textile Trading; Trading / Investment,curated_extension
+Operations,Business & Finance,Operations,execution; Facility; Handling; operation; ops; Order; Process,7;8;12;35;41;42;45;48;54;65;72;97;101;103;104;107;109;112,Battery Recycling Unit; Bicycle Rental; Cab Aggregator; Franchise Business; Home Interior Services; Hostel / PG; Laundry Services; Medical Store; Pet Care Services; Small Shop / Retail; Supply Chain Consultancy; Franchise Food Outlet; EV Charging Point; Pet Grooming Studio; Custom T-Shirt Printing; 3D Printing Lab; Online Tutoring Platform; Event Decor Service,catalog_core_skill
+Planning,Business & Finance,Planning,Event,13;21;28;46;47;52;76;77;84;96;112;113,Catering Service; Dairy Farm; Event Management; Logistics Company; Manufacturing Unit; Organic Farming; Transport Business; Travel Agency; Wedding Planning; Financial Advisory; Event Decor Service; Meal Prep Subscription,catalog_core_skill
+Project,Business & Finance,Project,,18,Construction Contracting,catalog_core_skill
+SOP,Business & Finance,SOP,,35;97,Franchise Business; Franchise Food Outlet,catalog_core_skill
+Strategy,Business & Finance,Strategy,Innovation; Solving,11;68;69;99,Business Consultancy; Startup; Stock Trading Firm; HR Consulting,catalog_core_skill
+Taxation,Business & Finance,Compliance,tax preparation; tax compliance,29;96,Export Import Business; Financial Advisory,curated_extension
+Client Management,Customer & People,Client Management,Client,34;119,Freelancing; Recruitment Boutique,catalog_core_skill
+Communication,Customer & People,Communication,community; Culture,10;34;91;109;118,Bookstore; Freelancing; Call Center; Online Tutoring Platform; Art Workshop Studio,catalog_core_skill
+Complaint Handling,Customer & People,Customer Service,customer complaints,20;82;120,Courier Franchise; Water Purifier Sales; Sari-sari Store,curated_extension
+Conflict Resolution,Customer & People,Customer Service,dispute handling,65;120;122,Small Shop / Retail; Sari-sari Store; Motorcycle Wash & Detailing,curated_extension
+Customer Service,Customer & People,Customer Service,Care; Customer; Service; Support; Trust,8;20;21;22;33;36;43;58;59;61;65;73;82;102;103;110;120;122;126,Bicycle Rental; Courier Franchise; Dairy Farm; Day Care Center; Food Truck; Fruit Juice Center; IT Services Company; Repair & Service Center; Restaurant; SaaS / App Business; Small Shop / Retail; Telecom Franchise; Water Purifier Sales; Home Cleaning Service; Pet Grooming Studio; Mobile Car Wash; Sari-sari Store; Motorcycle Wash & Detailing; Seedling Nursery & Plant Care,catalog_core_skill
+Hiring,Customer & People,Hiring,Placement,64;99,Skill Training Institute; HR Consulting,catalog_core_skill
+Interviewing,Customer & People,Interviewing,,119,Recruitment Boutique,catalog_core_skill
+Leadership,Customer & People,Leadership,,68,Startup,catalog_core_skill
+Negotiation,Customer & People,Negotiation,,28;57;116;127,Event Management; Real Estate Brokerage; Second-Hand Electronics Store; Farm Produce Reselling,catalog_core_skill
+Onboarding,Customer & People,Onboarding,,73,Telecom Franchise,catalog_core_skill
+Retention,Customer & People,Retention,,32,Fitness Gym,catalog_core_skill
+Staff Scheduling,Customer & People,Scheduling,shift scheduling,3;102,Agri Equipment Rental; Home Cleaning Service,curated_extension
+Team Leadership,Customer & People,Leadership,team management,68,Startup,curated_extension
+Career Coaching,Education & Training,Guidance,career guidance,94,Education Consultancy,curated_extension
+Classroom Management,Education & Training,Teaching,student management,15;17;78;114,Coaching Institute; Computer Training Center; Tuition Center; Language Training Center,curated_extension
+Curriculum,Education & Training,Curriculum,Syllabus,15;17;64;114,Coaching Institute; Computer Training Center; Skill Training Institute; Language Training Center,catalog_core_skill
+Guidance,Education & Training,Guidance,,94,Education Consultancy,catalog_core_skill
+Instructional Design,Education & Training,Curriculum,course design,15;64;114,Coaching Institute; Skill Training Institute; Language Training Center,curated_extension
+Lesson Planning,Education & Training,Curriculum,lesson plans,15;17;64;114,Coaching Institute; Computer Training Center; Skill Training Institute; Language Training Center,curated_extension
+Teaching,Education & Training,Teaching,,15;17;24;50;78;109;114;118,Coaching Institute; Computer Training Center; Driving School; Online Course Platform; Tuition Center; Online Tutoring Platform; Language Training Center; Art Workshop Studio,catalog_core_skill
+Training,Education & Training,Training,Knowledge; reading,10;32;40;62;63,Bookstore; Fitness Gym; Hardware Store; Security Services; Seed Distribution,catalog_core_skill
+Cleaning,Health & Personal Care,Cleaning,,122,Motorcycle Wash & Detailing,catalog_core_skill
+Grooming,Health & Personal Care,Grooming,,103,Pet Grooming Studio,catalog_core_skill
+Hygiene,Health & Personal Care,Hygiene,Medicine,6;22;36;45;48;71;103,Bakery; Day Care Center; Fruit Juice Center; Laundry Services; Medical Store; Street Food Stall; Pet Grooming Studio,catalog_core_skill
+Infection Control,Health & Personal Care,Hygiene,disinfection,22;45;48;103,Day Care Center; Laundry Services; Medical Store; Pet Grooming Studio,curated_extension
+Personal Grooming,Health & Personal Care,Grooming,grooming services,103,Pet Grooming Studio,curated_extension
+Pet First Aid,Health & Personal Care,Animal Care,animal first aid,54,Pet Care Services,curated_extension
+Sanitation,Health & Personal Care,Hygiene,sanitization,36;45;48,Fruit Juice Center; Laundry Services; Medical Store,curated_extension

@@ -1,0 +1,400 @@
+{
+  "status": "ok",
+  "generated_at": "2026-10-20T09:31:16.623582+00:00",
+  "k": 5,
+  "benchmark": {
+    "profiles": 30,
+    "labels": 3810,
+    "label_scope": "full_catalog",
+    "full_catalog_profile_count": 30,
+    "profile_file": "C:\\projs\\small-business-recommender\\data\\eval\\recommendation_profiles.csv",
+    "relevance_file": "data\\eval\\recommendation_relevance_draft_full.csv"
+  },
+  "candidate_count": 27,
+  "selection_metric": "ndcg_at_5",
+  "baseline": {
+    "weights": {
+      "capital": 0.28,
+      "skills": 0.28,
+      "experience": 0.11,
+      "setup": 0.11,
+      "time": 0.05,
+      "location": 0.11,
+      "success": 0.0,
+      "team": 0.06
+    },
+    "full_metrics": {
+      "precision_at_5": 0.4461,
+      "recall_at_5": 0.071,
+      "ndcg_at_5": 0.5166,
+      "average_precision_at_5": 0.4151,
+      "relevant_count": 64,
+      "labeled_count": 133
+    },
+    "cv_metrics": {
+      "precision_at_5": 0.4461,
+      "recall_at_5": 0.071,
+      "ndcg_at_5": 0.5166,
+      "average_precision_at_5": 0.4151,
+      "relevant_count": 64,
+      "labeled_count": 133
+    }
+  },
+  "selected": {
+    "weights": {
+      "capital": 0.2403433476,
+      "skills": 0.2403433476,
+      "experience": 0.1180257511,
+      "setup": 0.1180257511,
+      "time": 0.0536480687,
+      "location": 0.1652360515,
+      "success": 0.0,
+      "team": 0.0643776824
+    },
+    "full_metrics": {
+      "precision_at_5": 0.4661,
+      "recall_at_5": 0.0752,
+      "ndcg_at_5": 0.5343,
+      "average_precision_at_5": 0.441,
+      "relevant_count": 67,
+      "labeled_count": 133
+    }
+  },
+  "cv": {
+    "folds": 5,
+    "seed": 42,
+    "aggregate_test": {
+      "precision_at_5": 0.4594,
+      "recall_at_5": 0.0735,
+      "ndcg_at_5": 0.5296,
+      "average_precision_at_5": 0.4367,
+      "relevant_count": 66,
+      "labeled_count": 133
+    },
+    "baseline_test": {
+      "precision_at_5": 0.4461,
+      "recall_at_5": 0.071,
+      "ndcg_at_5": 0.5166,
+      "average_precision_at_5": 0.4151,
+      "relevant_count": 64,
+      "labeled_count": 133
+    },
+    "fold_details": [
+      {
+        "fold": 1,
+        "train_profiles": [
+          "P01",
+          "P02",
+          "P03",
+          "P04",
+          "P05",
+          "P06",
+          "P07",
+          "P08",
+          "P11",
+          "P12",
+          "P13",
+          "P14",
+          "P15",
+          "P17",
+          "P19",
+          "P20",
+          "P21",
+          "P22",
+          "P23",
+          "P25",
+          "P26",
+          "P27",
+          "P29",
+          "P30"
+        ],
+        "test_profiles": [
+          "P09",
+          "P10",
+          "P16",
+          "P18",
+          "P24",
+          "P28"
+        ],
+        "selected_weights": {
+          "capital": 0.2403433476,
+          "skills": 0.2403433476,
+          "experience": 0.1180257511,
+          "setup": 0.1180257511,
+          "time": 0.0536480687,
+          "location": 0.1652360515,
+          "success": 0.0,
+          "team": 0.0643776824
+        },
+        "train_metrics": {
+          "precision_at_5": 0.4625,
+          "recall_at_5": 0.0815,
+          "ndcg_at_5": 0.5461,
+          "average_precision_at_5": 0.4311,
+          "relevant_count": 54,
+          "labeled_count": 109
+        },
+        "test_metrics": {
+          "precision_at_5": 0.4806,
+          "recall_at_5": 0.0502,
+          "ndcg_at_5": 0.4872,
+          "average_precision_at_5": 0.4806,
+          "relevant_count": 13,
+          "labeled_count": 24
+        }
+      },
+      {
+        "fold": 2,
+        "train_profiles": [
+          "P02",
+          "P03",
+          "P04",
+          "P06",
+          "P07",
+          "P08",
+          "P09",
+          "P10",
+          "P11",
+          "P12",
+          "P14",
+          "P15",
+          "P16",
+          "P18",
+          "P19",
+          "P20",
+          "P21",
+          "P22",
+          "P23",
+          "P24",
+          "P26",
+          "P27",
+          "P28",
+          "P30"
+        ],
+        "test_profiles": [
+          "P01",
+          "P05",
+          "P13",
+          "P17",
+          "P25",
+          "P29"
+        ],
+        "selected_weights": {
+          "capital": 0.2403433476,
+          "skills": 0.2403433476,
+          "experience": 0.1180257511,
+          "setup": 0.1180257511,
+          "time": 0.0536480687,
+          "location": 0.1652360515,
+          "success": 0.0,
+          "team": 0.0643776824
+        },
+        "train_metrics": {
+          "precision_at_5": 0.541,
+          "recall_at_5": 0.0772,
+          "ndcg_at_5": 0.5959,
+          "average_precision_at_5": 0.5138,
+          "relevant_count": 62,
+          "labeled_count": 111
+        },
+        "test_metrics": {
+          "precision_at_5": 0.1667,
+          "recall_at_5": 0.0672,
+          "ndcg_at_5": 0.2879,
+          "average_precision_at_5": 0.15,
+          "relevant_count": 5,
+          "labeled_count": 22
+        }
+      },
+      {
+        "fold": 3,
+        "train_profiles": [
+          "P01",
+          "P04",
+          "P05",
+          "P07",
+          "P08",
+          "P09",
+          "P10",
+          "P11",
+          "P13",
+          "P15",
+          "P16",
+          "P17",
+          "P18",
+          "P19",
+          "P20",
+          "P21",
+          "P22",
+          "P24",
+          "P25",
+          "P26",
+          "P27",
+          "P28",
+          "P29",
+          "P30"
+        ],
+        "test_profiles": [
+          "P02",
+          "P03",
+          "P06",
+          "P12",
+          "P14",
+          "P23"
+        ],
+        "selected_weights": {
+          "capital": 0.2403433476,
+          "skills": 0.2403433476,
+          "experience": 0.1180257511,
+          "setup": 0.1180257511,
+          "time": 0.0536480687,
+          "location": 0.1652360515,
+          "success": 0.0,
+          "team": 0.0643776824
+        },
+        "train_metrics": {
+          "precision_at_5": 0.491,
+          "recall_at_5": 0.0743,
+          "ndcg_at_5": 0.5433,
+          "average_precision_at_5": 0.4679,
+          "relevant_count": 56,
+          "labeled_count": 103
+        },
+        "test_metrics": {
+          "precision_at_5": 0.3667,
+          "recall_at_5": 0.0788,
+          "ndcg_at_5": 0.4981,
+          "average_precision_at_5": 0.3333,
+          "relevant_count": 11,
+          "labeled_count": 30
+        }
+      },
+      {
+        "fold": 4,
+        "train_profiles": [
+          "P01",
+          "P02",
+          "P03",
+          "P05",
+          "P06",
+          "P07",
+          "P08",
+          "P09",
+          "P10",
+          "P11",
+          "P12",
+          "P13",
+          "P14",
+          "P15",
+          "P16",
+          "P17",
+          "P18",
+          "P20",
+          "P21",
+          "P23",
+          "P24",
+          "P25",
+          "P28",
+          "P29"
+        ],
+        "test_profiles": [
+          "P04",
+          "P19",
+          "P22",
+          "P26",
+          "P27",
+          "P30"
+        ],
+        "selected_weights": {
+          "capital": 0.2654028436,
+          "skills": 0.2654028436,
+          "experience": 0.1303317536,
+          "setup": 0.1303317536,
+          "time": 0.0592417062,
+          "location": 0.0781990521,
+          "success": 0.0,
+          "team": 0.0710900474
+        },
+        "train_metrics": {
+          "precision_at_5": 0.4493,
+          "recall_at_5": 0.0691,
+          "ndcg_at_5": 0.515,
+          "average_precision_at_5": 0.4306,
+          "relevant_count": 51,
+          "labeled_count": 103
+        },
+        "test_metrics": {
+          "precision_at_5": 0.5333,
+          "recall_at_5": 0.0931,
+          "ndcg_at_5": 0.6099,
+          "average_precision_at_5": 0.4944,
+          "relevant_count": 16,
+          "labeled_count": 30
+        }
+      },
+      {
+        "fold": 5,
+        "train_profiles": [
+          "P01",
+          "P02",
+          "P03",
+          "P04",
+          "P05",
+          "P06",
+          "P09",
+          "P10",
+          "P12",
+          "P13",
+          "P14",
+          "P16",
+          "P17",
+          "P18",
+          "P19",
+          "P22",
+          "P23",
+          "P24",
+          "P25",
+          "P26",
+          "P27",
+          "P28",
+          "P29",
+          "P30"
+        ],
+        "test_profiles": [
+          "P07",
+          "P08",
+          "P11",
+          "P15",
+          "P20",
+          "P21"
+        ],
+        "selected_weights": {
+          "capital": 0.2654028436,
+          "skills": 0.2654028436,
+          "experience": 0.1303317536,
+          "setup": 0.1303317536,
+          "time": 0.0592417062,
+          "location": 0.0781990521,
+          "success": 0.0,
+          "team": 0.0710900474
+        },
+        "train_metrics": {
+          "precision_at_5": 0.3951,
+          "recall_at_5": 0.0728,
+          "ndcg_at_5": 0.4763,
+          "average_precision_at_5": 0.3729,
+          "relevant_count": 46,
+          "labeled_count": 106
+        },
+        "test_metrics": {
+          "precision_at_5": 0.75,
+          "recall_at_5": 0.0784,
+          "ndcg_at_5": 0.765,
+          "average_precision_at_5": 0.725,
+          "relevant_count": 21,
+          "labeled_count": 27
+        }
+      }
+    ]
+  }
+}

@@ -10,6 +10,7 @@ from sklearn.pipeline import make_pipeline
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from config import Config
+from ml.success_features import APP_FEATURES
 
 def get_current_metrics():
     path = os.path.join(Config.ML_MODELS_PATH, "success_metrics.pkl")
@@ -27,7 +28,12 @@ def run_model_comparison(data_path=None):
         print("Target column missing.")
         return None
 
-    X = pd.get_dummies(df.drop(columns=[target]), drop_first=True)
+    missing = [column for column in APP_FEATURES if column not in df.columns]
+    if missing:
+        print(f"Missing app-only success features: {missing}")
+        return None
+
+    X = df[APP_FEATURES]
     y = df[target]
 
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
@@ -41,7 +47,15 @@ def run_model_comparison(data_path=None):
         )
     }
 
-    scoring = ["accuracy", "precision", "recall", "f1", "roc_auc"]
+    scoring = {
+        "accuracy": "accuracy",
+        "precision": "precision",
+        "recall": "recall",
+        "f1": "f1",
+        "roc_auc": "roc_auc",
+        "pr_auc": "average_precision",
+        "brier": "neg_brier_score",
+    }
     comparison_table = []
 
     for name, model in candidate_models.items():
@@ -53,6 +67,8 @@ def run_model_comparison(data_path=None):
             "recall": round(float(scores["test_recall"].mean()), 3),
             "F1": round(float(scores["test_f1"].mean()), 3),
             "AUC": round(float(scores["test_roc_auc"].mean()), 3),
+            "PR-AUC": round(float(scores["test_pr_auc"].mean()), 3),
+            "Brier": round(float(-scores["test_brier"].mean()), 3),
             "F1 std": f"±{round(float(scores['test_f1'].std()), 3)}"
         })
 

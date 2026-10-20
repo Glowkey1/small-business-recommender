@@ -38,8 +38,8 @@
 <div class="card card-editorial" style="margin-bottom: 24px;">
   <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
     <div>
-      <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // LOGISTIC REGRESSION</span>
-      <h3 style="margin: 4px 0 0 0;">5-Fold Stratified Cross-Validation Results</h3>
+      <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // APP-ONLY FEATURES</span>
+      <h3 style="margin: 4px 0 0 0;">Repeated Stratified Cross-Validation Results</h3>
     </div>
     <form action="/admin/retrain" method="POST">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -47,32 +47,144 @@
     </form>
   </div>
   <p style="font-size: 13px; color: var(--color-ink-muted); margin-bottom: 16px;">
-    The success model is one component of the hybrid recommendation system and does not represent the accuracy of the complete recommender.
+    This model uses only inputs the app actually collects. It is advisory, has a ranking weight of 0.0, and does not represent the accuracy of the complete recommender.
   </p>
 
-  {% if metrics_data and metrics_data.five_fold_cross_validation %}
-    {% set cv = metrics_data.five_fold_cross_validation %}
+  {% set cv = metrics_data.get('cross_validation', {}) if metrics_data else {} %}
+  {% set holdout = metrics_data.get('holdout', {}) if metrics_data else {} %}
+  {% set threshold = metrics_data.get('decision_threshold', {}) if metrics_data else {} %}
+  {% set selection = metrics_data.get('model_selection', {}) if metrics_data else {} %}
+
+  {% if cv %}
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; font-size: 13px;">
+      <span><strong>Model:</strong> {{ metrics_data.get('model_name', 'Unavailable') }}</span>
+      <span><strong>Version:</strong> {{ metrics_data.get('model_version', '—') }}</span>
+      <span><strong>Threshold:</strong> {{ ((threshold.get('selected', 0.5)) * 100) | round(1) }}%</span>
+    </div>
     <div class="grid-4" style="text-align: center;">
       <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Accuracy</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV Accuracy</div>
         <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.accuracy_mean * 100) | round(1) }}% ± {{ (cv.accuracy_std * 100) | round(2) }}%</div>
       </div>
       <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Precision</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV Precision</div>
         <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.precision_mean * 100) | round(1) }}% ± {{ (cv.precision_std * 100) | round(2) }}%</div>
       </div>
       <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV Recall</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV Recall</div>
         <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ (cv.recall_mean * 100) | round(1) }}% ± {{ (cv.recall_std * 100) | round(2) }}%</div>
       </div>
       <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">5-Fold CV F1-Score</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV F1-Score</div>
         <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ (cv.f1_mean * 100) | round(1) }}% ± {{ (cv.f1_std * 100) | round(2) }}%</div>
       </div>
     </div>
+    <div class="grid-4" style="text-align: center; margin-top: 16px;">
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV ROC-AUC</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.roc_auc_mean * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV PR-AUC</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.pr_auc_mean * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV Brier</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ cv.brier_mean }}</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Holdout F1 @ Threshold</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (holdout.get('threshold_selected', {}).get('f1', 0) * 100) | round(1) }}%</div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: var(--color-ink-muted); margin-top: 14px; margin-bottom: 0;">
+      Selected by {{ selection.get('selection_metric', 'nested CV') }}; trained on {{ metrics_data.get('dataset_size', 0) }} records ({{ metrics_data.get('successful_records', 0) }} success / {{ metrics_data.get('not_successful_records', 0) }} non-success). Holdout: {{ holdout.get('size', 0) }} records. The training dataset appears to be UMKM/Indonesian MSME data, so treat these metrics as internal validation, not Philippine-specific accuracy.
+    </p>
   {% else %}
     <p>Model metrics file not loaded. Click 'Retrain Success Model' above.</p>
   {% endif %}
+</div>
+
+<div class="card card-editorial" style="margin-bottom: 24px;">
+  <span class="mono-tag">RECOMMENDATION RANKING // LABELED BENCHMARK</span>
+  <h3 style="margin: 4px 0 12px 0;">Ranking Evaluation</h3>
+
+  {% set ranking = recommendation_metrics_data.get('metrics', {}).get('aggregate', {}) if recommendation_metrics_data else {} %}
+  {% set ranking_k = recommendation_metrics_data.get('k', 5) if recommendation_metrics_data else 5 %}
+  {% set labeling = recommendation_metrics_data.get('labeling', {}) if recommendation_metrics_data else {} %}
+  {% set proxy = recommendation_metrics_data.get('proxy_metrics', {}) if recommendation_metrics_data else {} %}
+
+  {% if recommendation_metrics_data and recommendation_metrics_data.get('status') == 'ok' %}
+    <p style="font-size: 13px; color: var(--color-ink-muted); margin-bottom: 14px;">
+      Benchmark: {{ recommendation_metrics_data.get('profile_count', 0) }} profiles, top-{{ ranking_k }}. Relevance threshold: {{ recommendation_metrics_data.get('relevance_threshold', 1) }}+.
+      Label scope: {{ recommendation_metrics_data.get('label_scope', '—') }}.
+      Recommender version: {{ recommendation_metrics_data.get('recommender_version', '—') }}.
+    </p>
+    {% if recommendation_metrics_data.get('label_scope') == 'partial_labeled_candidates' %}
+      <div class="alert alert-info" style="font-size: 12.5px; margin-bottom: 14px;">
+        Recall and NDCG use only the labeled candidate scope. Label the full catalog or use the draft full-catalog pass before treating them as absolute metrics.
+      </div>
+    {% endif %}
+    <div class="grid-4" style="text-align: center;">
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Precision@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (ranking.get('precision_at_' ~ ranking_k, 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Recall@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (ranking.get('recall_at_' ~ ranking_k, 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">NDCG@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--color-brand); margin-top: 4px;">{{ (ranking.get('ndcg_at_' ~ ranking_k, 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">MAP@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (ranking.get('average_precision_at_' ~ ranking_k, 0) * 100) | round(1) }}%</div>
+      </div>
+    </div>
+    <div class="grid-3" style="text-align: center; margin-top: 16px;">
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Catalog Coverage@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (ranking.get('coverage_at_k', 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Category Diversity@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (ranking.get('category_diversity_at_k', 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Budget Feasibility@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (ranking.get('budget_feasibility_at_k', 0) * 100) | round(1) }}%</div>
+      </div>
+    </div>
+  {% elif recommendation_metrics_data %}
+    <div class="alert alert-info" style="font-size: 13.5px; margin-bottom: 14px;">
+      <strong>Benchmark not ready:</strong> {{ recommendation_metrics_data.get('message', 'Relevance labels are incomplete.') }}
+      Labeled {{ labeling.get('labeled_rows', 0) }}/{{ labeling.get('worksheet_rows', 0) }} worksheet rows.
+    </div>
+    <div class="grid-3" style="text-align: center;">
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Catalog Coverage@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (proxy.get('coverage_at_k', 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Category Diversity@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (proxy.get('category_diversity_at_k', 0) * 100) | round(1) }}%</div>
+      </div>
+      <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Budget Feasibility@{{ ranking_k }}</div>
+        <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (proxy.get('budget_feasibility_at_k', 0) * 100) | round(1) }}%</div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: var(--color-ink-muted); margin-top: 12px; margin-bottom: 0;">
+      Complete <code>data/eval/recommendation_relevance.csv</code>, then run <code>python evaluate_recommender.py</code> to unlock precision, recall, NDCG, and MAP.
+    </p>
+  {% else %}
+    <p style="font-size: 13.5px; color: var(--color-ink-muted);">
+      No ranking evaluation yet. Generate the benchmark with <code>python create_recommendation_benchmark.py</code>.
+    </p>
+  {% endif %}
+
 </div>
 
 <div class="card card-editorial" style="background: #eaf3ed; border-left: 6px solid var(--color-brand);">

@@ -6,9 +6,10 @@ from models.user import User
 
 @pytest.fixture
 def app_instance():
-    app = create_app()
-    app.config["TESTING"] = False  # Enable real CSRF checks
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    app = create_app(test_config={
+        "TESTING": False,  # Enable real CSRF checks
+        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+    })
 
     with app.app_context():
         db.create_all()

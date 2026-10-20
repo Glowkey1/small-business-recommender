@@ -1,0 +1,40 @@
+{
+  "weights": {
+    "capital": 0.2403433476,
+    "skills": 0.2403433476,
+    "experience": 0.1180257511,
+    "setup": 0.1180257511,
+    "time": 0.0536480687,
+    "location": 0.1652360515,
+    "success": 0.0,
+    "team": 0.0643776824
+  },
+  "selected_by": "profile-level 5-fold CV; full-data ndcg_at_5",
+  "generated_at": "2026-10-20T09:31:16.623582+00:00",
+  "candidate_count": 27,
+  "cv_test_metrics": {
+    "precision_at_5": 0.4594,
+    "recall_at_5": 0.0735,
+    "ndcg_at_5": 0.5296,
+    "average_precision_at_5": 0.4367,
+    "relevant_count": 66,
+    "labeled_count": 133
+  },
+  "baseline_cv_test_metrics": {
+    "precision_at_5": 0.4461,
+    "recall_at_5": 0.071,
+    "ndcg_at_5": 0.5166,
+    "average_precision_at_5": 0.4151,
+    "relevant_count": 64,
+    "labeled_count": 133
+  },
+  "full_metrics": {
+    "precision_at_5": 0.4661,
+    "recall_at_5": 0.0752,
+    "ndcg_at_5": 0.5343,
+    "average_precision_at_5": 0.441,
+    "relevant_count": 67,
+    "labeled_count": 133
+  },
+  "report": "models\\recommendation_tuning_report_draft.json"
+}

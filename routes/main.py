@@ -4,4 +4,5 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def landing():
-    return render_template("main/landing.html")
+    from routes.recommendation import coverage_context
+    return render_template("main/landing.html", **coverage_context())

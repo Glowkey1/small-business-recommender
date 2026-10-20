@@ -6,7 +6,7 @@
   {% for s in saved %}
     <div class="history-item">
       <strong>{{ s.business.business_type }}</strong>
-      <a href="/pathway/{{ s.business.business_type }}" class="btn btn-sm">View Pathway</a>
+      <a href="{{ url_for('rec.pathway', biz_id=s.business_id) }}" class="btn btn-sm">View Pathway</a>
     </div>
   {% else %}
     <p>No saved businesses yet.</p>

@@ -39,6 +39,14 @@ def metrics():
         except Exception as e:
             logger.error(f"Error reading model metrics JSON: {e}")
 
+    recommendation_metrics_data = {}
+    if Config.RECOMMENDATION_METRICS_JSON.exists():
+        try:
+            with open(Config.RECOMMENDATION_METRICS_JSON, "r", encoding="utf-8") as f:
+                recommendation_metrics_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Error reading recommendation metrics JSON: {e}")
+
     dataset_counts = {
         "business_ideas": 119,
         "raw_skills": 163,
@@ -55,10 +63,11 @@ def metrics():
     return render_template(
         "admin/metrics.html",
         metrics_data=metrics_data,
+        recommendation_metrics_data=recommendation_metrics_data,
         dataset_counts=dataset_counts,
         total_votes=total_votes,
         positive_votes=positive_votes,
-        live_accuracy=live_accuracy
+        live_accuracy=live_accuracy,
     )
 
 @admin_bp.route("/retrain", methods=["POST"])
@@ -68,7 +77,7 @@ def retrain():
     if res:
         from routes.recommendation import engine
         engine.success_service._load()
-        flash("Logistic Regression success prediction model retrained successfully.", "success")
+        flash("Calibrated app-only success prediction model retrained successfully.", "success")
     else:
         flash("Model retraining failed: Dataset 1 is missing, unreadable, or invalid.", "danger")
     return redirect(url_for("admin.metrics"))

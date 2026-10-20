@@ -55,6 +55,7 @@ class Config:
     FINAL_BUSINESSES_CSV = FINAL_PATH / "final_business_dataset.csv"
     FINAL_SKILLS_CSV = FINAL_PATH / "final_skill_dataset.csv"
     SKILL_MASTER_CSV = FINAL_PATH / "skill_master.csv"
+    SKILL_CATALOG_CSV = FINAL_PATH / "skill_catalog.csv"
     MUNICIPALITY_MARKET_CSV = PROCESSED_PATH / "municipality_market_features.csv"
     BUSINESSES_PSA_CSV = PROCESSED_PATH / "businesses_with_psa_population.csv"
     DATASET_1_CLEANED_CSV = PROCESSED_PATH / "dataset_1_cleaned.csv"
@@ -63,6 +64,10 @@ class Config:
 
     SUCCESS_MODEL_JOBLIB = MODELS_DIR / "success_model.joblib"
     SUCCESS_METRICS_JSON = MODELS_DIR / "model_metrics.json"
+    SUCCESS_MODEL_CARD_JSON = MODELS_DIR / "success_model_card.json"
+    RECOMMENDATION_METRICS_JSON = MODELS_DIR / "recommendation_metrics.json"
+    RECOMMENDATION_WEIGHTS_JSON = MODELS_DIR / "recommendation_weights.json"
+    RECOMMENDATION_TUNING_REPORT_JSON = MODELS_DIR / "recommendation_tuning_report.json"
 
     MAX_CAPITAL = 100_000_000.0
     ALLOWED_EXPERIENCE = ["Beginner", "Intermediate", "Experienced"]
@@ -82,12 +87,12 @@ class Config:
     }
 
     RECOMMENDATION_WEIGHTS = {
-        "capital": 0.26,
-        "skills": 0.25,
-        "experience": 0.10,
-        "setup": 0.10,
+        "capital": 0.28,
+        "skills": 0.28,
+        "experience": 0.11,
+        "setup": 0.11,
         "time": 0.05,
-        "location": 0.10,
-        "success": 0.08,
+        "location": 0.11,
+        "success": 0.0,
         "team": 0.06
     }

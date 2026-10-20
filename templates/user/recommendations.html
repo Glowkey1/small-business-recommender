@@ -15,20 +15,45 @@
 
 {% if not profile.skills or profile.skills | length == 0 %}
   <div class="alert alert-info" style="font-size: 13.5px; margin-bottom: 16px; border-left: 6px solid var(--color-brand);">
-    <strong>Tip:</strong> Select your skills so similar businesses can be separated.
+    <strong>Tip:</strong> Select your skills to see businesses that actually use them.
   </div>
 {% endif %}
 
 <div class="alert alert-info" style="font-size: 13.5px;">
-  <strong>Notice:</strong> Recommendation Score is a weighted match of your inputs, not a probability of success. Time compatibility is estimated from the business setup and operational complexity.
+  <strong>Notice:</strong> Recommendation Score is a weighted match of your inputs, not a probability of success. The relative model estimate is shown for context only and is not part of the ranking. Time compatibility is estimated from the business setup and operational complexity.
 </div>
 
+{% if recs %}
+  <div class="results-toolbar">
+    <label class="filter-toggle">
+      <input type="checkbox" id="affordableOnly">
+      <span>Affordable only</span>
+    </label>
+    <span class="results-count">
+      {{ recs|length }} {% if profile.skills %}skill-connected {% endif %}matches
+    </span>
+  </div>
+  {% if profile.skills and recs|length < 5 %}
+    <div class="alert alert-info" style="font-size: 13.5px;">
+      Showing {{ recs|length }} of 5: only these businesses connect to your selected skills.
+      Add another skill or clear skills to see budget-based ideas.
+    </div>
+  {% endif %}
+  <div id="affordableEmpty" class="alert alert-info" style="display: none;">
+    No affordable start-small matches in this result set. Uncheck the filter or adjust your capital.
+  </div>
+{% endif %}
+
 {% for r in recs %}
-  <div class="business-card">
+  <div class="business-card" data-affordable="{{ 'true' if r.micro_start_capital <= profile.capital else 'false' }}">
     <div class="biz-cost-col">
-      <div class="biz-cost-label">Required Capital</div>
-      <div class="biz-cost-val">₱{{ "{:,.0f}".format(r.min_capital) }}</div>
-      <div style="font-size: 12px; color: var(--color-ink-muted); margin-top: 4px;">{{ r.startup_cost }}</div>
+      <div class="biz-cost-label">Start Small</div>
+      <div class="biz-cost-val">₱{{ "{:,.0f}".format(r.micro_start_capital) }}</div>
+      {% if r.full_start_capital > r.micro_start_capital %}
+        <div style="font-size: 12px; color: var(--color-ink-muted); margin-top: 4px;">
+          Full setup: ₱{{ "{:,.0f}".format(r.full_start_capital) }}
+        </div>
+      {% endif %}
     </div>
 
     <div class="biz-main-col">
@@ -38,17 +63,36 @@
         {% if r.market_category %}
           <span class="badge" style="background: #fdf3e7; color: var(--color-accent); border-color: var(--color-accent);">OSM: {{ r.market_category }}</span>
         {% endif %}
-        {% if not r.affordable %}
-          <span class="badge" style="background: #fff3cd; color: #856404; border-color: #ffeeba;">Start small — budget gap ₱{{ "{:,.0f}".format(r.budget_gap) }}</span>
+        {% if r.micro_start_capital > profile.capital %}
+          <span class="badge" style="background: #fff3cd; color: #856404; border-color: #ffeeba;">Start small gap ₱{{ "{:,.0f}".format(r.micro_start_capital - profile.capital) }}</span>
+        {% elif r.full_start_capital > profile.capital %}
+          <span class="badge" style="background: #fdf3e7; color: var(--color-accent); border-color: var(--color-accent);">Full setup needs ₱{{ "{:,.0f}".format(r.full_start_capital - profile.capital) }} more</span>
         {% endif %}
       </div>
       <div class="biz-meta">
         Setup: <strong>{{ r.business_setup }}</strong> · Required Staff: <strong>{{ r.people_needed }}</strong> · Level: <strong>{{ r.experience_level }}</strong>
       </div>
 
+      {% if r.start_small_description %}
+        <div class="start-small-note"><strong>Start small:</strong> {{ r.start_small_description }}</div>
+      {% endif %}
+
+      {% set matched_count = r.matched_skills|length %}
+      {% set core_count = matched_count + (r.skill_gaps|length) %}
       <div style="margin: 6px 0;">
-        {% if r.matched_skills %}
-          <div class="skills-match">✓ Matching Skills: {{ r.matched_skills | join(', ') }}</div>
+        {% if profile.skills %}
+          <div class="skills-match">✓ Matched {{ matched_count }} of {{ core_count }} core skills{% if matched_count %}: {{ r.matched_skills | join(', ') }}{% endif %}</div>
+          {% if r.skill_gaps %}
+            <div class="skill-gaps">
+              <span class="skill-gaps-label">Skills to build:</span>
+              {% for gap in r.skill_gaps[:4] %}
+                <span class="skill-chip">{{ gap }}</span>
+              {% endfor %}
+              {% if r.skill_gaps|length > 4 %}
+                <span class="skill-chip skill-chip-more">+{{ r.skill_gaps|length - 4 }} more</span>
+              {% endif %}
+            </div>
+          {% endif %}
         {% else %}
           <div style="font-size: 13px; color: var(--color-ink-muted);">No skills selected</div>
         {% endif %}
@@ -76,7 +120,7 @@
           <div>Setup: <strong>{{ r.component_scores.setup }}%</strong></div>
           <div>Time: <strong>{{ r.component_scores.time }}%</strong></div>
           <div>Location: <strong>{{ r.component_scores.location ~ '%' if r.component_scores.location is not none else 'Not available' }}</strong></div>
-          <div>Success Model: <strong>{{ r.component_scores.success ~ '%' if r.component_scores.success is not none else 'Not available' }}</strong></div>
+          <div>Model Estimate (not ranked): <strong>{{ r.component_scores.success ~ '%' if r.component_scores.success is not none else 'Not available' }}</strong></div>
           <div>Team Size: <strong>{{ r.component_scores.team }}%</strong></div>
         </div>
       </details>
@@ -87,15 +131,30 @@
         <div class="score-num">{{ r.recommendation_score }}%</div>
         <div class="score-lbl">Recommendation Score</div>
       </div>
+      {% if r.recommendation_id %}
+        <button type="button" class="btn btn-secondary btn-sm btn-block save-btn"
+                data-rec-id="{{ r.recommendation_id }}"
+                data-saved="{{ 'true' if r.is_saved else 'false' }}">
+          {{ 'Saved' if r.is_saved else 'Save' }}
+        </button>
+      {% endif %}
       <a href="{{ url_for('rec.pathway', biz_id=r.id) }}" class="btn btn-primary btn-sm btn-block">View Pathway</a>
     </div>
   </div>
 {% else %}
   <div class="card card-editorial" style="border-left: 6px solid var(--color-accent);">
-    <h3>No business recommendations available.</h3>
-    <p style="margin-top: 8px;">
-      Try adjusting your skills, location, or setup preferences.
-    </p>
+    {% if profile.skills %}
+      <h3>No catalog business connects to your selected skills.</h3>
+      <p style="margin-top: 8px;">
+        Selected skills: <strong>{{ profile.skills | join(', ') }}</strong>.
+        Try choosing different skills, or clear skills to see budget-based business ideas.
+      </p>
+    {% else %}
+      <h3>No business recommendations available.</h3>
+      <p style="margin-top: 8px;">
+        Try adjusting your location or setup preferences.
+      </p>
+    {% endif %}
     <a href="/find" class="btn btn-primary" style="margin-top: 16px;">Adjust Inputs</a>
   </div>
 {% endfor %}
@@ -112,6 +171,50 @@
 </div>
 
 <script>
+const CSRF_TOKEN = '{{ csrf_token() }}';
+
+const affordableOnly = document.getElementById("affordableOnly");
+if (affordableOnly) {
+  const cards = document.querySelectorAll(".business-card[data-affordable]");
+  const emptyState = document.getElementById("affordableEmpty");
+
+  affordableOnly.addEventListener("change", function () {
+    let visible = 0;
+    cards.forEach(function (card) {
+      const show = !affordableOnly.checked || card.dataset.affordable === "true";
+      card.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+    if (emptyState) emptyState.style.display = visible ? "none" : "block";
+  });
+}
+
+document.querySelectorAll(".save-btn").forEach(function (button) {
+  button.addEventListener("click", function () {
+    const recId = button.dataset.recId;
+    button.disabled = true;
+
+    fetch(`/recommendations/${recId}/save`, {
+      method: "POST",
+      headers: { "X-CSRF-Token": CSRF_TOKEN }
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("Save failed");
+        return response.json();
+      })
+      .then(function (data) {
+        button.dataset.saved = data.saved ? "true" : "false";
+        button.textContent = data.saved ? "Saved" : "Save";
+      })
+      .catch(function () {
+        alert("Could not update this saved business. Please try again.");
+      })
+      .finally(function () {
+        button.disabled = false;
+      });
+  });
+});
+
 function sendFeedback(choice) {
   const formData = new FormData();
   formData.append('rating', choice);

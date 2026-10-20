@@ -100,28 +100,40 @@ def get_cat(row):
 df_raw["market_category"] = df_raw.apply(get_cat, axis=1)
 mun_col = "municipality_city" if "municipality_city" in df_raw.columns else "municipality"
 df_raw["mun_clean"] = df_raw[mun_col].astype(str).str.strip()
+# Group by PSGC, not name: CALABARZON has two municipalities named "Rosario"
+# (Batangas 0401021000 and Cavite 0402117000).
+if "municipality_psgc" in df_raw.columns:
+    df_raw["mun_key"] = df_raw["municipality_psgc"]
+elif "adm3_psgc" in df_raw.columns:
+    df_raw["mun_key"] = df_raw["adm3_psgc"]
+else:
+    df_raw["mun_key"] = ""
 
-# Load 2024 PSA populations if available
+# Load 2024 PSA populations keyed by PSGC so duplicate names stay distinct
 pop_lookup = {}
 nat_file = PROCESSED_DIR / "municipality_market_features.csv"
 if nat_file.exists():
-    df_nat = pd.read_csv(nat_file)
+    df_nat = pd.read_csv(nat_file, dtype={"adm3_psgc": str})
     for _, r in df_nat.iterrows():
-        m_name = str(r.get("municipality_city", "")).strip().lower()
+        m_code_raw = str(r.get("adm3_psgc", "")).strip()
+        if not m_code_raw or m_code_raw.lower() == "nan":
+            continue
+        m_code_key = f"{int(float(m_code_raw)):010d}"
         pop = r.get("population_2024")
         if pd.notna(pop) and float(pop) > 0:
-            pop_lookup[m_name] = float(pop)
+            pop_lookup[m_code_key] = float(pop)
 
 rows = []
-for mun_name, grp in df_raw.groupby("mun_clean"):
-    if mun_name.lower() in ["nan", "unknown", ""]:
+for m_code, grp in df_raw.groupby("mun_key"):
+    mun_name = grp["mun_clean"].iloc[0]
+    if mun_name.lower() in ["nan", "unknown", ""] or not str(m_code).strip():
         continue
 
     p_code = grp["province_psgc"].iloc[0] if "province_psgc" in grp.columns else "0401000000"
-    m_code = grp["municipality_psgc"].iloc[0] if "municipality_psgc" in grp.columns else (grp["adm3_psgc"].iloc[0] if "adm3_psgc" in grp.columns else "")
+    m_code = str(m_code).strip()
 
     total_cnt = len(grp)
-    pop_val = pop_lookup.get(mun_name.lower(), np.nan)
+    pop_val = pop_lookup.get(m_code, np.nan)
     has_pop = pd.notna(pop_val) and pop_val > 0
 
     if total_cnt >= 250 and has_pop:
@@ -706,4 +718,4 @@ print("✓ Updated validate_datasets.py for CALABARZON")
 
 print("\n" + "=" * 80)
 print("🎉 CALABARZON LOCK COMPLETE!")
-print("=" * 80)git status
+print("=" * 80)

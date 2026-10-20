@@ -187,12 +187,24 @@ class PhilippineMarketAnalyzer:
         count_col = f"businesses_{cat_key}" if f"businesses_{cat_key}" in row else f"{cat_key}_count"
         rate_col = f"businesses_{cat_key}_per_1000_people" if f"businesses_{cat_key}_per_1000_people" in row else f"{cat_key}_per_1000"
 
-        osm_count = int(row[count_col]) if count_col in row and pd.notna(row[count_col]) else 0
-        density = float(row[rate_col]) if rate_col in row and pd.notna(row[rate_col]) else 0.0
-
         pop_val = row.get("population_2024")
         has_pop = pd.notna(pop_val) and float(pop_val) > 0
         pop_num = float(pop_val) if has_pop else None
+
+        if count_col not in row and rate_col not in row:
+            return {
+                "location_score": None,
+                "evidence_text": f"Location market data is not available for {cat} businesses in the current dataset.",
+                "osm_count": None,
+                "total_osm": total_osm,
+                "population": pop_num,
+                "density_per_1000": None,
+                "category": cat,
+                "data_quality": "UNSUPPORTED"
+            }
+
+        osm_count = int(row[count_col]) if count_col in row and pd.notna(row[count_col]) else 0
+        density = float(row[rate_col]) if rate_col in row and pd.notna(row[rate_col]) else 0.0
 
         tiers = Config.LOCATION_SCORES
         cutoffs = self.density_cutoffs.get(cat, {"p25": 0.05, "p75": 0.35, "p90": 0.70})

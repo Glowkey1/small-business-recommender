@@ -1,41 +1,16 @@
 import json
 import logging
+from pathlib import Path
+
 import joblib
 import pandas as pd
-import numpy as np
-from pathlib import Path
+
+from ml.success_features import APP_FEATURES, map_success_features
 
 logger = logging.getLogger(__name__)
 
-FEATURE_COLUMNS = [
-    "age", "education", "initial_capital", "financial_record_keeping",
-    "internet_usage", "business_plan", "marketing_effort", "partnership",
-    "parent_business_experience", "industry_experience", "owner_gender",
-    "professional_advice"
-]
+FEATURE_COLUMNS = APP_FEATURES
 
-TRAINING_MEDIANS = {
-    "age": 35.0,
-    "education": 3.0,
-    "parent_business_experience": 0.0,
-    "owner_gender": 1.0,
-    "professional_advice": 4.0
-}
-
-TRAINING_BOUNDS = {
-    "age": (18.0, 60.0),
-    "education": (1.0, 5.0),
-    "initial_capital": (0.0, 1.0),
-    "financial_record_keeping": (0.0, 1.0),
-    "internet_usage": (0.0, 1.0),
-    "business_plan": (0.0, 1.0),
-    "marketing_effort": (1.0, 7.0),
-    "partnership": (0.0, 1.0),
-    "parent_business_experience": (0.0, 1.0),
-    "industry_experience": (0.0, 20.0),
-    "owner_gender": (0.0, 1.0),
-    "professional_advice": (1.0, 7.0)
-}
 
 class SuccessModelService:
     def __init__(self, model_path: Path, metrics_path: Path):
@@ -43,79 +18,117 @@ class SuccessModelService:
         self.metrics_path = metrics_path
         self.model = None
         self.metrics = {}
+        self.feature_columns = list(APP_FEATURES)
+        self.threshold = 0.5
+        self.model_version = None
+        self.trained_at = None
+        self.feature_metadata = {}
         self._load()
 
     def _load(self):
-        if self.model_path.exists():
-            try:
-                self.model = joblib.load(self.model_path)
-                logger.info(f"Loaded Success Prediction Model from: {self.model_path}")
-            except Exception as e:
-                logger.error(f"Error loading success model: {e}")
-                self.model = None
-        else:
-            self.model = None
+        self.model = None
+        self.metrics = {}
+        self.feature_columns = list(APP_FEATURES)
+        self.threshold = 0.5
+        self.model_version = None
+        self.trained_at = None
+        self.feature_metadata = {}
 
         if self.metrics_path.exists():
             try:
-                with open(self.metrics_path, "r", encoding="utf-8") as f:
-                    self.metrics = json.load(f)
-            except Exception:
-                pass
+                with open(self.metrics_path, "r", encoding="utf-8") as handle:
+                    self.metrics = json.load(handle)
+            except Exception as exc:
+                logger.error("Error loading success model metrics: %s", exc)
+                self.metrics = {}
+
+        artifact = None
+        if self.model_path.exists():
+            try:
+                artifact = joblib.load(self.model_path)
+            except Exception as exc:
+                logger.error("Error loading success model: %s", exc)
+
+        if artifact is None:
+            return
+
+        if isinstance(artifact, dict):
+            self.model = artifact.get("model")
+            artifact_columns = artifact.get("feature_columns")
+            self.threshold = float(artifact.get("threshold", self.threshold))
+            self.model_version = artifact.get("model_version")
+            self.trained_at = artifact.get("trained_at")
+        else:
+            self.model = artifact
+            artifact_columns = getattr(artifact, "feature_names_in_", None)
+
+        if self.model is None:
+            return
+
+        expected_columns = list(APP_FEATURES)
+        if artifact_columns is None:
+            logger.error(
+                "Success model has no feature schema; disabling estimates until retrained."
+            )
+            self.model = None
+            return
+
+        artifact_columns = [str(column) for column in artifact_columns]
+        if artifact_columns != expected_columns:
+            logger.error(
+                "Success model feature schema mismatch. Expected %s, got %s. "
+                "Disabling estimates until retrained.",
+                expected_columns,
+                artifact_columns,
+            )
+            self.model = None
+            return
+
+        metrics_columns = self.metrics.get("feature_columns")
+        if metrics_columns is not None and list(metrics_columns) != expected_columns:
+            logger.error(
+                "Success metrics feature schema mismatch. Disabling estimates until retrained."
+            )
+            self.model = None
+            return
+
+        self.feature_columns = expected_columns
+        if "decision_threshold" in self.metrics:
+            self.threshold = float(
+                self.metrics["decision_threshold"].get("selected", self.threshold)
+            )
+        self.model_version = self.model_version or self.metrics.get("model_version")
+        self.trained_at = self.trained_at or self.metrics.get("trained_at")
+        self.feature_metadata = self.metrics.get("feature_metadata", {})
+        logger.info(
+            "Loaded success model %s with threshold %.4f from %s",
+            self.model_version or "(unknown version)",
+            self.threshold,
+            self.model_path,
+        )
+
+    @property
+    def is_available(self):
+        return self.model is not None
 
     def map_features(self, user_profile: dict, business_item: dict) -> dict:
-        user_cap = float(user_profile.get("capital", 0))
-        min_cap = float(business_item.get("min_capital", 0))
-        user_skills = [str(s).lower() for s in user_profile.get("skills", [])]
-        user_exp = str(user_profile.get("experience", "Beginner")).lower()
-        biz_setup = str(business_item.get("business_setup", "")).lower()
-
-        initial_cap = 1.0 if user_cap >= min_cap else 0.0
-        internet = 1.0 if ("online" in biz_setup or any(s in ["social media", "marketing", "technology", "design"] for s in user_skills)) else 0.0
-        mktg = 5.0 if any(s in ["marketing", "sales", "social media"] for s in user_skills) else 2.0
-        bus_plan = 1.0
-        fin_records = 1.0 if (any(s in ["accounting", "bookkeeping", "finance"] for s in user_skills) or "costing" in str(business_item.get("core_skills", "")).lower()) else 0.0
-        partnership = 1.0 if ("people_needed" in business_item and "solo" not in str(business_item["people_needed"]).lower()) else 0.0
-
-        if "experienced" in user_exp:
-            exp_val = 5.0
-        elif "intermediate" in user_exp:
-            exp_val = 3.0
-        else:
-            exp_val = 1.0
-
-        row = {
-            "age": TRAINING_MEDIANS["age"],
-            "education": TRAINING_MEDIANS["education"],
-            "initial_capital": initial_cap,
-            "financial_record_keeping": fin_records,
-            "internet_usage": internet,
-            "business_plan": bus_plan,
-            "marketing_effort": mktg,
-            "partnership": partnership,
-            "parent_business_experience": TRAINING_MEDIANS["parent_business_experience"],
-            "industry_experience": exp_val,
-            "owner_gender": TRAINING_MEDIANS["owner_gender"],
-            "professional_advice": TRAINING_MEDIANS["professional_advice"]
-        }
-
-        for k, (low, high) in TRAINING_BOUNDS.items():
-            row[k] = float(np.clip(row[k], low, high))
-
-        return row
+        return map_success_features(user_profile, business_item)
 
     def predict_success_scores(self, user_profile: dict, businesses: list) -> list:
         if self.model is None or not businesses:
             return [None] * len(businesses)
 
         try:
-            rows = [self.map_features(user_profile, b) for b in businesses]
-            df_in = pd.DataFrame(rows)[FEATURE_COLUMNS]
-            if hasattr(self.model, "predict_proba"):
-                probs = self.model.predict_proba(df_in)[:, 1]
-                return [round(float(p), 4) for p in probs]
-            preds = self.model.predict(df_in)
-            return [0.75 if int(p) == 1 else 0.35 for p in preds]
-        except Exception as e:
-            logger.error(f"Inference error in success model batch: {e}")
+            rows = [self.map_features(user_profile, business) for business in businesses]
+            frame = pd.DataFrame(rows, columns=self.feature_columns)
+            if list(frame.columns) != self.feature_columns:
+                raise ValueError("Success feature frame does not match model schema.")
+            if frame.isnull().any().any():
+                raise ValueError("Success feature frame contains null values.")
+            if not hasattr(self.model, "predict_proba"):
+                raise ValueError("Success model does not expose predict_proba.")
+            probabilities = self.model.predict_proba(frame)[:, 1]
+            return [round(float(probability), 4) for probability in probabilities]
+        except Exception as exc:
+            logger.error("Inference error in success model batch: %s", exc)
             return [None] * len(businesses)

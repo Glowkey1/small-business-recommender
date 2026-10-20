@@ -6,6 +6,8 @@ def test_capital_filter():
     assert len(recs) == 5, f"Expected 5 results, got {len(recs)}"
     for r in recs:
         assert "budget_gap" in r
+        assert "full_setup_gap" in r
         assert "affordable" in r
-        assert r["affordable"] == (r["min_capital"] <= 1000)
-        assert r["budget_gap"] == max(0.0, r["min_capital"] - 1000)
+        assert r["affordable"] == (r["micro_start_capital"] <= 1000)
+        assert r["budget_gap"] == max(0.0, r["micro_start_capital"] - 1000)
+        assert r["full_setup_gap"] == max(0.0, r["full_start_capital"] - 1000)

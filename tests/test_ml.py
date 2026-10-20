@@ -21,7 +21,7 @@ def test_skill_splitting_and_matching(engine):
 
 def test_recommender_produces_differentiated_scores(engine):
     user_low = {"capital": 5000, "skills": ["Cooking", "Baking"], "experience": "Beginner", "setup": ["Home-Based"]}
-    user_high = {"capital": 150000, "skills": ["Web", "Development", "Graphic", "Design"], "experience": "Experienced", "setup": ["Online"]}
+    user_high = {"capital": 150000, "skills": ["Web Development", "Graphic Design"], "experience": "Experienced", "setup": ["Online"]}
 
     recs_low = engine.recommend(user_low, top_n=5)
     recs_high = engine.recommend(user_high, top_n=5)

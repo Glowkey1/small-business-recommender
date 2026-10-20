@@ -1,15 +1,28 @@
-import re
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, session, redirect, url_for, jsonify
 from flask_login import login_required, current_user
 from config import Config
 from ml.recommendation_engine import HybridBusinessRecommender
+from ml.skill_fields import build_skill_groups, canonical_skill
 from ml.validation import validate_recommendation_input
 from models import db
 from models.recommendation import Recommendation, RecommendationFeedback
-from models.business import Business
 
 rec_bp = Blueprint("rec", __name__)
 engine = HybridBusinessRecommender()
+skill_groups = build_skill_groups(engine.selectable_skills)
+catalog_count = len(engine.df_businesses)
+market_count = len(engine.market_analyzer.df_market)
+region_count = (
+    engine.market_analyzer.df_market["region_psgc"].nunique()
+    if "region_psgc" in engine.market_analyzer.df_market.columns else 0
+)
+
+def coverage_context():
+    return {
+        "catalog_count": catalog_count,
+        "market_count": market_count,
+        "region_count": region_count,
+    }
 
 @rec_bp.route("/api/locations", methods=["GET"])
 def api_locations():
@@ -25,55 +38,96 @@ def find():
 
         if errors:
             hierarchy = engine.market_analyzer.get_location_hierarchy()
+            form_data = {
+                key: request.form.getlist(key) if key in ("skills", "setup") else request.form.get(key, "")
+                for key in request.form.keys()
+            }
             return render_template(
                 "user/recommendations_form.html",
-                skills=engine.selectable_skills,
+                skill_groups=skill_groups,
                 hierarchy=hierarchy,
-                form_data=request.form,
-                errors=errors
+                form_data=form_data,
+                errors=errors,
+                **coverage_context()
             ), 400
 
-        recs = engine.recommend(clean_profile, top_n=5)
-
-        if current_user.is_authenticated:
-            try:
-                for r in recs:
-                    rec_row = Recommendation(
-                        user_id=current_user.id,
-                        business_id=r["business_id"],
-                        compatibility_score=r["recommendation_score"]
-                    )
-                    db.session.add(rec_row)
-                db.session.commit()
-            except Exception:
-                db.session.rollback()
-
         session["last_profile"] = clean_profile
+        return redirect(url_for("rec.results"))
 
-        return render_template(
-            "user/recommendations.html",
-            recs=recs,
-            profile=clean_profile
-        )
+    preferred = current_user.preferred_setup or ""
+    if preferred == "Online / Home-Based":
+        saved_setups = ["Online", "Home-Based"]
+    elif preferred in Config.ALLOWED_SETUPS:
+        saved_setups = [preferred]
+    else:
+        saved_setups = ["Online"]
 
-    saved_data = {}
-    if current_user.is_authenticated:
-        saved_data["capital"] = current_user.starting_capital
-        saved_data["experience"] = current_user.experience_level
-        saved_data["available_time"] = current_user.available_time
-        saved_data["setup"] = [current_user.preferred_setup] if current_user.preferred_setup else ["Online / Home-Based"]
-        saved_data["skills"] = [s.name for s in current_user.skills]
-    elif "last_profile" in session:
-        saved_data = session["last_profile"]
+    saved_data = {
+        "capital": current_user.starting_capital or 10000,
+        "experience": current_user.experience_level if current_user.experience_level in Config.ALLOWED_EXPERIENCE else "Beginner",
+        "available_time": current_user.available_time if current_user.available_time in Config.ALLOWED_TIMES else "5-6 hours/day",
+        "setup": saved_setups,
+        "skills": [canonical_skill(s.name) for s in current_user.skills],
+    }
 
     hierarchy = engine.market_analyzer.get_location_hierarchy()
     return render_template(
         "user/recommendations_form.html",
-        skills=engine.selectable_skills,
+        skill_groups=skill_groups,
         hierarchy=hierarchy,
         form_data=saved_data,
-        errors=[]
+        errors=[],
+        **coverage_context()
     )
+
+def _annotate_saved(recs, user_id, create_missing=False):
+    created = False
+    for r in recs:
+        existing = (
+            Recommendation.query
+            .filter_by(user_id=user_id, business_id=r["business_id"])
+            .order_by(Recommendation.created_at.desc(), Recommendation.id.desc())
+            .first()
+        )
+        if not existing and create_missing:
+            existing = Recommendation(
+                user_id=user_id,
+                business_id=r["business_id"],
+                compatibility_score=r["recommendation_score"]
+            )
+            db.session.add(existing)
+            db.session.flush()
+            created = True
+        if existing:
+            r["recommendation_id"] = existing.id
+            r["is_saved"] = bool(existing.is_saved)
+    if created:
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            for r in recs:
+                r.pop("recommendation_id", None)
+                r.pop("is_saved", None)
+    return recs
+
+@rec_bp.route("/recommendations")
+@login_required
+def results():
+    profile = session.get("last_profile")
+    if not profile:
+        return redirect(url_for("rec.find"))
+    recs = engine.recommend(dict(profile), top_n=5)
+    _annotate_saved(recs, current_user.id, create_missing=True)
+    return render_template("user/recommendations.html", recs=recs, profile=profile)
+
+@rec_bp.route("/recommendations/<int:rec_id>/save", methods=["POST"])
+@login_required
+def toggle_save(rec_id):
+    rec = Recommendation.query.filter_by(id=rec_id, user_id=current_user.id).first_or_404()
+    rec.is_saved = not bool(rec.is_saved)
+    db.session.commit()
+    return jsonify({"saved": bool(rec.is_saved)})
 
 @rec_bp.route("/pathway/<int:biz_id>")
 def pathway(biz_id):
