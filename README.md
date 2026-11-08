@@ -5,7 +5,7 @@ A Machine Learning-powered web platform that analyzes entrepreneur attributes (c
 ## Architecture
 - **Recommendation System:** Skill-connected filtering via the curated catalog + capital feasibility gating + TF-IDF skill cosine similarity + multi-attribute scoring. When skills are selected, only businesses linked to those skills are returned (fewer than five if not enough exist), and over-budget matches stay visible with their budget gap.
 - **Pathway Generator:** Dynamically extracts requirements, risks, and strategies from catalog data and calculates skill gaps.
-- **Success Classification Analysis:** Calibrated, app-only advisory estimate trained from Dataset 1. It is not part of ranking while its weight is `0.0`.
+- **Success Classification Analysis:** Calibrated, self-reported advisory estimate trained from Dataset 1. It is not part of ranking while its weight is `0.0`.
 
 ## Getting Started
 1. Place your raw files into `data/raw/dataset_1/` and `data/raw/dataset_2/`.
@@ -14,7 +14,7 @@ A Machine Learning-powered web platform that analyzes entrepreneur attributes (c
 4. Seed database: `python seed_real_data.py`
 5. Run the web application: `python app.py`
 
-The success model uses only inputs the app collects: initial capital, financial record keeping, internet usage, marketing effort, partnership, and industry experience. It is advisory: `Config.RECOMMENDATION_WEIGHTS["success"]` is `0.0`, so it does not affect recommendation ranking. Training writes `models/success_model.joblib`, `models/model_metrics.json`, and `models/success_model_card.json`.
+The success model uses only inputs the app collects: initial capital, financial record keeping, internet usage, marketing effort, partnership, industry experience, written-business-plan status, professional-advice frequency, and family-business background. It is advisory: `Config.RECOMMENDATION_WEIGHTS["success"]` is `0.0`, so it does not affect recommendation ranking. Training writes `models/success_model.joblib`, `models/model_metrics.json`, and `models/success_model_card.json`.
 
 ## Recommendation Evaluation
 

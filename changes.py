@@ -1,13 +1,4 @@
-# lock_calabarzon_only.py
-"""
-Locks the Small Business Recommender exclusively to CALABARZON (Region IV-A):
-1. Builds data/processed/calabarzon_market_features.csv from calabarzon_businesses_standardized.csv.
-2. Restricts psgc_region_province_names.csv to Region IV-A and its 5 provinces + Lucena City.
-3. Locks ml/market_analyzer.py to the CALABARZON market features dataset.
-4. Updates tests in tests/test_hybrid_recommender.py to test Lipa City and Lucena City.
-5. Updates tests/test_validation.py to use a CALABARZON location PSGC.
-6. Updates validate_datasets.py to audit the CALABARZON dataset.
-"""
+
 
 import os
 import re

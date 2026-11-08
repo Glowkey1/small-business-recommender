@@ -100,6 +100,40 @@
           <label class="setup-target"><input type="checkbox" name="setup" value="Service / Mobile" {% if 'Service / Mobile' in sel_setups %}checked{% endif %}> <span>Service / Mobile</span></label>
         </div>
       </div>
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label>Business Background</label>
+        <small style="color: var(--color-ink-muted); font-size: 13px; display: block; margin-bottom: 8px;">
+          These answers feed the advisory success estimate only. They do not change your business ranking.
+        </small>
+        <div class="grid-3">
+          <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">Written business plan</label>
+            {% set plan_value = form_data.business_plan if form_data.business_plan is defined else 'No' %}
+            <select name="business_plan" class="form-control">
+              <option value="No" {% if plan_value in ['No', 'no', False] %}selected{% endif %}>No</option>
+              <option value="Yes" {% if plan_value in ['Yes', 'yes', True] %}selected{% endif %}>Yes</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">Professional advice frequency</label>
+            {% set advice_value = form_data.professional_advice if form_data.professional_advice is defined else 1 %}
+            <select name="professional_advice" class="form-control">
+              {% for level in range(1, 8) %}
+                <option value="{{ level }}" {% if advice_value|string == level|string %}selected{% endif %}>{{ level }}{% if level == 1 %} — Never{% elif level == 7 %} — Very often{% endif %}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 12px; margin-bottom: 4px;">Parents/guardians ran a business</label>
+            {% set parent_value = form_data.parent_business_experience if form_data.parent_business_experience is defined else 'No' %}
+            <select name="parent_business_experience" class="form-control">
+              <option value="No" {% if parent_value in ['No', 'no', False] %}selected{% endif %}>No</option>
+              <option value="Yes" {% if parent_value in ['Yes', 'yes', True] %}selected{% endif %}>Yes</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- STEP 4: Cascading Location -->

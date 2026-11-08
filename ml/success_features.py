@@ -9,6 +9,9 @@ APP_FEATURES = [
     "marketing_effort",
     "partnership",
     "industry_experience",
+    "business_plan",
+    "professional_advice",
+    "parent_business_experience",
 ]
 
 EXPERIENCE_YEARS = {
@@ -24,7 +27,12 @@ FEATURE_BOUNDS = {
     "marketing_effort": (1.0, 7.0),
     "partnership": (0.0, 1.0),
     "industry_experience": (0.0, 20.0),
+    "business_plan": (0.0, 1.0),
+    "professional_advice": (1.0, 7.0),
+    "parent_business_experience": (0.0, 1.0),
 }
+
+PROFESSIONAL_ADVICE_DEFAULT = 1.0
 
 FINANCE_SKILL_TERMS = {
     "accounting",
@@ -93,6 +101,22 @@ def _safe_float(value, fallback=0.0):
     return number
 
 
+def _flag_value(value, default=0.0):
+    if isinstance(value, bool):
+        return 1.0 if value else 0.0
+    text = str(value).strip().lower()
+    if text in {"1", "yes", "true", "y", "on"}:
+        return 1.0
+    if text in {"0", "no", "false", "n", "off"}:
+        return 0.0
+    return float(default)
+
+
+def _ordinal_value(value, low, high, default):
+    number = _safe_float(value, fallback=default)
+    return float(min(max(number, low), high))
+
+
 def map_success_features(user_profile, business_item):
     user_cap = _safe_float(user_profile.get("capital", 0.0))
     min_cap = _safe_float(business_item.get("min_capital", 0.0))
@@ -126,6 +150,16 @@ def map_success_features(user_profile, business_item):
         "marketing_effort": marketing_effort,
         "partnership": 1.0 if ("solo" not in people_needed and people_needed) else 0.0,
         "industry_experience": EXPERIENCE_YEARS.get(experience, 0.0),
+        "business_plan": _flag_value(user_profile.get("business_plan"), default=0.0),
+        "professional_advice": _ordinal_value(
+            user_profile.get("professional_advice"),
+            low=1.0,
+            high=7.0,
+            default=PROFESSIONAL_ADVICE_DEFAULT,
+        ),
+        "parent_business_experience": _flag_value(
+            user_profile.get("parent_business_experience"), default=0.0
+        ),
     }
 
     for feature, (low, high) in FEATURE_BOUNDS.items():

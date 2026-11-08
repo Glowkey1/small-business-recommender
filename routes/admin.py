@@ -77,7 +77,7 @@ def retrain():
     if res:
         from routes.recommendation import engine
         engine.success_service._load()
-        flash("Calibrated app-only success prediction model retrained successfully.", "success")
+        flash("Calibrated self-reported success prediction model retrained successfully.", "success")
     else:
         flash("Model retraining failed: Dataset 1 is missing, unreadable, or invalid.", "danger")
     return redirect(url_for("admin.metrics"))

@@ -70,6 +70,15 @@ def find():
         "skills": [canonical_skill(s.name) for s in current_user.skills],
     }
 
+    last_profile = session.get("last_profile", {})
+    saved_data["business_plan"] = "Yes" if last_profile.get("business_plan") else "No"
+    saved_data["professional_advice"] = last_profile.get(
+        "professional_advice", Config.PROFESSIONAL_ADVICE_MIN
+    )
+    saved_data["parent_business_experience"] = (
+        "Yes" if last_profile.get("parent_business_experience") else "No"
+    )
+
     hierarchy = engine.market_analyzer.get_location_hierarchy()
     return render_template(
         "user/recommendations_form.html",

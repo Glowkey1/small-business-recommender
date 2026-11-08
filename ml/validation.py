@@ -62,7 +62,48 @@ def validate_recommendation_input(form_data, market_analyzer, selectable_skills)
     else:
         clean["setup"] = clean_setups
 
-    # 6. Location PSGC Validation
+    # 6. Background inputs for the advisory success estimate
+    plan_answer = str(form_data.get("business_plan", "") or "").strip().lower()
+    if plan_answer in {"", "no"}:
+        clean["business_plan"] = False
+    elif plan_answer == "yes":
+        clean["business_plan"] = True
+    else:
+        errors.append(
+            f"Written business plan must be one of: {', '.join(Config.ALLOWED_BACKGROUND_ANSWERS)}."
+        )
+
+    raw_advice = str(form_data.get("professional_advice", "") or "").strip()
+    if not raw_advice:
+        clean["professional_advice"] = Config.PROFESSIONAL_ADVICE_MIN
+    else:
+        try:
+            advice_value = int(raw_advice)
+        except (TypeError, ValueError):
+            advice_value = None
+        if (
+            advice_value is not None
+            and Config.PROFESSIONAL_ADVICE_MIN <= advice_value <= Config.PROFESSIONAL_ADVICE_MAX
+        ):
+            clean["professional_advice"] = advice_value
+        else:
+            errors.append(
+                "Professional advice must be a whole number from "
+                f"{Config.PROFESSIONAL_ADVICE_MIN} to {Config.PROFESSIONAL_ADVICE_MAX}."
+            )
+
+    parent_answer = str(form_data.get("parent_business_experience", "") or "").strip().lower()
+    if parent_answer in {"", "no"}:
+        clean["parent_business_experience"] = False
+    elif parent_answer == "yes":
+        clean["parent_business_experience"] = True
+    else:
+        errors.append(
+            "Family business background must be one of: "
+            f"{', '.join(Config.ALLOWED_BACKGROUND_ANSWERS)}."
+        )
+
+    # 7. Location PSGC Validation
     loc_psgc = form_data.get("location", "").strip().zfill(10)
     if not loc_psgc:
         errors.append("Please select a Philippine City / Municipality.")

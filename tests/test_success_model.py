@@ -13,7 +13,7 @@ from ml.success_features import (
 from ml.success_model_service import SuccessModelService
 
 
-def test_app_feature_contract_excludes_uncollected_personal_fields():
+def test_app_feature_contract_excludes_sensitive_or_uncollected_fields():
     assert APP_FEATURES == [
         "initial_capital",
         "financial_record_keeping",
@@ -21,14 +21,14 @@ def test_app_feature_contract_excludes_uncollected_personal_fields():
         "marketing_effort",
         "partnership",
         "industry_experience",
+        "business_plan",
+        "professional_advice",
+        "parent_business_experience",
     ]
     forbidden = {
         "age",
         "education",
         "owner_gender",
-        "parent_business_experience",
-        "professional_advice",
-        "business_plan",
     }
     assert forbidden.isdisjoint(APP_FEATURES)
 
@@ -39,6 +39,9 @@ def test_map_success_features_uses_actual_app_inputs():
         "skills": ["Marketing", "Basic Bookkeeping"],
         "experience": "Intermediate",
         "setup": ["Online"],
+        "business_plan": "Yes",
+        "professional_advice": 5,
+        "parent_business_experience": "Yes",
     }
     business = {
         "min_capital": 10000,
@@ -55,6 +58,9 @@ def test_map_success_features_uses_actual_app_inputs():
     assert row["marketing_effort"] == 4.0
     assert row["partnership"] == 0.0
     assert row["industry_experience"] == EXPERIENCE_YEARS["intermediate"]
+    assert row["business_plan"] == 1.0
+    assert row["professional_advice"] == 5.0
+    assert row["parent_business_experience"] == 1.0
 
 
 def test_map_success_features_does_not_use_business_setup_as_user_online_access():
@@ -86,6 +92,38 @@ def test_map_success_features_is_bounded_for_missing_inputs():
         assert low <= row[feature] <= high
     assert row["industry_experience"] == 0.0
     assert row["marketing_effort"] == 2.0
+    assert row["business_plan"] == 0.0
+    assert row["professional_advice"] == 1.0
+    assert row["parent_business_experience"] == 0.0
+
+
+def test_map_success_features_parses_background_answers():
+    row = map_success_features(
+        {
+            "business_plan": True,
+            "professional_advice": "7",
+            "parent_business_experience": "yes",
+        },
+        {},
+    )
+    assert row["business_plan"] == 1.0
+    assert row["professional_advice"] == 7.0
+    assert row["parent_business_experience"] == 1.0
+
+    clamped = map_success_features(
+        {
+            "business_plan": "No",
+            "professional_advice": 99,
+            "parent_business_experience": "No",
+        },
+        {},
+    )
+    assert clamped["business_plan"] == 0.0
+    assert clamped["professional_advice"] == 7.0
+    assert clamped["parent_business_experience"] == 0.0
+
+    invalid = map_success_features({"professional_advice": "not-a-number"}, {})
+    assert invalid["professional_advice"] == 1.0
 
 
 def test_service_without_artifacts_returns_none(tmp_path):

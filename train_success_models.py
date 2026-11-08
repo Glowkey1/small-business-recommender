@@ -431,7 +431,8 @@ def train():
         ),
         "limitations": [
             "The training dataset is small (250 records) and appears to be UMKM/Indonesian MSME data, not Philippine-specific.",
-            "Only features that can be derived from actual app inputs are used; no age, education, gender, or professional-advice fields are fabricated.",
+            "Only self-reported fields collected by the app are used; age, education, and gender remain excluded. Business-plan, professional-advice, and family-business answers come directly from the user rather than being inferred.",
+            "The three background answers carry strong signal in this small dataset, so the high cross-validation scores may not generalize to the Philippine market.",
             "Holdout metrics are based on a small test set and have wide uncertainty.",
             "A success probability is not the same as recommendation relevance or recommendation accuracy.",
         ],

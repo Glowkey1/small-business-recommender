@@ -30,7 +30,7 @@ def run_model_comparison(data_path=None):
 
     missing = [column for column in APP_FEATURES if column not in df.columns]
     if missing:
-        print(f"Missing app-only success features: {missing}")
+        print(f"Missing success-model features: {missing}")
         return None
 
     X = df[APP_FEATURES]

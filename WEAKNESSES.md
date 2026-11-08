@@ -64,10 +64,10 @@ The system works end-to-end for the happy path, but it has several **high-impact
 The model is a real logistic regression, but the inference adapter does not faithfully map the user/business context:
 
 - `TRAINING_MEDIANS["age"] = 35.0` (`ml/success_model_service.py:18`) conflicts with the trained model metadata median of **40.0** (`models/model_metrics.json:8-11`).
-- `business_plan` is always `1.0` (`ml/success_model_service.py:76`), so the model's business-plan feature carries no user signal.
+- `business_plan` was always `1.0` (`ml/success_model_service.py:76`), so the model's business-plan feature carried no user signal. **Resolved:** the recommendation form now asks the user for a written business plan and maps the answer.
 - `financial_record_keeping` is inferred from the **business's** `core_skills` containing "costing" (`ml/success_model_service.py:77`), not from the user, conflating a business attribute with an owner trait.
 - `partnership` is set to `1.0` whenever `people_needed` exists and does not contain "solo" (`ml/success_model_service.py:78`). For `"1 person"`, partnership becomes `1.0`, which is incorrect.
-- Several features are constants or heuristic placeholders (`age`, `education`, `parent_business_experience`, `owner_gender`, `professional_advice`), so predictions vary mostly by capital, setup, a few skills, and headcount.
+- Several features were constants or heuristic placeholders (`age`, `education`, `parent_business_experience`, `owner_gender`, `professional_advice`). **Resolved for three of them:** the form now collects business-plan status, professional-advice frequency, and family-business background directly. Age, education, and owner gender remain excluded from the model.
 - Raw probabilities observed at runtime had only **5 distinct values** for a beginner profile and **3** for an experienced profile across all 127 businesses.
 - Scores are then min-max normalized per request (`ml/recommendation_engine.py:325-333`), turning a maximum raw probability of ~0.15 into a displayed `100%` success component for the least-bad option.
 

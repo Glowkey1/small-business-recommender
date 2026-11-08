@@ -75,6 +75,9 @@ class Config:
         "1-2 hours/day", "3-4 hours/day", "5-6 hours/day", "7-8 hours/day", "Full-time"
     ]
     ALLOWED_SETUPS = ["Online", "Home-Based", "Physical Store", "Service / Mobile"]
+    ALLOWED_BACKGROUND_ANSWERS = ["Yes", "No"]
+    PROFESSIONAL_ADVICE_MIN = 1
+    PROFESSIONAL_ADVICE_MAX = 7
 
     LOCATION_SCORES = {
         "zero": 0.60,

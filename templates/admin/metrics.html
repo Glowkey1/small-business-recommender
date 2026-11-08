@@ -38,7 +38,7 @@
 <div class="card card-editorial" style="margin-bottom: 24px;">
   <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
     <div>
-      <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // APP-ONLY FEATURES</span>
+      <span class="mono-tag">SUCCESS CLASSIFICATION COMPONENT // SELF-REPORTED BACKGROUND FEATURES</span>
       <h3 style="margin: 4px 0 0 0;">Repeated Stratified Cross-Validation Results</h3>
     </div>
     <form action="/admin/retrain" method="POST">
@@ -47,7 +47,7 @@
     </form>
   </div>
   <p style="font-size: 13px; color: var(--color-ink-muted); margin-bottom: 16px;">
-    This model uses only inputs the app actually collects. It is advisory, has a ranking weight of 0.0, and does not represent the accuracy of the complete recommender.
+    This model uses inputs the app actually collects, including three self-reported background questions. It is advisory, has a ranking weight of 0.0, and does not represent the accuracy of the complete recommender.
   </p>
 
   {% set cv = metrics_data.get('cross_validation', {}) if metrics_data else {} %}
@@ -89,7 +89,7 @@
         <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ (cv.pr_auc_mean * 100) | round(1) }}%</div>
       </div>
       <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
-        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV Brier</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--color-ink-muted);">Repeated CV Brier (lower is better)</div>
         <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; margin-top: 4px;">{{ cv.brier_mean }}</div>
       </div>
       <div style="background: var(--color-surface-soft); padding: 14px; border: 1.5px solid var(--color-ink);">
