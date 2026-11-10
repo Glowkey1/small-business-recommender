@@ -1,7 +1,7 @@
 import re
 from urllib.parse import urlsplit
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from models import db
 from models.user import User
 
@@ -13,6 +13,14 @@ def is_safe_url(target):
     ref_url = urlsplit(request.host_url)
     test_url = urlsplit(target)
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+def post_login_redirect(user, next_page=None):
+    """Send admins straight to the ML Admin section, others to their target."""
+    if user.role == "admin":
+        return redirect(url_for("admin.metrics"))
+    if next_page and is_safe_url(next_page):
+        return redirect(next_page)
+    return redirect(url_for("rec.find"))
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -58,15 +66,15 @@ def register():
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     next_page = request.args.get("next")
+    if request.method == "GET" and current_user.is_authenticated and current_user.role == "admin":
+        return redirect(url_for("admin.metrics"))
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         user = User.query.filter((User.email == email) | (User.username == email)).first()
         if user and user.check_password(password):
             login_user(user)
-            if next_page and is_safe_url(next_page):
-                return redirect(next_page)
-            return redirect(url_for("rec.find"))
+            return post_login_redirect(user, next_page)
         flash("Invalid email or password.", "danger")
     return render_template("auth/login.html", next=next_page)
 

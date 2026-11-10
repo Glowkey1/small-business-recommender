@@ -14,6 +14,8 @@ A Machine Learning-powered web platform that analyzes entrepreneur attributes (c
 4. Seed database: `python seed_real_data.py`
 5. Run the web application: `python app.py`
 
+An admin account is created automatically at startup if none exists, so no manual database step is needed on a live host. Set `ADMIN_USERNAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in the environment (or `.env`) before deploying; if unset, the defaults are `admin` / `admin@smallbiz.local` / `admin123`. Always override the password in production.
+
 The success model uses only inputs the app collects: initial capital, financial record keeping, internet usage, marketing effort, partnership, industry experience, written-business-plan status, professional-advice frequency, and family-business background. It is advisory: `Config.RECOMMENDATION_WEIGHTS["success"]` is `0.0`, so it does not affect recommendation ranking. Training writes `models/success_model.joblib`, `models/model_metrics.json`, and `models/success_model_card.json`.
 
 ## Recommendation Evaluation

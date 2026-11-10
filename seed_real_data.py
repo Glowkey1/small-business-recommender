@@ -5,7 +5,7 @@ from models import db
 from models.business import Business
 from models.skill import Skill
 from models.category import Category
-from models.user import User
+from services.seed_service import ensure_admin_account
 
 app = create_app()
 
@@ -61,10 +61,6 @@ with app.app_context():
     else:
         print("⚠ Run ml/preprocessing.py first to build final_business_dataset.csv.")
 
-    # 3. Create Default Admin
-    if not User.query.filter_by(username="admin").first():
-        admin = User(username="admin", email="admin@smallbiz.local", role="admin")
-        admin.set_password("admin123")
-        db.session.add(admin)
-        db.session.commit()
-        print("✓ Created default admin user (admin / admin123).")
+    # 3. Ensure Default Admin (also happens automatically at app startup)
+    ensure_admin_account()
+    print("✓ Admin account ensured from ADMIN_USERNAME / ADMIN_EMAIL / ADMIN_PASSWORD.")

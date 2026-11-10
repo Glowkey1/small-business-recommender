@@ -43,6 +43,12 @@ class Config:
     SQLALCHEMY_DATABASE_URI = resolve_db_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Initial admin account created automatically at startup when missing.
+    # Override these via environment variables in production.
+    ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin").strip() or "admin"
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@smallbiz.local").strip().lower()
+    ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
+
     BASE_DIR = BASE_DIR
     DATA_DIR = BASE_DIR / "data"
     RAW_D1_PATH = DATA_DIR / "raw" / "dataset_1"

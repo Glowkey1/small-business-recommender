@@ -24,3 +24,19 @@ def test_register_empty_password_fails_cleanly(client):
     }, follow_redirects=True)
     assert res.status_code == 400
     assert b"Password must be at least 6 characters long" in res.data
+
+def test_admin_login_redirects_to_ml_admin(client):
+    res = client.post("/login", data={
+        "email": "admin",
+        "password": "admin123"
+    }, follow_redirects=False)
+    assert res.status_code == 302
+    assert res.headers["Location"].endswith("/admin/metrics")
+
+def test_authenticated_admin_visits_are_sent_to_ml_admin(client):
+    client.post("/login", data={"email": "admin", "password": "admin123"})
+
+    for path in ("/", "/login"):
+        res = client.get(path, follow_redirects=False)
+        assert res.status_code == 302
+        assert res.headers["Location"].endswith("/admin/metrics")

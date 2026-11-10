@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from config import Config
 from models import db
 from models.user import User
-from services.seed_service import seed_database_if_empty
+from services.seed_service import seed_database_if_empty, ensure_admin_account
 from routes.main import main_bp
 from routes.auth import auth_bp
 from routes.user import user_bp
@@ -28,6 +28,7 @@ def create_app(config_class=Config, test_config=None):
         try:
             db.create_all()
             seed_database_if_empty()
+            ensure_admin_account()
         except Exception as e:
             print(f"❌ Database initialization error: {e}")
             raise

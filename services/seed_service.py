@@ -4,8 +4,48 @@ from config import Config
 from models import db
 from models.business import Business
 from models.skill import Skill
+from models.user import User
 
 logger = logging.getLogger(__name__)
+
+DEFAULT_ADMIN_PASSWORD = "admin123"
+
+def ensure_admin_account():
+    """Create the initial admin account if it does not exist yet.
+
+    Safe to call on every startup: existing accounts are never modified.
+    Credentials come from Config (ADMIN_USERNAME / ADMIN_EMAIL / ADMIN_PASSWORD).
+    """
+    username = Config.ADMIN_USERNAME
+    email = Config.ADMIN_EMAIL
+
+    existing = User.query.filter(
+        (User.username == username) | (User.email == email)
+    ).first()
+
+    if existing:
+        if existing.role != "admin":
+            logger.warning(
+                "An account already uses the configured admin username/email ('%s') but is not an admin. "
+                "Leaving it unchanged; set ADMIN_USERNAME/ADMIN_EMAIL to different values to create the initial admin.",
+                existing.username,
+            )
+        return existing
+
+    admin = User(username=username, email=email, role="admin")
+    admin.set_password(Config.ADMIN_PASSWORD)
+    db.session.add(admin)
+    db.session.commit()
+
+    if Config.ADMIN_PASSWORD == DEFAULT_ADMIN_PASSWORD:
+        logger.warning(
+            "Created initial admin account '%s' with the default password. "
+            "Set ADMIN_PASSWORD (and optionally ADMIN_USERNAME/ADMIN_EMAIL) in the environment.",
+            username,
+        )
+    else:
+        logger.info("Created initial admin account '%s' (%s).", username, email)
+    return admin
 
 def seed_database_if_empty():
     try:
